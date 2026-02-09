@@ -1114,7 +1114,7 @@ export default function Dashboard() {
                         <span key={v} className="flex items-center gap-0.5"><span>{icon}</span>{v}</span>
                       ))}
                     </div>
-                    <div className="text-xs text-slate-500">{displayClients.length} clients</div>
+                    <div className="text-xs text-slate-500">{displayClients.length} accounts ({CLIENTS.filter(c => c.status === "active" || c.status === "warning" || c.status === "critical" || c.status === "declining").length} paying)</div>
                   </div>
                 </div>
                 <div className="overflow-x-auto">
