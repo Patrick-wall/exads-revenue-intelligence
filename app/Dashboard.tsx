@@ -95,7 +95,7 @@ const CLIENTS: Client[] = [
   { id:20, name:"Medialix", tradingName:"Adclix", vertical:["Mainstream"], language:"English", currency:"EUR", blurb:"Trades as Adclix. Setting up DSP integration — enterprise onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   // ── Testing (3) ──
   { id:21, name:"Top Solutions", tradingName:"Top Solutions Media", vertical:["Mainstream"], language:"English", currency:"EUR", blurb:"Running initial test campaigns on DSP. Evaluating platform fit before committing to full rollout.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
-  { id:22, name:"Ezmob", vertical:["Mainstream"], language:"English", currency:"USD", blurb:"Ad tech platform running test campaigns on Ad Serving. Evaluating integration and performance.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["Ad Serving"], plans:{"Ad Serving":"Core"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:22, name:"Ezmob", vertical:["Mainstream"], language:"English", currency:"USD", blurb:"Ad tech platform running test campaigns on Ad Serving. Evaluating integration and performance.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0.08,0.15], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["Ad Serving"], plans:{"Ad Serving":"Core"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   { id:23, name:"AdultadAdworld", vertical:["Adult","Dating"], language:"English", currency:"USD", blurb:"Running test campaigns on DSP platform. Evaluating ad formats and targeting capabilities.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   // ── Churn (1) ──
   { id:24, name:"Venus London", tradingName:"Venus London Technology", vertical:["Dating"], language:"English", currency:"GBP", blurb:"Was on DSP Business plan. Revenue declined steadily over 6 months before going quiet. May be worth a win-back campaign.", rev:[420,380,340,290,210,120], adReqs:[0.2,0.2,0.15,0.12,0.08,0.04], cost:[48,44,39,33,24,14], tier:"T3", status:"churn", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"very_unhappy", tickets:{open:0,resolved:2}, upsell:null },
@@ -151,14 +151,15 @@ function generateAlerts(clients: Client[]): Alert[] {
         time: "Today"
       });
     }
-    // Testing client with first activity
-    if (c.status === "testing" && curr === 0 && a[a.length-1] > 0) {
+    // Testing/onboarding client with ad request activity but no revenue — ready to move to billing
+    if ((c.status === "testing" || c.status === "onboarding") && curr === 0 && a.some(v => v > 0)) {
+      const activeMonths = a.filter(v => v > 0).length;
       alerts.push({
         severity: "positive",
         client: c.name,
-        title: "Testing activity detected",
-        detail: `Ad requests: ${a[a.length-1].toFixed(2)}B this month. No revenue yet — monitor for billing readiness.`,
-        action: "Monitor & prepare onboarding",
+        title: activeMonths >= 2 ? "Move to billing — significant activity detected" : "Testing activity detected — monitor for billing",
+        detail: `${activeMonths} month${activeMonths > 1 ? "s" : ""} of ad request activity (${a[a.length-1].toFixed(2)}B this month). No revenue billed yet. Platform: ${c.pricing.join(" + ")}, plan: ${c.pricing.map(p => c.plans[p] || "Core").join(" / ")}.`,
+        action: activeMonths >= 2 ? "Set up billing & activate account" : "Monitor & prepare onboarding",
         time: "Today"
       });
     }
@@ -421,7 +422,7 @@ export default function Dashboard() {
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
   const [alertFilter, setAlertFilter] = useState("all");
   const [clientOverrides, setClientOverrides] = useState<Record<number, { sentiment?: Sentiment; pricing?: Pricing }>>({});
-  const [clientTab, setClientTab] = useState<"all" | "new">("all");
+  const [clientTab, setClientTab] = useState<"all" | "active" | "onboarding" | "testing">("all");
 
   const alerts = useMemo(() => generateAlerts(CLIENTS), []);
   const filteredAlerts = alertFilter === "all" ? alerts : alerts.filter(a => a.severity === alertFilter);
@@ -786,35 +787,6 @@ export default function Dashboard() {
                 </ResponsiveContainer>
               </div>
 
-              {/* Revenue by Vertical */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="text-sm font-semibold text-slate-300 mb-3">Revenue by Vertical</div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {Object.keys(VERTICAL_ICONS).map(v => {
-                    const vClients = CLIENTS.filter(c => c.vertical.includes(v) && c.rev[c.rev.length-1] > 0);
-                    const vRev = vClients.reduce((s, c) => s + c.rev[c.rev.length-1], 0);
-                    const vCount = vClients.length;
-                    const pct = totalMRR > 0 ? ((vRev / totalMRR) * 100).toFixed(0) : "0";
-                    return (
-                      <div key={v} className="bg-slate-900/50 rounded-lg p-3">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-base">{VERTICAL_ICONS[v]}</span>
-                          <span className="text-xs text-slate-300 font-medium">{v}</span>
-                        </div>
-                        <div className="text-lg font-bold tabular-nums" style={{ color: VERTICAL_COLORS[v] }}>{"\u20AC"}{vRev.toLocaleString()}</div>
-                        <div className="flex items-center justify-between mt-1">
-                          <span className="text-[10px] text-slate-500">{vCount} clients</span>
-                          <span className="text-[10px] text-slate-500">{pct}% of MRR</span>
-                        </div>
-                        <div className="h-1.5 bg-slate-800 rounded-full mt-2 overflow-hidden">
-                          <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: VERTICAL_COLORS[v] }} />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
               {/* Quick Client Table */}
               <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl overflow-hidden backdrop-blur-xl">
                 <div className="px-4 py-3 flex items-center justify-between border-b border-slate-700/30">
@@ -1074,32 +1046,35 @@ export default function Dashboard() {
               {(() => {
                 const CLIENT_COLORS = ["#06b6d4","#8b5cf6","#22c55e","#f59e0b","#ef4444","#ec4899","#14b8a6","#f97316","#6366f1","#84cc16","#a855f7","#0ea5e9","#e879f9","#facc15","#fb923c","#4ade80"];
                 const payingClients = CLIENTS.filter(c => c.rev.some(v => v > 0)).sort((a, b) => b.rev[b.rev.length-1] - a.rev[a.rev.length-1]);
-                const clientRevData = MONTHS_LABELS.map((month, i) => {
-                  const row: Record<string, string | number> = { month };
-                  payingClients.forEach(c => { row[c.name] = c.rev[i]; });
-                  return row;
-                });
+                const clientBarData = payingClients.map((c, i) => ({
+                  name: c.name,
+                  mrr: c.rev[c.rev.length-1],
+                  prev: c.rev[c.rev.length-2],
+                  fill: CLIENT_COLORS[i % CLIENT_COLORS.length],
+                  tier: c.tier,
+                }));
                 return (
                 <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
                   <div className="flex items-center justify-between mb-3">
                     <div className="text-sm font-semibold text-slate-300">Revenue per Client Account</div>
                     <div className="text-xs text-slate-500">{payingClients.length} accounts with revenue</div>
                   </div>
-                  <ResponsiveContainer width="100%" height={380}>
-                    <LineChart data={clientRevData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                      <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
-                      <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                  <ResponsiveContainer width="100%" height={Math.max(300, payingClients.length * 32)}>
+                    <BarChart data={clientBarData} layout="vertical" margin={{ left: 10, right: 20 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />
+                      <XAxis type="number" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                      <YAxis type="category" dataKey="name" tick={{ fill: "#94a3b8", fontSize: 11 }} axisLine={false} width={110} />
                       <Tooltip
-                        contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 11, color: "#e2e8f0" }}
-                        formatter={(v: number, name: string) => [`\u20AC${v.toLocaleString()}`, name]}
-                        itemSorter={(item: { value?: number }) => -(item.value ?? 0)}
+                        contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
+                        formatter={(v: number) => [`\u20AC${v.toLocaleString()}`, "Current MRR"]}
+                        cursor={{ fill: "rgba(148,163,184,0.05)" }}
                       />
-                      <Legend wrapperStyle={{ fontSize: 11, color: "#94a3b8" }} />
-                      {payingClients.map((c, i) => (
-                        <Line key={c.id} type="monotone" dataKey={c.name} stroke={CLIENT_COLORS[i % CLIENT_COLORS.length]} strokeWidth={c.tier === "T1" ? 2.5 : 1.5} dot={{ r: c.tier === "T1" ? 3 : 2 }} activeDot={{ r: 5 }} />
-                      ))}
-                    </LineChart>
+                      <Bar dataKey="mrr" radius={[0, 4, 4, 0]} barSize={18}>
+                        {clientBarData.map((entry, i) => (
+                          <Cell key={i} fill={entry.fill} />
+                        ))}
+                      </Bar>
+                    </BarChart>
                   </ResponsiveContainer>
                 </div>
                 );
@@ -1133,8 +1108,12 @@ export default function Dashboard() {
 
           {/* ═══════ CLIENTS TAB ═══════ */}
           {view === "clients" && (() => {
-            const displayClients = clientTab === "new"
-              ? sortedByRev.filter(c => c.tier === "New" || c.status === "onboarding" || c.status === "testing" || c.status === "churn")
+            const displayClients = clientTab === "active"
+              ? sortedByRev.filter(c => c.status === "active" || c.status === "warning" || c.status === "critical" || c.status === "declining")
+              : clientTab === "onboarding"
+              ? sortedByRev.filter(c => c.status === "onboarding")
+              : clientTab === "testing"
+              ? sortedByRev.filter(c => c.status === "testing")
               : sortedByRev;
             return (
             <div key="clients-tab" className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -1142,8 +1121,10 @@ export default function Dashboard() {
                 <div className="px-4 py-3 border-b border-slate-700/30 flex items-center justify-between">
                   <div className="flex items-center gap-1">
                     {([
-                      { key: "all" as const, label: "All Clients" },
-                      { key: "new" as const, label: "New (last 60 days)" },
+                      { key: "all" as const, label: "All", count: CLIENTS.length },
+                      { key: "active" as const, label: "Active", count: CLIENTS.filter(c => c.status === "active" || c.status === "warning" || c.status === "critical" || c.status === "declining").length },
+                      { key: "onboarding" as const, label: "Onboarding", count: CLIENTS.filter(c => c.status === "onboarding").length },
+                      { key: "testing" as const, label: "Testing", count: CLIENTS.filter(c => c.status === "testing").length },
                     ]).map(t => (
                       <button
                         key={t.key}
@@ -1155,11 +1136,9 @@ export default function Dashboard() {
                         }`}
                       >
                         {t.label}
-                        {t.key === "new" && (
-                          <span className="ml-1.5 bg-cyan-500/20 text-cyan-400 text-[10px] font-bold px-1.5 py-0 rounded-full">
-                            {CLIENTS.filter(c => c.tier === "New" || c.status === "onboarding").length}
-                          </span>
-                        )}
+                        <span className={`ml-1.5 text-[10px] font-bold px-1.5 py-0 rounded-full ${
+                          clientTab === t.key ? "bg-cyan-500/20 text-cyan-400" : "bg-slate-700/50 text-slate-500"
+                        }`}>{t.count}</span>
                       </button>
                     ))}
                   </div>
@@ -1410,6 +1389,34 @@ export default function Dashboard() {
                     <div className="text-sm">Select a client to view details</div>
                   </div>
                 )}
+              </div>
+            </div>
+
+            {/* Clients by Vertical */}
+            <div className="mt-4 bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+              <div className="text-sm font-semibold text-slate-300 mb-3">Clients by Vertical</div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {Object.keys(VERTICAL_ICONS).map(v => {
+                  const allV = CLIENTS.filter(c => c.vertical.includes(v));
+                  const payingV = allV.filter(c => c.rev[c.rev.length-1] > 0);
+                  const vRev = payingV.reduce((s, c) => s + c.rev[c.rev.length-1], 0);
+                  return (
+                    <div key={v} className="bg-slate-900/50 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-base">{VERTICAL_ICONS[v]}</span>
+                        <span className="text-xs text-slate-300 font-medium">{v}</span>
+                      </div>
+                      <div className="text-lg font-bold tabular-nums" style={{ color: VERTICAL_COLORS[v] }}>{allV.length} <span className="text-xs font-normal text-slate-500">accounts</span></div>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-[10px] text-slate-500">{payingV.length} paying</span>
+                        <span className="text-[10px] text-slate-500">{"\u20AC"}{vRev.toLocaleString()} MRR</span>
+                      </div>
+                      <div className="h-1.5 bg-slate-800 rounded-full mt-2 overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${allV.length > 0 ? (payingV.length / allV.length * 100) : 0}%`, backgroundColor: VERTICAL_COLORS[v] }} />
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           );})()}
