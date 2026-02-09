@@ -874,24 +874,8 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Revenue Split + KPIs + Pipeline Summary */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                  <div className="text-sm font-semibold text-slate-300 mb-2">Revenue by Pricing</div>
-                  <ResponsiveContainer width="100%" height={160}>
-                    <PieChart>
-                      <Pie data={pieData} cx="50%" cy="50%" innerRadius={35} outerRadius={60} dataKey="value" paddingAngle={3}>
-                        {pieData.map((d, i) => <Cell key={i} fill={d.color} />)}
-                      </Pie>
-                      <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 11, color: "#e2e8f0" }} labelStyle={{ color: "#e2e8f0" }} itemStyle={{ color: "#e2e8f0" }} formatter={(v: number) => `\u20AC${v.toLocaleString()}`} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="flex justify-center gap-4 text-xs">
-                    <span className="text-cyan-400">{"\u25CF"} Ad Serving {"\u20AC"}{adServingRev.toLocaleString()}</span>
-                    <span className="text-purple-400">{"\u25CF"} DSP {"\u20AC"}{dspRev.toLocaleString()}</span>
-                  </div>
-                </div>
-
+              {/* KPIs + Pipeline Summary */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
                   <div className="text-sm font-semibold text-slate-300 mb-3">Revenue KPIs</div>
                   <div className="space-y-3">
