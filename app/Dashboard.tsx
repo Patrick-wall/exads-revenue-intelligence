@@ -755,8 +755,8 @@ export default function Dashboard() {
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
                     <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
-                    <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${v.toLocaleString()}`, ""]} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000000).toFixed(1)}M`} />
+                    <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${(v/1000000).toFixed(2)}M`, ""]} />
                     <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
                     <Area type="monotone" dataKey="adServing" stackId="1" stroke="#06b6d4" fill="url(#gNet1)" strokeWidth={2} name="Ad Serving" />
                     <Area type="monotone" dataKey="dsp" stackId="1" stroke="#8b5cf6" fill="url(#gNet2)" strokeWidth={2} name="DSP" />
