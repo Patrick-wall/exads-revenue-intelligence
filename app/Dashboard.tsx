@@ -714,8 +714,8 @@ export default function Dashboard() {
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="flex justify-center gap-4 text-xs">
-                    <span className="text-cyan-400">{"\u25CF"} Ad Serving {((adServingRev/totalMRR)*100).toFixed(0)}%</span>
-                    <span className="text-purple-400">{"\u25CF"} DSP {((dspRev/totalMRR)*100).toFixed(0)}%</span>
+                    <span className="text-cyan-400">{"\u25CF"} Ad Serving {((adServingRev/(adServingRev+dspRev))*100).toFixed(0)}%</span>
+                    <span className="text-purple-400">{"\u25CF"} DSP {((dspRev/(adServingRev+dspRev))*100).toFixed(0)}%</span>
                   </div>
                 </div>
 
