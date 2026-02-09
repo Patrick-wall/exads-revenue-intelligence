@@ -634,7 +634,6 @@ export default function Dashboard() {
     { id: "sales", label: "Sales", icon: "\u25B2" },
     { id: "alerts", label: "Alerts", icon: "\u26A0", count: alerts.filter(a => a.severity === "critical" || a.severity === "warning").length },
     { id: "clients", label: "Clients", icon: "\u25EB" },
-    { id: "pipelines", label: "Pipelines", icon: "\u25C8" },
     { id: "reports", label: "Reports", icon: "\u2630" },
   ];
 
@@ -1132,7 +1131,29 @@ export default function Dashboard() {
               ? sortedByRev.filter(c => c.status === "testing")
               : sortedByRev;
             return (
-            <div key="clients-tab" className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div key="clients-tab" className="space-y-4">
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="text-sm font-semibold text-slate-300 mb-4">Support Tickets (from HubSpot)</div>
+                <div className="grid grid-cols-4 gap-3">
+                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-amber-400">{HUBSPOT_TICKETS.open}</div>
+                    <div className="text-xs text-slate-500">Open</div>
+                  </div>
+                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-cyan-400">{HUBSPOT_TICKETS.pending}</div>
+                    <div className="text-xs text-slate-500">Pending</div>
+                  </div>
+                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-emerald-400">{HUBSPOT_TICKETS.resolved}</div>
+                    <div className="text-xs text-slate-500">Resolved</div>
+                  </div>
+                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
+                    <div className="text-lg font-bold text-emerald-400">{((HUBSPOT_TICKETS.resolved / (HUBSPOT_TICKETS.open + HUBSPOT_TICKETS.pending + HUBSPOT_TICKETS.resolved)) * 100).toFixed(0)}%</div>
+                    <div className="text-xs text-slate-500">Resolution Rate</div>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <div className="lg:col-span-2 bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl overflow-hidden backdrop-blur-xl">
                 <div className="px-4 py-3 border-b border-slate-700/30 flex items-center justify-between">
                   <div className="flex items-center gap-1">
@@ -1158,14 +1179,7 @@ export default function Dashboard() {
                       </button>
                     ))}
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2 text-[10px] text-slate-500">
-                      {Object.entries(VERTICAL_ICONS).map(([v, icon]) => (
-                        <span key={v} className="flex items-center gap-0.5"><span>{icon}</span>{v}</span>
-                      ))}
-                    </div>
-                    <div className="text-xs text-slate-500">{displayClients.length} accounts ({CLIENTS.filter(c => c.status === "active" || c.status === "warning" || c.status === "critical" || c.status === "declining").length} paying)</div>
-                  </div>
+                  <div className="text-xs text-slate-500">{displayClients.length} accounts ({CLIENTS.filter(c => c.status === "active" || c.status === "warning" || c.status === "critical" || c.status === "declining").length} paying)</div>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -1407,56 +1421,8 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-          );})()}
-
-          {/* ═══════ PIPELINES TAB ═══════ */}
-          {view === "pipelines" && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="text-sm font-semibold text-slate-300 mb-4">Sales Pipeline (from HubSpot)</div>
-                <div className="space-y-3">
-                  {[
-                    { stage: "Qualified Leads", count: PIPELINE.qualified, color: "bg-cyan-500", width: "100%" },
-                    { stage: "Proposal Sent", count: PIPELINE.proposal, color: "bg-purple-500", width: "37.5%" },
-                    { stage: "Negotiation", count: PIPELINE.negotiation, color: "bg-amber-500", width: "25%" },
-                    { stage: "Closed Won", count: PIPELINE.closed, color: "bg-emerald-500", width: "12.5%" },
-                  ].map((s, i) => (
-                    <div key={i}>
-                      <div className="flex justify-between text-xs text-slate-400 mb-1">
-                        <span>{s.stage}</span>
-                        <span className="font-bold text-slate-300">{s.count}</span>
-                      </div>
-                      <div className="h-6 bg-slate-900/50 rounded-lg overflow-hidden">
-                        <div className={`h-full ${s.color} rounded-lg transition-all`} style={{ width: s.width, opacity: 0.7 }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="text-sm font-semibold text-slate-300 mb-4">Support Tickets (from HubSpot)</div>
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-amber-400">{HUBSPOT_TICKETS.open}</div>
-                    <div className="text-xs text-slate-500">Open</div>
-                  </div>
-                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-cyan-400">{HUBSPOT_TICKETS.pending}</div>
-                    <div className="text-xs text-slate-500">Pending</div>
-                  </div>
-                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-emerald-400">{HUBSPOT_TICKETS.resolved}</div>
-                    <div className="text-xs text-slate-500">Resolved</div>
-                  </div>
-                </div>
-                <div className="text-xs text-slate-500 border-t border-slate-700/30 pt-3">
-                  <div className="font-medium text-slate-400 mb-1">Resolution Rate</div>
-                  <div className="text-lg font-bold text-emerald-400">{((HUBSPOT_TICKETS.resolved / (HUBSPOT_TICKETS.open + HUBSPOT_TICKETS.pending + HUBSPOT_TICKETS.resolved)) * 100).toFixed(0)}%</div>
-                </div>
-              </div>
             </div>
-          )}
+          );})()}
 
           {/* ═══════ REPORTS TAB ═══════ */}
           {view === "reports" && (
