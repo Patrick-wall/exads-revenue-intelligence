@@ -72,34 +72,47 @@ interface AlertCardProps {
 // ═══════════════════════════════════════════════════════════════
 const CLIENTS: Client[] = [
   // ── Active / Paying (15) ──
-  { id:1, name:"Adsession", tradingName:"Adsession BV", vertical:"Ad Tech", language:"English", currency:"EUR", blurb:"Large-scale ad tech platform specialising in pop-under and push notification ad formats. High-volume programmatic buyer with strong self-serve usage.", rev:[12162,12024,13101,11927,14718,16941], adReqs:[4.2,4.1,4.5,4.1,5.0,5.8], cost:[410,395,440,390,510,580], tier:"T1", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"very_happy", tickets:{open:0,resolved:5}, upsell:null },
-  { id:2, name:"Crakmedia", tradingName:"Crak Revenue / Crakmedia Inc.", vertical:"Performance Marketing", language:"English / French", currency:"USD", blurb:"Canadian performance marketing network. Runs large CPA campaigns across dating, nutra, and sweepstakes verticals. Ad Serving active, DSP currently in testing.", rev:[0,0,0,5280,8940,12526], adReqs:[0,0,0,1.8,3.1,4.3], cost:[0,0,0,290,530,820], tier:"T1", status:"active", pricing:["Ad Serving","DSP"], plans:{"Ad Serving":"Enterprise","DSP":"Pro"}, platformStatus:{"Ad Serving":"active","DSP":"testing"}, sentiment:"happy", tickets:{open:1,resolved:3}, upsell:null },
+  { id:1, name:"Adsession", tradingName:"Adsession BV", vertical:"Mainstream", language:"English", currency:"EUR", blurb:"Large-scale ad tech platform specialising in pop-under and push notification ad formats. High-volume programmatic buyer with strong self-serve usage.", rev:[12162,12024,13101,11927,14718,16941], adReqs:[4.2,4.1,4.5,4.1,5.0,5.8], cost:[410,395,440,390,510,580], tier:"T1", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"very_happy", tickets:{open:0,resolved:5}, upsell:null },
+  { id:2, name:"Crakmedia", tradingName:"Crak Revenue / Crakmedia Inc.", vertical:"Adult", language:"English / French", currency:"USD", blurb:"Canadian performance marketing network. Runs large CPA campaigns across dating, nutra, and sweepstakes verticals. Ad Serving active, DSP currently in testing.", rev:[0,0,0,5280,8940,12526], adReqs:[0,0,0,1.8,3.1,4.3], cost:[0,0,0,290,530,820], tier:"T1", status:"active", pricing:["Ad Serving","DSP"], plans:{"Ad Serving":"Enterprise","DSP":"Pro"}, platformStatus:{"Ad Serving":"active","DSP":"testing"}, sentiment:"happy", tickets:{open:1,resolved:3}, upsell:null },
   { id:3, name:"DatingLeads", tradingName:"Adclix / Perfect Ads / Traffic Gold", vertical:"Dating", language:"English", currency:"EUR", blurb:"Monetises member areas across a large portfolio of dating sites. Operates multiple brands including Adclix, Perfect Ads, and Traffic Gold.", rev:[3785,4114,3887,3084,3144,7320], adReqs:[1.3,1.4,1.3,1.1,1.1,2.5], cost:[340,380,350,285,290,680], tier:"T2", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:2,resolved:4}, upsell:null },
-  { id:4, name:"ValueMedia", tradingName:"Value Media GmbH", vertical:"Media Buying", language:"German / English", currency:"USD", blurb:"German media buying agency focused on display and native campaigns. Uses DSP for programmatic buying across EU markets.", rev:[1429,1594,2181,2263,1443,1213], adReqs:[0.9,1.0,1.3,1.4,1.2,1.1], cost:[155,178,262,275,170,142], tier:"T2", status:"warning", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:3,resolved:2}, upsell:null },
-  { id:5, name:"OptiDigital", tradingName:"Opti Digital SAS", vertical:"Ad Tech", language:"French / English", currency:"EUR", blurb:"French ad tech company providing header bidding and ad layout optimisation for premium publishers.", rev:[1538,1505,1348,1447,1280,1193], adReqs:[0.5,0.5,0.4,0.5,0.4,0.4], cost:[78,76,68,73,64,60], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
-  { id:6, name:"Topple", tradingName:"Topple Media", vertical:"Media Buying", language:"English", currency:"USD", blurb:"Performance-focused media buyer running RON campaigns. Steady mid-tier account with predictable volumes.", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:1,resolved:1}, upsell:null },
+  { id:4, name:"ValueMedia", tradingName:"Value Media GmbH", vertical:"Mainstream", language:"German / English", currency:"USD", blurb:"German media buying agency focused on display and native campaigns. Uses DSP for programmatic buying across EU markets.", rev:[1429,1594,2181,2263,1443,1213], adReqs:[0.9,1.0,1.3,1.4,1.2,1.1], cost:[155,178,262,275,170,142], tier:"T2", status:"warning", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:3,resolved:2}, upsell:null },
+  { id:5, name:"OptiDigital", tradingName:"Opti Digital SAS", vertical:"Mainstream", language:"French / English", currency:"EUR", blurb:"French ad tech company providing header bidding and ad layout optimisation for premium publishers.", rev:[1538,1505,1348,1447,1280,1193], adReqs:[0.5,0.5,0.4,0.5,0.4,0.4], cost:[78,76,68,73,64,60], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
+  { id:6, name:"Topple", tradingName:"Topple Media", vertical:"Mainstream", language:"English", currency:"USD", blurb:"Performance-focused media buyer running RON campaigns. Steady mid-tier account with predictable volumes.", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:1,resolved:1}, upsell:null },
   { id:7, name:"CargoMedia", tradingName:"Cargo Media AG", vertical:"Dating", language:"German / English", currency:"CHF", blurb:"Swiss dating platform operator. Very stable, flat revenue — classic \"set and forget\" account.", rev:[1000,1000,1000,1000,1000,1000], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[45,45,45,45,45,45], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:0,resolved:0}, upsell:"Pro plan upgrade" },
-  { id:8, name:"Harlem Next", tradingName:"Adsomnia", vertical:"Ad Tech", language:"English", currency:"EUR", blurb:"Ad tech outfit running remnant inventory monetisation. Trades as Adsomnia. Inconsistent month-to-month but overall stable.", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[82,110,88,84,92,95], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:1,resolved:3}, upsell:null },
-  { id:9, name:"Vrume", tradingName:"Ontario", vertical:"Media Buying", language:"English", currency:"USD", blurb:"Also operates as Ontario. Performance media buyer with steady volumes across multiple geos.", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[52,48,51,49,51,48], tier:"T3", status:"active", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Ad Serving migration" },
-  { id:10, name:"Ideawise", tradingName:"PlayaMedia", vertical:"Media Buying", language:"English", currency:"USD", blurb:"Trades as PlayaMedia. Media buying across multiple verticals with focus on entertainment and dating offers.", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[70,68,65,67,66,62], tier:"T3", status:"declining", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"unhappy", tickets:{open:2,resolved:6}, upsell:null },
-  { id:11, name:"Expandi Group", tradingName:"Expandi Group B.V. / TrafficHunt", vertical:"Ad Tech", language:"English / Russian", currency:"USD", blurb:"Runs TrafficHunt ad network. Was a strong T1 account but has been steadily declining. Multiple open tickets — possible platform dissatisfaction.", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[195,180,135,138,115,105], tier:"T2", status:"critical", pricing:["Ad Serving"], plans:{"Ad Serving":"Pro"}, sentiment:"very_unhappy", tickets:{open:4,resolved:8}, upsell:null },
-  { id:12, name:"Digital East", tradingName:"Digital East GmbH", vertical:"Media Buying", language:"German", currency:"USD", blurb:"Small agency buying inventory for DACH region clients. Low volume but consistent payer.", rev:[320,340,310,290,305,295], adReqs:[0.1,0.1,0.1,0.1,0.1,0.1], cost:[38,41,37,35,37,35], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Pro"}, sentiment:"happy", tickets:{open:0,resolved:0}, upsell:null },
-  { id:13, name:"PTP Media", tradingName:"PTP Media Ltd", vertical:"Performance Marketing", language:"English", currency:"EUR", blurb:"UK-based performance network specialising in lead generation. Slow decline in volumes — may need pricing review.", rev:[1800,1750,1690,1720,1680,1650], adReqs:[0.6,0.6,0.6,0.6,0.6,0.6], cost:[108,105,101,103,101,99], tier:"T2", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:1,resolved:4}, upsell:"DSP migration" },
+  { id:8, name:"Harlem Next", tradingName:"Adsomnia", vertical:"Mainstream", language:"English", currency:"EUR", blurb:"Ad tech outfit running remnant inventory monetisation. Trades as Adsomnia. Inconsistent month-to-month but overall stable.", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[82,110,88,84,92,95], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:1,resolved:3}, upsell:null },
+  { id:9, name:"Vrume", tradingName:"Ontario", vertical:"Mainstream", language:"English", currency:"USD", blurb:"Also operates as Ontario. Performance media buyer with steady volumes across multiple geos.", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[52,48,51,49,51,48], tier:"T3", status:"active", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Ad Serving migration" },
+  { id:10, name:"Ideawise", tradingName:"PlayaMedia", vertical:"Mainstream", language:"English", currency:"USD", blurb:"Trades as PlayaMedia. Media buying across multiple verticals with focus on entertainment and dating offers.", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[70,68,65,67,66,62], tier:"T3", status:"declining", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"unhappy", tickets:{open:2,resolved:6}, upsell:null },
+  { id:11, name:"Expandi Group", tradingName:"Expandi Group B.V. / TrafficHunt", vertical:"Mainstream", language:"English / Russian", currency:"USD", blurb:"Runs TrafficHunt ad network. Was a strong T1 account but has been steadily declining. Multiple open tickets — possible platform dissatisfaction.", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[195,180,135,138,115,105], tier:"T2", status:"critical", pricing:["Ad Serving"], plans:{"Ad Serving":"Pro"}, sentiment:"very_unhappy", tickets:{open:4,resolved:8}, upsell:null },
+  { id:12, name:"Digital East", tradingName:"Digital East GmbH", vertical:"Mainstream", language:"German", currency:"USD", blurb:"Small agency buying inventory for DACH region clients. Low volume but consistent payer.", rev:[320,340,310,290,305,295], adReqs:[0.1,0.1,0.1,0.1,0.1,0.1], cost:[38,41,37,35,37,35], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Pro"}, sentiment:"happy", tickets:{open:0,resolved:0}, upsell:null },
+  { id:13, name:"PTP Media", tradingName:"PTP Media Ltd", vertical:"Adult", language:"English", currency:"EUR", blurb:"UK-based performance network specialising in lead generation. Slow decline in volumes — may need pricing review.", rev:[1800,1750,1690,1720,1680,1650], adReqs:[0.6,0.6,0.6,0.6,0.6,0.6], cost:[108,105,101,103,101,99], tier:"T2", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:1,resolved:4}, upsell:"DSP migration" },
   { id:14, name:"FlirtVentures", tradingName:"SSP / Former AdClix / Turtle Pace Media", vertical:"Dating", language:"Dutch / English", currency:"EUR", blurb:"Netherlands-based dating network operating niche dating sites across Western Europe. Formerly operated as AdClix. Stable, consistent traffic.", rev:[1100,1050,980,1020,1045,1070], adReqs:[0.4,0.4,0.3,0.3,0.4,0.4], cost:[99,95,88,92,94,96], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:0,resolved:2}, upsell:"Pro plan upgrade" },
-  { id:15, name:"Bank Midia", tradingName:"Bank Midia Ltda", vertical:"Media Buying", language:"Portuguese", currency:"BRL", blurb:"Brazilian media buyer focused on LATAM markets. Growing steadily since onboarding — potential for significant scale.", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,22,42,58], tier:"New", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
+  { id:15, name:"Bank Midia", tradingName:"Bank Midia Ltda", vertical:"Mainstream", language:"Portuguese", currency:"BRL", blurb:"Brazilian media buyer focused on LATAM markets. Growing steadily since onboarding — potential for significant scale.", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,22,42,58], tier:"New", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
   // ── Onboarding (5) ──
-  { id:16, name:"Chillipepper", tradingName:"Chillipepper Media", vertical:"Ad Tech", language:"English", currency:"EUR", blurb:"Newly onboarded ad tech startup. Running initial setup on DSP. Early signs of potential.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:1,resolved:0}, upsell:null },
-  { id:17, name:"Flowlink Global", tradingName:"Starlinker", vertical:"Ad Tech", language:"English", currency:"USD", blurb:"Also trades as Starlinker. Setting up DSP campaigns — onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
-  { id:18, name:"CF Media", tradingName:"Klico", vertical:"Ad Tech", language:"Portuguese / English", currency:"USD", blurb:"Also operates as Klico. Setting up DSP integration — onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
-  { id:19, name:"Caribou Media", tradingName:"Recoil Network", vertical:"Gaming", language:"English", currency:"CAD", blurb:"Canadian gaming publisher. Also operates Recoil Network. Setting up DSP for mobile game ad monetisation.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
-  { id:20, name:"Medialix", tradingName:"Adclix", vertical:"Ad Tech", language:"English", currency:"EUR", blurb:"Trades as Adclix. Setting up DSP integration — enterprise onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:16, name:"Chillipepper", tradingName:"Chillipepper Media", vertical:"Mainstream", language:"English", currency:"EUR", blurb:"Newly onboarded ad tech startup. Running initial setup on DSP. Early signs of potential.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:1,resolved:0}, upsell:null },
+  { id:17, name:"Flowlink Global", tradingName:"Starlinker", vertical:"Mainstream", language:"English", currency:"USD", blurb:"Also trades as Starlinker. Setting up DSP campaigns — onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:18, name:"CF Media", tradingName:"Klico", vertical:"Mainstream", language:"Portuguese / English", currency:"USD", blurb:"Also operates as Klico. Setting up DSP integration — onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:19, name:"Caribou Media", tradingName:"Recoil Network", vertical:"iGaming", language:"English", currency:"CAD", blurb:"Canadian gaming publisher. Also operates Recoil Network. Setting up DSP for mobile game ad monetisation.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:20, name:"Medialix", tradingName:"Adclix", vertical:"Mainstream", language:"English", currency:"EUR", blurb:"Trades as Adclix. Setting up DSP integration — enterprise onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   // ── Testing (3) ──
-  { id:21, name:"Top Solutions", tradingName:"Top Solutions Media", vertical:"Media Buying", language:"English", currency:"EUR", blurb:"Running initial test campaigns on DSP. Evaluating platform fit before committing to full rollout.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
-  { id:22, name:"Ezmob", vertical:"Ad Tech", language:"English", currency:"USD", blurb:"Ad tech platform running test campaigns on Ad Serving. Evaluating integration and performance.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["Ad Serving"], plans:{"Ad Serving":"Core"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:21, name:"Top Solutions", tradingName:"Top Solutions Media", vertical:"Mainstream", language:"English", currency:"EUR", blurb:"Running initial test campaigns on DSP. Evaluating platform fit before committing to full rollout.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:22, name:"Ezmob", vertical:"Mainstream", language:"English", currency:"USD", blurb:"Ad tech platform running test campaigns on Ad Serving. Evaluating integration and performance.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["Ad Serving"], plans:{"Ad Serving":"Core"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   { id:23, name:"AdultadAdworld", vertical:"Dating", language:"English", currency:"USD", blurb:"Running test campaigns on DSP platform. Evaluating ad formats and targeting capabilities.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   // ── Churn (1) ──
   { id:24, name:"Venus London", tradingName:"Venus London Technology", vertical:"Dating", language:"English", currency:"GBP", blurb:"Was on DSP Business plan. Churned — last activity was minimal. May be worth a win-back campaign.", rev:[420,380,310,180,90,0], adReqs:[0.2,0.2,0.1,0.1,0,0], cost:[48,44,36,21,10,0], tier:"T3", status:"churn", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"very_unhappy", tickets:{open:0,resolved:2}, upsell:null },
 ];
+
+const VERTICAL_ICONS: Record<string, string> = {
+  "Mainstream": "\uD83C\uDF10",
+  "Adult": "\uD83D\uDD1E",
+  "Dating": "\u2764\uFE0F",
+  "iGaming": "\uD83C\uDFB0",
+};
+const VERTICAL_COLORS: Record<string, string> = {
+  "Mainstream": "#06b6d4",
+  "Adult": "#8b5cf6",
+  "Dating": "#f43f5e",
+  "iGaming": "#22c55e",
+};
 
 const MONTHS_LABELS = ["Aug","Sep","Oct","Nov","Dec","Jan"];
 const MRR_TARGET = 100000;
@@ -351,6 +364,7 @@ function ClientRow({ client, onClick, selected, sentimentOverride, openTickets }
       <td className="py-2.5 px-3">
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${statusColors[client.status] || "bg-slate-500"}`} />
+          <span className="text-xs" title={client.vertical}>{VERTICAL_ICONS[client.vertical] || "\u25CB"}</span>
           <span className="text-sm text-slate-200 font-medium">{client.name}</span>
           {(openTickets ?? client.tickets.open) > 0 && (
             <span className="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-1.5 py-0 rounded-full">{openTickets ?? client.tickets.open}</span>
@@ -748,6 +762,34 @@ export default function Dashboard() {
                     <Area type="monotone" dataKey="dsp" stackId="1" stroke="#8b5cf6" fill="url(#gNet2)" strokeWidth={2} name="DSP" />
                   </AreaChart>
                 </ResponsiveContainer>
+              </div>
+
+              {/* Revenue by Vertical */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="text-sm font-semibold text-slate-300 mb-3">Revenue by Vertical</div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {Object.keys(VERTICAL_ICONS).map(v => {
+                    const vRev = CLIENTS.filter(c => c.vertical === v).reduce((s, c) => s + c.rev[c.rev.length-1], 0);
+                    const vCount = CLIENTS.filter(c => c.vertical === v).length;
+                    const pct = totalMRR > 0 ? ((vRev / totalMRR) * 100).toFixed(0) : "0";
+                    return (
+                      <div key={v} className="bg-slate-900/50 rounded-lg p-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-base">{VERTICAL_ICONS[v]}</span>
+                          <span className="text-xs text-slate-300 font-medium">{v}</span>
+                        </div>
+                        <div className="text-lg font-bold tabular-nums" style={{ color: VERTICAL_COLORS[v] }}>{"\u20AC"}{vRev.toLocaleString()}</div>
+                        <div className="flex items-center justify-between mt-1">
+                          <span className="text-[10px] text-slate-500">{vCount} clients</span>
+                          <span className="text-[10px] text-slate-500">{pct}% of MRR</span>
+                        </div>
+                        <div className="h-1.5 bg-slate-800 rounded-full mt-2 overflow-hidden">
+                          <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: VERTICAL_COLORS[v] }} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Quick Client Table */}
@@ -1364,21 +1406,8 @@ export default function Dashboard() {
               <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-8 backdrop-blur-xl text-center">
                 <div className="text-4xl mb-4">{"\uD83D\uDCCA"}</div>
                 <div className="text-lg font-semibold text-slate-300 mb-2">Reports produced here</div>
-                <div className="text-sm text-slate-500 max-w-md mx-auto mb-6">
+                <div className="text-sm text-slate-500 max-w-md mx-auto">
                   Monthly sales decks, client performance summaries, and billing reports — auto-generated from live data. No more manual spreadsheets.
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-                  {[
-                    { title: "Monthly Sales Deck", desc: "MRR, pipeline, forecasts, and client health — ready for leadership review", status: "Coming soon" },
-                    { title: "Client Performance", desc: "Per-client revenue trends, cost ratios, and engagement metrics", status: "Coming soon" },
-                    { title: "Billing Summary", desc: "Auto EUR conversion, invoice tracking, and payment reconciliation", status: "Coming soon" },
-                  ].map((r, i) => (
-                    <div key={i} className="bg-slate-900/50 rounded-lg p-4 text-left">
-                      <div className="text-sm font-semibold text-slate-300 mb-1">{r.title}</div>
-                      <div className="text-xs text-slate-500 mb-3">{r.desc}</div>
-                      <span className="text-[10px] bg-slate-700/50 text-slate-400 px-2 py-0.5 rounded-full">{r.status}</span>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>
