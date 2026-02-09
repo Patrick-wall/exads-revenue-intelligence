@@ -1,19 +1,27 @@
 "use client";
 import { useState, useMemo } from "react";
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart, CartesianGrid, Legend } from "recharts";
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart, CartesianGrid, Legend, ReferenceLine } from "recharts";
 
 // ═══════════════════════════════════════════════════════════════
 // TYPE DEFINITIONS
 // ═══════════════════════════════════════════════════════════════
+type Sentiment = "very_happy" | "happy" | "neutral" | "unhappy" | "very_unhappy";
+type Plan = "Ad Serving" | "DSP";
+
 interface Client {
   id: number;
   name: string;
+  tradingName?: string;
+  vertical: string;
   rev: number[];
   adReqs: number[];
   cost: number[];
   tier: "T1" | "T2" | "T3" | "New";
   status: "active" | "warning" | "critical" | "declining" | "onboarding";
-  plan: "Ad Serving" | "DSP";
+  plan: Plan;
+  sentiment: Sentiment;
+  tickets: { open: number; resolved: number };
+  upsell: string | null;
 }
 
 type AlertSeverity = "critical" | "warning" | "trend" | "positive";
@@ -45,6 +53,8 @@ interface ClientRowProps {
   client: Client;
   onClick: () => void;
   selected: boolean;
+  sentimentOverride?: Sentiment;
+  openTickets?: number;
 }
 
 interface AlertCardProps {
@@ -55,25 +65,25 @@ interface AlertCardProps {
 // MOCK DATA — In production, all from EXADS API + HubSpot
 // ═══════════════════════════════════════════════════════════════
 const CLIENTS: Client[] = [
-  { id:1, name:"Adsession", rev:[12162,12024,13101,11927,14718,16941], adReqs:[4.2,4.1,4.5,4.1,5.0,5.8], cost:[410,395,440,390,510,580], tier:"T1", status:"active", plan:"Ad Serving" },
-  { id:2, name:"Crakmedia", rev:[0,0,0,5280,8940,12526], adReqs:[0,0,0,1.8,3.1,4.3], cost:[0,0,0,290,530,820], tier:"T1", status:"active", plan:"Ad Serving" },
-  { id:3, name:"DatingLeads", rev:[3785,4114,3887,3084,3144,7320], adReqs:[1.3,1.4,1.3,1.1,1.1,2.5], cost:[340,380,350,285,290,680], tier:"T2", status:"active", plan:"Ad Serving" },
-  { id:4, name:"ValueMedia", rev:[1429,1594,2181,2263,1443,1213], adReqs:[0.9,1.0,1.3,1.4,1.2,1.1], cost:[155,178,262,275,170,142], tier:"T2", status:"warning", plan:"DSP" },
-  { id:5, name:"OptiDigital", rev:[1538,1505,1348,1447,1280,1193], adReqs:[0.5,0.5,0.4,0.5,0.4,0.4], cost:[78,76,68,73,64,60], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:6, name:"FlirtVentures", rev:[1100,1050,980,1020,1045,1070], adReqs:[0.4,0.4,0.3,0.3,0.4,0.4], cost:[99,95,88,92,94,96], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:7, name:"Topple", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:8, name:"PlayaMedia", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[70,68,65,67,66,62], tier:"T3", status:"declining", plan:"Ad Serving" },
-  { id:9, name:"Expandi Group", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[195,180,135,138,115,105], tier:"T2", status:"critical", plan:"Ad Serving" },
-  { id:10, name:"CargoMedia", rev:[1000,1000,1000,1000,1000,1000], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[45,45,45,45,45,45], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:11, name:"Adsomnia", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[82,110,88,84,92,95], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:12, name:"Vrume", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[52,48,51,49,51,48], tier:"T3", status:"active", plan:"DSP" },
-  { id:13, name:"Digital East", rev:[320,340,310,290,305,295], adReqs:[0.1,0.1,0.1,0.1,0.1,0.1], cost:[38,41,37,35,37,35], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:14, name:"PTP Media", rev:[1800,1750,1690,1720,1680,1650], adReqs:[0.6,0.6,0.6,0.6,0.6,0.6], cost:[108,105,101,103,101,99], tier:"T2", status:"active", plan:"Ad Serving" },
-  { id:15, name:"Chillipepper", rev:[0,0,0,0,150,380], adReqs:[0,0,0,0,0.1,0.1], cost:[0,0,0,0,18,46], tier:"New", status:"onboarding", plan:"DSP" },
-  { id:16, name:"CF Media", rev:[0,0,0,0,0,220], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,24], tier:"New", status:"onboarding", plan:"DSP" },
-  { id:17, name:"Bank Midia", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,22,42,58], tier:"New", status:"onboarding", plan:"Ad Serving" },
-  { id:18, name:"Caribou Media", rev:[0,0,0,0,0,175], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,19], tier:"New", status:"onboarding", plan:"DSP" },
-  { id:19, name:"Top Solutions", rev:[0,0,0,0,100,280], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,12,34], tier:"New", status:"onboarding", plan:"DSP" },
+  { id:1, name:"Adsession", tradingName:"Adsession BV", vertical:"Ad Tech", rev:[12162,12024,13101,11927,14718,16941], adReqs:[4.2,4.1,4.5,4.1,5.0,5.8], cost:[410,395,440,390,510,580], tier:"T1", status:"active", plan:"Ad Serving", sentiment:"very_happy", tickets:{open:0,resolved:5}, upsell:"CDN Video add-on" },
+  { id:2, name:"Crakmedia", tradingName:"Crak Revenue / Crakmedia Inc.", vertical:"Performance Marketing", rev:[0,0,0,5280,8940,12526], adReqs:[0,0,0,1.8,3.1,4.3], cost:[0,0,0,290,530,820], tier:"T1", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:1,resolved:3}, upsell:"DSP migration" },
+  { id:3, name:"DatingLeads", tradingName:"Dating Leads Ltd", vertical:"Dating", rev:[3785,4114,3887,3084,3144,7320], adReqs:[1.3,1.4,1.3,1.1,1.1,2.5], cost:[340,380,350,285,290,680], tier:"T2", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:2,resolved:4}, upsell:"Enterprise tier upgrade" },
+  { id:4, name:"ValueMedia", tradingName:"Value Media GmbH", vertical:"Media Buying", rev:[1429,1594,2181,2263,1443,1213], adReqs:[0.9,1.0,1.3,1.4,1.2,1.1], cost:[155,178,262,275,170,142], tier:"T2", status:"warning", plan:"DSP", sentiment:"neutral", tickets:{open:3,resolved:2}, upsell:null },
+  { id:5, name:"OptiDigital", tradingName:"Opti Digital SAS", vertical:"Ad Tech", rev:[1538,1505,1348,1447,1280,1193], adReqs:[0.5,0.5,0.4,0.5,0.4,0.4], cost:[78,76,68,73,64,60], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:0,resolved:1}, upsell:null },
+  { id:6, name:"FlirtVentures", tradingName:"Flirt Ventures B.V.", vertical:"Dating", rev:[1100,1050,980,1020,1045,1070], adReqs:[0.4,0.4,0.3,0.3,0.4,0.4], cost:[99,95,88,92,94,96], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:0,resolved:2}, upsell:"CDN Video add-on" },
+  { id:7, name:"Topple", tradingName:"Topple Media", vertical:"Media Buying", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"neutral", tickets:{open:1,resolved:1}, upsell:null },
+  { id:8, name:"PlayaMedia", tradingName:"Playa Media S.L.", vertical:"Media Buying", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[70,68,65,67,66,62], tier:"T3", status:"declining", plan:"Ad Serving", sentiment:"unhappy", tickets:{open:2,resolved:6}, upsell:null },
+  { id:9, name:"Expandi Group", tradingName:"Expandi Group B.V. / TrafficHunt", vertical:"Ad Tech", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[195,180,135,138,115,105], tier:"T2", status:"critical", plan:"Ad Serving", sentiment:"very_unhappy", tickets:{open:4,resolved:8}, upsell:null },
+  { id:10, name:"CargoMedia", tradingName:"Cargo Media AG", vertical:"Dating", rev:[1000,1000,1000,1000,1000,1000], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[45,45,45,45,45,45], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:0,resolved:0}, upsell:"Pro plan upgrade" },
+  { id:11, name:"Adsomnia", vertical:"Ad Tech", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[82,110,88,84,92,95], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:1,resolved:3}, upsell:null },
+  { id:12, name:"Vrume", tradingName:"Vrume Ltd", vertical:"Gaming", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[52,48,51,49,51,48], tier:"T3", status:"active", plan:"DSP", sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Ad Serving bundle" },
+  { id:13, name:"Digital East", tradingName:"Digital East GmbH", vertical:"Media Buying", rev:[320,340,310,290,305,295], adReqs:[0.1,0.1,0.1,0.1,0.1,0.1], cost:[38,41,37,35,37,35], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:0,resolved:0}, upsell:null },
+  { id:14, name:"PTP Media", tradingName:"PTP Media Ltd", vertical:"Performance Marketing", rev:[1800,1750,1690,1720,1680,1650], adReqs:[0.6,0.6,0.6,0.6,0.6,0.6], cost:[108,105,101,103,101,99], tier:"T2", status:"active", plan:"Ad Serving", sentiment:"neutral", tickets:{open:1,resolved:4}, upsell:"DSP migration" },
+  { id:15, name:"Chillipepper", tradingName:"Chillipepper Media", vertical:"Ad Tech", rev:[0,0,0,0,150,380], adReqs:[0,0,0,0,0.1,0.1], cost:[0,0,0,0,18,46], tier:"New", status:"onboarding", plan:"DSP", sentiment:"neutral", tickets:{open:1,resolved:0}, upsell:null },
+  { id:16, name:"CF Media", vertical:"Ad Tech", rev:[0,0,0,0,0,220], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,24], tier:"New", status:"onboarding", plan:"DSP", sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:17, name:"Bank Midia", tradingName:"Bank Midia Ltda", vertical:"Media Buying", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,22,42,58], tier:"New", status:"onboarding", plan:"Ad Serving", sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"CDN Video add-on" },
+  { id:18, name:"Caribou Media", vertical:"Gaming", rev:[0,0,0,0,0,175], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,19], tier:"New", status:"onboarding", plan:"DSP", sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:19, name:"Top Solutions", tradingName:"Top Solutions S.R.L.", vertical:"Media Buying", rev:[0,0,0,0,100,280], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,12,34], tier:"New", status:"onboarding", plan:"DSP", sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
 ];
 
 const MONTHS_LABELS = ["Aug","Sep","Oct","Nov","Dec","Jan"];
@@ -141,6 +151,24 @@ function generateAlerts(clients: Client[]): Alert[] {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// FORECAST HELPERS
+// ═══════════════════════════════════════════════════════════════
+function forecastClient(rev: number[], status: string): number {
+  const r = rev;
+  const weighted = r[5] * 0.5 + r[4] * 0.3 + r[3] * 0.2;
+  const momGrowth = r[4] > 0 ? (r[5] - r[4]) / r[4] : 0;
+  return (status === "onboarding" && momGrowth > 0.5) ? weighted * 1.2 : weighted;
+}
+
+function computeVariance(rev: number[]): number {
+  const nonZero = rev.filter(v => v > 0);
+  if (nonZero.length < 2) return 1;
+  const mean = nonZero.reduce((a, b) => a + b, 0) / nonZero.length;
+  const variance = nonZero.reduce((s, v) => s + (v - mean) ** 2, 0) / nonZero.length;
+  return Math.sqrt(variance) / mean; // coefficient of variation
+}
+
+// ═══════════════════════════════════════════════════════════════
 // COMPONENTS
 // ═══════════════════════════════════════════════════════════════
 
@@ -198,7 +226,88 @@ function MiniSparkline({ data, color = "#06b6d4", height = 32 }: MiniSparklinePr
   );
 }
 
-function ClientRow({ client, onClick, selected }: ClientRowProps) {
+const SENTIMENT_COLORS: Record<Sentiment, string> = {
+  very_happy: "#22c55e",
+  happy: "#4ade80",
+  neutral: "#f59e0b",
+  unhappy: "#f97316",
+  very_unhappy: "#ef4444",
+};
+
+function SentimentFace({ sentiment, size = 28, onClick, selected }: { sentiment: Sentiment; size?: number; onClick?: () => void; selected?: boolean }) {
+  const color = SENTIMENT_COLORS[sentiment];
+  const r = size / 2;
+  const cx = r, cy = r;
+  const eyeY = r * 0.72;
+  const eyeL = r * 0.65;
+  const eyeR = r * 1.35;
+  const mouthY = r * 1.3;
+
+  const eyeRadius = r * 0.08;
+  const mouthW = r * 0.5;
+
+  let eyes: React.ReactNode = null;
+  let mouth: React.ReactNode = null;
+
+  switch (sentiment) {
+    case "very_happy":
+      eyes = <>
+        <ellipse cx={eyeL} cy={eyeY - r*0.05} rx={eyeRadius * 1.2} ry={eyeRadius * 0.6} fill={color} />
+        <ellipse cx={eyeR} cy={eyeY - r*0.05} rx={eyeRadius * 1.2} ry={eyeRadius * 0.6} fill={color} />
+      </>;
+      mouth = <path d={`M ${cx - mouthW} ${mouthY - r*0.1} Q ${cx} ${mouthY + r*0.35} ${cx + mouthW} ${mouthY - r*0.1}`} stroke={color} strokeWidth={r * 0.12} fill="none" strokeLinecap="round" />;
+      break;
+    case "happy":
+      eyes = <>
+        <circle cx={eyeL} cy={eyeY} r={eyeRadius} fill={color} />
+        <circle cx={eyeR} cy={eyeY} r={eyeRadius} fill={color} />
+      </>;
+      mouth = <path d={`M ${cx - mouthW * 0.8} ${mouthY} Q ${cx} ${mouthY + r*0.22} ${cx + mouthW * 0.8} ${mouthY}`} stroke={color} strokeWidth={r * 0.1} fill="none" strokeLinecap="round" />;
+      break;
+    case "neutral":
+      eyes = <>
+        <circle cx={eyeL} cy={eyeY} r={eyeRadius} fill={color} />
+        <circle cx={eyeR} cy={eyeY} r={eyeRadius} fill={color} />
+      </>;
+      mouth = <line x1={cx - mouthW * 0.6} y1={mouthY} x2={cx + mouthW * 0.6} y2={mouthY} stroke={color} strokeWidth={r * 0.1} strokeLinecap="round" />;
+      break;
+    case "unhappy":
+      eyes = <>
+        <circle cx={eyeL} cy={eyeY} r={eyeRadius} fill={color} />
+        <circle cx={eyeR} cy={eyeY} r={eyeRadius} fill={color} />
+      </>;
+      mouth = <path d={`M ${cx - mouthW * 0.8} ${mouthY + r*0.12} Q ${cx} ${mouthY - r*0.15} ${cx + mouthW * 0.8} ${mouthY + r*0.12}`} stroke={color} strokeWidth={r * 0.1} fill="none" strokeLinecap="round" />;
+      break;
+    case "very_unhappy":
+      eyes = <>
+        <line x1={eyeL - eyeRadius*1.5} y1={eyeY - eyeRadius*1.2} x2={eyeL + eyeRadius*1.5} y2={eyeY + eyeRadius*0.5} stroke={color} strokeWidth={r * 0.08} strokeLinecap="round" />
+        <circle cx={eyeL} cy={eyeY + eyeRadius} r={eyeRadius * 0.8} fill={color} />
+        <line x1={eyeR + eyeRadius*1.5} y1={eyeY - eyeRadius*1.2} x2={eyeR - eyeRadius*1.5} y2={eyeY + eyeRadius*0.5} stroke={color} strokeWidth={r * 0.08} strokeLinecap="round" />
+        <circle cx={eyeR} cy={eyeY + eyeRadius} r={eyeRadius * 0.8} fill={color} />
+      </>;
+      mouth = <path d={`M ${cx - mouthW} ${mouthY + r*0.2} Q ${cx} ${mouthY - r*0.2} ${cx + mouthW} ${mouthY + r*0.2}`} stroke={color} strokeWidth={r * 0.12} fill="none" strokeLinecap="round" />;
+      break;
+  }
+
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      onClick={onClick}
+      className={`${onClick ? "cursor-pointer hover:scale-110" : ""} transition-transform ${selected ? "scale-125 drop-shadow-lg" : "opacity-60 hover:opacity-100"}`}
+      style={selected ? { filter: `drop-shadow(0 0 4px ${color}40)` } : undefined}
+    >
+      <circle cx={cx} cy={cy} r={r - 1} fill={`${color}18`} stroke={color} strokeWidth={selected ? 2 : 1.2} />
+      {eyes}
+      {mouth}
+    </svg>
+  );
+}
+
+const SENTIMENTS: Sentiment[] = ["very_happy", "happy", "neutral", "unhappy", "very_unhappy"];
+
+function ClientRow({ client, onClick, selected, sentimentOverride, openTickets }: ClientRowProps) {
   const curr = client.rev[client.rev.length - 1];
   const prev = client.rev[client.rev.length - 2];
   const change = prev > 0 ? ((curr - prev) / prev * 100) : 0;
@@ -218,10 +327,18 @@ function ClientRow({ client, onClick, selected }: ClientRowProps) {
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${statusColors[client.status] || "bg-slate-500"}`} />
           <span className="text-sm text-slate-200 font-medium">{client.name}</span>
+          {(openTickets ?? client.tickets.open) > 0 && (
+            <span className="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-1.5 py-0 rounded-full">{openTickets ?? client.tickets.open}</span>
+          )}
         </div>
       </td>
       <td className="py-2.5 px-3">
         <span className="text-xs bg-slate-700/60 text-slate-400 px-1.5 py-0.5 rounded font-mono">{client.tier}</span>
+      </td>
+      <td className="py-2.5 px-1">
+        <div className="flex justify-center">
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SENTIMENT_COLORS[sentimentOverride ?? client.sentiment] }} />
+        </div>
       </td>
       <td className="py-2.5 px-3 text-sm text-slate-300 font-medium tabular-nums text-right">{"\u20AC"}{curr.toLocaleString()}</td>
       <td className="py-2.5 px-3 text-right">
@@ -242,6 +359,8 @@ export default function Dashboard() {
   const [view, setView] = useState("overview");
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
   const [alertFilter, setAlertFilter] = useState("all");
+  const [clientOverrides, setClientOverrides] = useState<Record<number, { sentiment?: Sentiment; plan?: Plan }>>({});
+  const [clientTab, setClientTab] = useState<"all" | "new">("all");
 
   const alerts = useMemo(() => generateAlerts(CLIENTS), []);
   const filteredAlerts = alertFilter === "all" ? alerts : alerts.filter(a => a.severity === alertFilter);
@@ -254,8 +373,45 @@ export default function Dashboard() {
   const avgRev = Math.round(totalMRR / activeClients);
   const totalAdReqs = CLIENTS.reduce((s, c) => s + c.adReqs[c.adReqs.length-1], 0);
 
-  // MRR vs Target yearly data
-  const MRR_YEARLY_DATA = [
+  // Forecast calculations
+  const forecastData = useMemo(() => {
+    // Month 1 (Feb): weighted average per client
+    const m1Forecasts = CLIENTS.map(c => forecastClient(c.rev, c.status));
+    const m1Total = Math.round(m1Forecasts.reduce((s, v) => s + v, 0));
+
+    // Month 2 (Mar): shift window — use [rev[4], rev[5], m1forecast] with same weights
+    const m2Forecasts = CLIENTS.map((c, i) => {
+      const shifted = c.rev[5] * 0.2 + m1Forecasts[i] * 0.5 + c.rev[4] * 0.3;
+      const momGrowth = c.rev[4] > 0 ? (c.rev[5] - c.rev[4]) / c.rev[4] : 0;
+      return (c.status === "onboarding" && momGrowth > 0.5) ? shifted * 1.2 : shifted;
+    });
+    const m2Total = Math.round(m2Forecasts.reduce((s, v) => s + v, 0));
+
+    // Month 3 (Apr): shift again
+    const m3Forecasts = CLIENTS.map((c, i) => {
+      const shifted = m1Forecasts[i] * 0.2 + m2Forecasts[i] * 0.5 + c.rev[5] * 0.3;
+      const momGrowth = c.rev[4] > 0 ? (c.rev[5] - c.rev[4]) / c.rev[4] : 0;
+      return (c.status === "onboarding" && momGrowth > 0.5) ? shifted * 1.2 : shifted;
+    });
+    const m3Total = Math.round(m3Forecasts.reduce((s, v) => s + v, 0));
+
+    // Confidence: based on avg coefficient of variation across clients
+    const avgCV = CLIENTS.reduce((s, c) => s + computeVariance(c.rev), 0) / CLIENTS.length;
+    const confidence = avgCV < 0.15 ? "High" : avgCV < 0.35 ? "Medium" : "Low";
+
+    return {
+      months: [
+        { label: "Feb", value: m1Total },
+        { label: "Mar", value: m2Total },
+        { label: "Apr", value: m3Total },
+      ],
+      confidence,
+      avgCV,
+    };
+  }, []);
+
+  // MRR vs Target yearly data (with forecast extension)
+  const MRR_YEARLY_DATA: { month: string; actual?: number; target: number; forecast?: number }[] = [
     { month: "Jan", actual: 42500, target: 50000 },
     { month: "Feb", actual: 44200, target: 55000 },
     { month: "Mar", actual: 46800, target: 60000 },
@@ -268,6 +424,9 @@ export default function Dashboard() {
     { month: "Oct", actual: 55100, target: 95000 },
     { month: "Nov", actual: 47100, target: 97000 },
     { month: "Dec", actual: totalMRR, target: 100000 },
+    { month: "Jan\u2019", forecast: forecastData.months[0].value, target: 103000 },
+    { month: "Feb\u2019", forecast: forecastData.months[1].value, target: 106000 },
+    { month: "Mar\u2019", forecast: forecastData.months[2].value, target: 109000 },
   ];
 
   // Revenue over time
@@ -295,6 +454,118 @@ export default function Dashboard() {
 
   // Client detail
   const detail = selectedClient ? CLIENTS.find(c => c.id === selectedClient) : null;
+  const detailSentiment = detail ? (clientOverrides[detail.id]?.sentiment ?? detail.sentiment) : "neutral";
+  const detailPlan = detail ? (clientOverrides[detail.id]?.plan ?? detail.plan) : "Ad Serving";
+
+  // Invoice generation
+  function openInvoice(client: Client) {
+    const invNum = `EX/2026/${String(client.id).padStart(5, "0")}`;
+    const months = [
+      { label: "November 2025", idx: 3 },
+      { label: "December 2025", idx: 4 },
+      { label: "January 2026", idx: 5 },
+    ];
+    const isOnboarding = client.status === "onboarding";
+    let grandTotal = 0;
+    let grandUntaxed = 0;
+    let grandDiscount = 0;
+
+    const monthRows = months.map((m, mi) => {
+      const adReqBase = client.adReqs[m.idx] * 1_000_000_000;
+      const variance = 1 + (Math.random() * 0.06 - 0.03);
+      const adReqQty = Math.round(adReqBase * variance);
+      const adUnitPrice = 0.0000100;
+      const adAmount = adReqQty * adUnitPrice;
+
+      const cdnGB = Math.round(adReqQty * 0.6 / 1_000_000);
+      const cdnUnitPrice = 0.0100000;
+      const cdnAmount = cdnGB * cdnUnitPrice;
+
+      let monthSubtotal = adAmount + cdnAmount;
+      let discount = 0;
+      if (isOnboarding && mi === 0) {
+        discount = monthSubtotal * 0.5;
+        monthSubtotal -= discount;
+      }
+      grandTotal += monthSubtotal;
+      grandUntaxed += adAmount + cdnAmount;
+      grandDiscount += discount;
+
+      return `
+        <tr style="background:#f8fafc"><td colspan="5" style="padding:8px 12px;font-weight:600;color:#1e40af;border:1px solid #e2e8f0;">${m.label}</td></tr>
+        <tr>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;">Ad requests</td>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;text-align:right">${adReqQty.toLocaleString()}</td>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;text-align:right">${adUnitPrice.toFixed(7)}</td>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;text-align:right">${discount > 0 ? "50%" : "-"}</td>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;text-align:right;font-weight:500">\u20AC${(adAmount - (discount > 0 ? adAmount * 0.5 : 0)).toFixed(2)}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;">CDN (GB) Video</td>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;text-align:right">${cdnGB.toLocaleString()}</td>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;text-align:right">${cdnUnitPrice.toFixed(7)}</td>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;text-align:right">${discount > 0 ? "50%" : "-"}</td>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;text-align:right;font-weight:500">\u20AC${(cdnAmount - (discount > 0 ? cdnAmount * 0.5 : 0)).toFixed(2)}</td>
+        </tr>
+        <tr style="background:#f1f5f9">
+          <td colspan="4" style="padding:6px 12px;border:1px solid #e2e8f0;text-align:right;font-weight:600">Subtotal ${m.label}</td>
+          <td style="padding:6px 12px;border:1px solid #e2e8f0;text-align:right;font-weight:600">\u20AC${monthSubtotal.toFixed(2)}</td>
+        </tr>
+      `;
+    }).join("");
+
+    const html = `<!DOCTYPE html><html><head><title>Invoice ${invNum} - ${client.name}</title>
+      <style>body{font-family:Arial,Helvetica,sans-serif;max-width:800px;margin:0 auto;padding:30px;color:#1e293b}
+      table{width:100%;border-collapse:collapse}th{background:#1e3a5f;color:white;padding:8px 12px;text-align:left;font-size:13px}
+      td{font-size:13px}.header{display:flex;justify-content:space-between;margin-bottom:30px}
+      .logo{font-size:24px;font-weight:bold;color:#1e3a5f}.addr{font-size:11px;color:#64748b;line-height:1.6}
+      .inv-details{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:24px;display:flex;justify-content:space-between}
+      .inv-details div{font-size:13px;line-height:1.8}.total-row{background:#1e3a5f;color:white}
+      .total-row td{padding:10px 12px;font-weight:bold;font-size:15px}</style></head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="logo">EXADS</div>
+          <div class="addr">Smart Advertising Technology Limited T/A EXADS<br>
+          Workhub, Office 1.6, 6 Fern Road<br>Sandyford, Co. Dublin D18 FP98<br>Ireland<br>VAT: IE3179817IH</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:20px;font-weight:bold;color:#1e3a5f">INVOICE</div>
+          <div style="font-size:14px;color:#64748b;margin-top:4px">${invNum}</div>
+        </div>
+      </div>
+      <div class="inv-details">
+        <div><strong>Bill To:</strong><br>${client.name}${client.tradingName ? `<br><span style="color:#64748b">${client.tradingName}</span>` : ""}<br>Client ID: ${client.id}</div>
+        <div style="text-align:right"><strong>Invoice Date:</strong> 31/01/2026<br><strong>Due Date:</strong> 15/02/2026<br><strong>Currency:</strong> EUR<br><strong>Plan:</strong> ${detailPlan}</div>
+      </div>
+      <table>
+        <thead><tr><th>Description</th><th style="text-align:right">Quantity</th><th style="text-align:right">Unit Price</th><th style="text-align:right">Discount</th><th style="text-align:right">Amount</th></tr></thead>
+        <tbody>
+          ${monthRows}
+          <tr style="border-top:2px solid #cbd5e1">
+            <td colspan="4" style="padding:8px 12px;text-align:right;font-size:13px">Untaxed Amount</td>
+            <td style="padding:8px 12px;text-align:right;font-weight:600">\u20AC${grandUntaxed.toFixed(2)}</td>
+          </tr>
+          ${grandDiscount > 0 ? `<tr><td colspan="4" style="padding:6px 12px;text-align:right;font-size:13px;color:#dc2626">Discount</td><td style="padding:6px 12px;text-align:right;font-weight:600;color:#dc2626">-\u20AC${grandDiscount.toFixed(2)}</td></tr>` : ""}
+          <tr>
+            <td colspan="4" style="padding:6px 12px;text-align:right;font-size:13px">Taxes (0%)</td>
+            <td style="padding:6px 12px;text-align:right;font-weight:600">\u20AC0.00</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="4" style="text-align:right">Total</td>
+            <td style="text-align:right">\u20AC${grandTotal.toFixed(2)}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:30px;padding:16px;background:#f8fafc;border-radius:8px;font-size:11px;color:#64748b">
+        <strong>Payment Terms:</strong> Net 15 days. Please reference invoice number ${invNum} with your payment.<br>
+        <strong>Bank:</strong> AIB Bank, IBAN: IE12 AIBK 9311 5212 3456 78, BIC: AIBKIE2D
+      </div>
+    </body></html>`;
+
+    const w = window.open("", "_blank");
+    if (w) { w.document.write(html); w.document.close(); }
+  }
 
   const navItems = [
     { id: "overview", label: "Overview", icon: "\u25C9" },
@@ -439,6 +710,7 @@ export default function Dashboard() {
                       <tr className="border-b border-slate-700/30 text-xs text-slate-500 uppercase tracking-wider">
                         <th className="text-left px-3 py-2 font-medium">Client</th>
                         <th className="text-left px-3 py-2 font-medium">Tier</th>
+                        <th className="text-center px-1 py-2 font-medium">{"\u263A"}</th>
                         <th className="text-right px-3 py-2 font-medium">MRR</th>
                         <th className="text-right px-3 py-2 font-medium">MoM</th>
                         <th className="text-right px-3 py-2 font-medium">Cost %</th>
@@ -447,7 +719,7 @@ export default function Dashboard() {
                     </thead>
                     <tbody>
                       {sortedByRev.filter(c => c.rev[c.rev.length-1] > 0).slice(0, 8).map(c => (
-                        <ClientRow key={c.id} client={c} onClick={() => setSelectedClient(c.id)} selected={selectedClient === c.id} />
+                        <ClientRow key={c.id} client={c} onClick={() => { setSelectedClient(c.id); setView("clients"); }} selected={selectedClient === c.id} sentimentOverride={clientOverrides[c.id]?.sentiment} />
                       ))}
                     </tbody>
                   </table>
@@ -464,9 +736,12 @@ export default function Dashboard() {
                 <div className="text-sm text-slate-500">Revenue tracking & targets</div>
               </div>
 
-              {/* MRR vs Target Chart */}
+              {/* MRR vs Target Chart (with forecast) */}
               <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="text-sm font-semibold text-slate-300 mb-3">MRR vs Target (Monthly)</div>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="text-sm font-semibold text-slate-300">MRR vs Target (Monthly)</div>
+                  <span className="text-[10px] bg-cyan-500/15 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-500/30">+ Forecast</span>
+                </div>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={MRR_YEARLY_DATA} barGap={2}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
@@ -474,13 +749,18 @@ export default function Dashboard() {
                     <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
                     <Tooltip
                       contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
-                      formatter={(v: number, name: string) => [`\u20AC${v.toLocaleString()}`, name === "actual" ? "Actual" : "Target"]}
+                      formatter={(v: number, name: string) => {
+                        const label = name === "actual" ? "Actual" : name === "forecast" ? "Forecast" : "Target";
+                        return [`\u20AC${v.toLocaleString()}`, label];
+                      }}
                     />
                     <Legend
-                      formatter={(value: string) => value === "actual" ? "Actual" : "Target"}
+                      formatter={(value: string) => value === "actual" ? "Actual" : value === "forecast" ? "Forecast" : "Target"}
                       wrapperStyle={{ fontSize: 12, color: "#94a3b8" }}
                     />
+                    <ReferenceLine x="Dec" stroke="#334155" strokeDasharray="6 3" label={{ value: "Forecast \u2192", position: "top", fill: "#64748b", fontSize: 10 }} />
                     <Bar dataKey="actual" fill="#06b6d4" radius={[3, 3, 0, 0]} name="actual" />
+                    <Bar dataKey="forecast" fill="#06b6d4" radius={[3, 3, 0, 0]} name="forecast" opacity={0.4} strokeDasharray="4 2" stroke="#06b6d4" />
                     <Bar dataKey="target" fill="#475569" radius={[3, 3, 0, 0]} name="target" opacity={0.6} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -506,6 +786,52 @@ export default function Dashboard() {
                     <Area type="monotone" dataKey="t3" stackId="1" stroke="#22c55e" fill="url(#g3)" strokeWidth={2} name="Tier 3 & New" />
                   </AreaChart>
                 </ResponsiveContainer>
+              </div>
+
+              {/* Revenue Forecast */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="text-sm font-semibold text-slate-300">Revenue Forecast</div>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                      forecastData.confidence === "High" ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30" :
+                      forecastData.confidence === "Medium" ? "bg-amber-500/15 text-amber-400 border border-amber-500/30" :
+                      "bg-red-500/15 text-red-400 border border-red-500/30"
+                    }`}>
+                      {forecastData.confidence} confidence
+                    </span>
+                  </div>
+                  <div className="text-xs text-slate-500">Based on weighted 3-month trends</div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {forecastData.months.map((m, i) => {
+                    const prevVal = i === 0 ? totalMRR : forecastData.months[i - 1].value;
+                    const change = prevVal > 0 ? ((m.value - prevVal) / prevVal) * 100 : 0;
+                    const target = [103000, 106000, 109000][i];
+                    const attainment = ((m.value / target) * 100).toFixed(0);
+                    return (
+                      <div key={m.label} className="bg-slate-900/50 rounded-lg p-4">
+                        <div className="text-xs text-slate-500 mb-1">{m.label} 2026</div>
+                        <div className="text-xl font-bold text-cyan-400 tabular-nums">{"\u20AC"}{m.value.toLocaleString()}</div>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className={`text-xs font-medium ${change >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                            {change >= 0 ? "\u2191" : "\u2193"}{Math.abs(change).toFixed(1)}%
+                          </span>
+                          <span className="text-xs text-slate-500">vs {i === 0 ? "Jan" : forecastData.months[i-1].label}</span>
+                        </div>
+                        <div className="mt-2 pt-2 border-t border-slate-700/30">
+                          <div className="flex justify-between text-xs">
+                            <span className="text-slate-500">vs Target</span>
+                            <span className={`font-medium ${parseInt(attainment) >= 80 ? "text-emerald-400" : "text-amber-400"}`}>{attainment}%</span>
+                          </div>
+                          <div className="h-1.5 bg-slate-800 rounded-full mt-1 overflow-hidden">
+                            <div className={`h-full rounded-full ${parseInt(attainment) >= 80 ? "bg-emerald-500" : "bg-amber-500"}`} style={{ width: `${Math.min(100, parseInt(attainment))}%` }} />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Revenue Split + KPIs + Pipeline Summary */}
@@ -630,11 +956,38 @@ export default function Dashboard() {
           )}
 
           {/* ═══════ CLIENTS TAB ═══════ */}
-          {view === "clients" && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {view === "clients" && (() => {
+            const displayClients = clientTab === "new"
+              ? sortedByRev.filter(c => c.tier === "New" || c.status === "onboarding")
+              : sortedByRev.filter(c => c.rev[c.rev.length-1] > 0);
+            return (
+            <div key="clients-tab" className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <div className="lg:col-span-2 bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl overflow-hidden backdrop-blur-xl">
-                <div className="px-4 py-3 border-b border-slate-700/30">
-                  <div className="text-sm font-semibold text-slate-300">All Clients — {CLIENTS.filter(c => c.rev[c.rev.length-1] > 0).length} active</div>
+                <div className="px-4 py-3 border-b border-slate-700/30 flex items-center justify-between">
+                  <div className="flex items-center gap-1">
+                    {([
+                      { key: "all" as const, label: "All Clients" },
+                      { key: "new" as const, label: "New (last 60 days)" },
+                    ]).map(t => (
+                      <button
+                        key={t.key}
+                        onClick={() => setClientTab(t.key)}
+                        className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+                          clientTab === t.key
+                            ? "bg-cyan-500/15 text-cyan-400 border border-cyan-500/40"
+                            : "text-slate-500 hover:text-slate-300 border border-transparent"
+                        }`}
+                      >
+                        {t.label}
+                        {t.key === "new" && (
+                          <span className="ml-1.5 bg-cyan-500/20 text-cyan-400 text-[10px] font-bold px-1.5 py-0 rounded-full">
+                            {CLIENTS.filter(c => c.tier === "New" || c.status === "onboarding").length}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="text-xs text-slate-500">{displayClients.length} clients</div>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -642,6 +995,7 @@ export default function Dashboard() {
                       <tr className="border-b border-slate-700/30 text-xs text-slate-500 uppercase tracking-wider">
                         <th className="text-left px-3 py-2 font-medium">Client</th>
                         <th className="text-left px-3 py-2 font-medium">Tier</th>
+                        <th className="text-center px-1 py-2 font-medium">{"\u263A"}</th>
                         <th className="text-right px-3 py-2 font-medium">MRR</th>
                         <th className="text-right px-3 py-2 font-medium">MoM</th>
                         <th className="text-right px-3 py-2 font-medium">Cost %</th>
@@ -649,8 +1003,8 @@ export default function Dashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {sortedByRev.filter(c => c.rev[c.rev.length-1] > 0).map(c => (
-                        <ClientRow key={c.id} client={c} onClick={() => setSelectedClient(c.id)} selected={selectedClient === c.id} />
+                      {displayClients.map(c => (
+                        <ClientRow key={c.id} client={c} onClick={() => setSelectedClient(c.id)} selected={selectedClient === c.id} sentimentOverride={clientOverrides[c.id]?.sentiment} />
                       ))}
                     </tbody>
                   </table>
@@ -658,23 +1012,101 @@ export default function Dashboard() {
               </div>
 
               {/* Client Detail */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl overflow-y-auto max-h-[calc(100vh-160px)]">
                 {detail ? (
                   <div>
-                    <div className="flex items-center gap-2 mb-3">
+                    {/* Header */}
+                    <div className="flex items-center gap-2 mb-1">
                       <div className={`w-2.5 h-2.5 rounded-full ${
-                        detail.status === "active" ? "bg-emerald-500" : detail.status === "critical" ? "bg-red-500" : detail.status === "warning" ? "bg-amber-500" : "bg-cyan-500"
+                        detail.status === "active" ? "bg-emerald-500" : detail.status === "critical" ? "bg-red-500" : detail.status === "warning" ? "bg-amber-500" : detail.status === "declining" ? "bg-orange-500" : "bg-cyan-500"
                       }`} />
                       <div className="text-base font-bold text-white">{detail.name}</div>
                     </div>
+                    {detail.tradingName && (
+                      <div className="text-xs text-slate-500 mb-1 ml-5">a.k.a. {detail.tradingName}</div>
+                    )}
+                    <div className="ml-5 mb-3">
+                      <span className="text-[10px] font-medium bg-slate-700/60 text-slate-300 px-2 py-0.5 rounded-full">{detail.vertical}</span>
+                    </div>
+
+                    {/* Sentiment faces */}
+                    <div className="mb-4">
+                      <div className="text-xs text-slate-500 font-medium mb-2">Sentiment</div>
+                      <div className="flex items-center gap-2">
+                        {SENTIMENTS.map(s => (
+                          <SentimentFace
+                            key={s}
+                            sentiment={s}
+                            size={detailSentiment === s ? 32 : 26}
+                            selected={detailSentiment === s}
+                            onClick={() => setClientOverrides(prev => ({
+                              ...prev,
+                              [detail.id]: { ...prev[detail.id], sentiment: s }
+                            }))}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Plan toggle */}
+                    <div className="mb-4">
+                      <div className="text-xs text-slate-500 font-medium mb-2">Plan</div>
+                      <div className="flex rounded-lg overflow-hidden border border-slate-700/50">
+                        {(["Ad Serving", "DSP"] as const).map(p => (
+                          <button
+                            key={p}
+                            onClick={() => setClientOverrides(prev => ({
+                              ...prev,
+                              [detail.id]: { ...prev[detail.id], plan: p }
+                            }))}
+                            className={`flex-1 py-1.5 text-xs font-medium transition-colors ${
+                              detailPlan === p
+                                ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/40"
+                                : "bg-slate-800/40 text-slate-500 hover:text-slate-300"
+                            }`}
+                          >
+                            {p}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Key metrics */}
                     <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
                       <div className="bg-slate-900/50 rounded-lg p-2"><span className="text-slate-500">Tier</span><div className="text-slate-200 font-medium">{detail.tier}</div></div>
-                      <div className="bg-slate-900/50 rounded-lg p-2"><span className="text-slate-500">Plan</span><div className="text-slate-200 font-medium">{detail.plan}</div></div>
+                      <div className="bg-slate-900/50 rounded-lg p-2"><span className="text-slate-500">Status</span><div className="text-slate-200 font-medium capitalize">{detail.status}</div></div>
                       <div className="bg-slate-900/50 rounded-lg p-2"><span className="text-slate-500">MRR</span><div className="text-cyan-400 font-bold">{"\u20AC"}{detail.rev[detail.rev.length-1].toLocaleString()}</div></div>
                       <div className="bg-slate-900/50 rounded-lg p-2"><span className="text-slate-500">Ad Reqs</span><div className="text-purple-400 font-bold">{detail.adReqs[detail.adReqs.length-1].toFixed(1)}B</div></div>
                     </div>
+
+                    {/* Tickets */}
+                    <div className="mb-4">
+                      <div className="text-xs text-slate-500 font-medium mb-2">Tickets this month</div>
+                      <div className="flex gap-3">
+                        <div className="flex items-center gap-1.5">
+                          <span className="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full">{detail.tickets.open}</span>
+                          <span className="text-xs text-slate-400">Open</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full">{detail.tickets.resolved}</span>
+                          <span className="text-xs text-slate-400">Resolved</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Upsell Opportunity */}
+                    {detail.upsell && (
+                      <div className="mb-4">
+                        <div className="text-xs text-slate-500 font-medium mb-2">Upsell Opportunity</div>
+                        <div className="bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/30 rounded-lg p-2.5">
+                          <div className="text-xs font-medium text-purple-300">{"\u2728"} {detail.upsell}</div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Revenue chart */}
                     <div className="text-xs text-slate-500 mb-2 font-medium">Revenue Trend (6m)</div>
-                    <ResponsiveContainer width="100%" height={140}>
+                    <ResponsiveContainer width="100%" height={120}>
                       <AreaChart data={detail.rev.map((v,i) => ({ month: MONTHS_LABELS[i], rev: v, cost: detail.cost[i] }))}>
                         <defs>
                           <linearGradient id="detailG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#06b6d4" stopOpacity={0.4}/><stop offset="100%" stopColor="#06b6d4" stopOpacity={0}/></linearGradient>
@@ -687,14 +1119,90 @@ export default function Dashboard() {
                         <Line type="monotone" dataKey="cost" stroke="#ef4444" strokeWidth={1.5} strokeDasharray="4 4" dot={false} name="Cost" />
                       </AreaChart>
                     </ResponsiveContainer>
-                    <div className="mt-3 space-y-1.5">
-                      {alerts.filter(a => a.client === detail.name).map((a, i) => (
-                        <div key={i} className={`text-xs p-2 rounded-lg ${severityConfig[a.severity].bg} border ${severityConfig[a.severity].border}`}>
-                          <span className={`font-bold uppercase ${severityConfig[a.severity].text}`}>{a.severity}:</span>{" "}
-                          <span className="text-slate-300">{a.title}</span>
+
+                    {/* Billing */}
+                    {(() => {
+                      const r = detail.rev;
+                      const currentDay = 9;
+                      const daysInMonth = 28;
+                      const mtdEstimate = r[5] * (currentDay / daysInMonth);
+                      const forecast = r[5] * 0.5 + r[4] * 0.3 + r[3] * 0.2;
+                      const prev = r[5];
+                      const forecastChange = prev > 0 ? ((forecast - prev) / prev) * 100 : 0;
+                      const last3Avg = (r[5] + r[4] + r[3]) / 3;
+                      // Growth multiplier for fast-growing onboarding clients
+                      const momGrowth = r[4] > 0 ? ((r[5] - r[4]) / r[4]) : 0;
+                      const adjustedForecast = (detail.status === "onboarding" && momGrowth > 0.5)
+                        ? forecast * 1.2
+                        : forecast;
+                      const adjustedChange = prev > 0 ? ((adjustedForecast - prev) / prev) * 100 : 0;
+                      return (
+                        <div className="mt-4">
+                          <div className="text-xs text-slate-500 font-medium mb-2">Billing</div>
+                          <div className="bg-slate-900/50 rounded-lg p-3 space-y-2 text-xs font-mono">
+                            <div className="flex justify-between items-center">
+                              <span className="text-slate-400">Current month ({currentDay}d/{daysInMonth}d)</span>
+                              <span className="text-slate-200 font-medium">{"\u20AC"}{Math.round(mtdEstimate).toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-slate-400">Forecast (Feb)</span>
+                              <span className="flex items-center gap-1.5">
+                                <span className="text-cyan-400 font-medium">{"\u20AC"}{Math.round(adjustedForecast).toLocaleString()}</span>
+                                <span className={`text-[10px] font-bold ${adjustedChange >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                                  {adjustedChange >= 0 ? "\u2191" : "\u2193"}{Math.abs(adjustedChange).toFixed(0)}%
+                                </span>
+                              </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-slate-400">Last 3m avg</span>
+                              <span className="text-slate-300 font-medium">{"\u20AC"}{Math.round(last3Avg).toLocaleString()}</span>
+                            </div>
+                          </div>
                         </div>
-                      ))}
+                      );
+                    })()}
+
+                    {/* Actions: Invoice + Odoo */}
+                    <div className="mt-4 space-y-2">
+                      <button
+                        onClick={() => openInvoice(detail)}
+                        className="w-full py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-xs font-medium text-cyan-400 hover:bg-cyan-500/20 transition-colors"
+                      >
+                        View Invoice {"\u2192"}
+                      </button>
+                      <div className="text-xs text-slate-500 font-medium mt-3 mb-1.5">Finance</div>
+                      <div className="flex gap-2">
+                        <a
+                          href={`https://exads.odoo.com/web#model=res.partner&id=${detail.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 py-1.5 text-center bg-slate-800/50 border border-slate-700/40 rounded-lg text-[11px] text-slate-400 hover:text-slate-200 hover:border-slate-600 transition-colors"
+                        >
+                          View in Odoo {"\u2197"}
+                        </a>
+                        <a
+                          href={`https://exads.odoo.com/web#model=account.move&partner_id=${detail.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 py-1.5 text-center bg-slate-800/50 border border-slate-700/40 rounded-lg text-[11px] text-slate-400 hover:text-slate-200 hover:border-slate-600 transition-colors"
+                        >
+                          Invoices {"\u2197"}
+                        </a>
+                      </div>
                     </div>
+
+                    {/* Client alerts */}
+                    {alerts.filter(a => a.client === detail.name).length > 0 && (
+                      <div className="mt-4 space-y-1.5">
+                        <div className="text-xs text-slate-500 font-medium mb-1">Alerts</div>
+                        {alerts.filter(a => a.client === detail.name).map((a, i) => (
+                          <div key={i} className={`text-xs p-2 rounded-lg ${severityConfig[a.severity].bg} border ${severityConfig[a.severity].border}`}>
+                            <span className={`font-bold uppercase ${severityConfig[a.severity].text}`}>{a.severity}:</span>{" "}
+                            <span className="text-slate-300">{a.title}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="text-center py-16 text-slate-500">
@@ -704,7 +1212,7 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-          )}
+          );})()}
 
           {/* ═══════ PIPELINES TAB ═══════ */}
           {view === "pipelines" && (
