@@ -976,6 +976,8 @@ export default function Dashboard() {
                     <YAxis tick={{ fill: "#cbd5e1", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
                     <Tooltip
                       contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
+                      itemStyle={{ color: "#e2e8f0" }}
+                      labelStyle={{ color: "#e2e8f0" }}
                       formatter={(v: number, name: string) => {
                         return [`\u20AC${v.toLocaleString()}`, name === "actual" ? "Actual" : "Target"];
                       }}
