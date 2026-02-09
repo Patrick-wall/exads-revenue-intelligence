@@ -93,7 +93,7 @@ const CLIENTS: Client[] = [
 
 const MONTHS_LABELS = ["Aug","Sep","Oct","Nov","Dec","Jan"];
 const MRR_TARGET = 100000;
-const PIPELINE = { qualified: 8, proposal: 3, negotiation: 2, closed: 1 };
+const PIPELINE = { qualified: 8, proposal: 3, negotiation: 2, closed: 1, qualifiedVal: 18400, proposalVal: 9200, negotiationVal: 7600, closedVal: 3800 };
 const HUBSPOT_TICKETS = { open: 12, pending: 5, resolved: 34 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -418,22 +418,22 @@ export default function Dashboard() {
   }, []);
 
   // MRR vs Target yearly data (with forecast extension)
-  const MRR_YEARLY_DATA: { month: string; actual?: number; target: number; forecast?: number }[] = [
-    { month: "Jan", actual: 42500, target: 50000 },
-    { month: "Feb", actual: 44200, target: 55000 },
-    { month: "Mar", actual: 46800, target: 60000 },
-    { month: "Apr", actual: 48100, target: 65000 },
-    { month: "May", actual: 49300, target: 70000 },
-    { month: "Jun", actual: 48900, target: 75000 },
-    { month: "Jul", actual: 50200, target: 80000 },
-    { month: "Aug", actual: 51800, target: 85000 },
-    { month: "Sep", actual: 53400, target: 90000 },
-    { month: "Oct", actual: 55100, target: 95000 },
-    { month: "Nov", actual: 47100, target: 97000 },
-    { month: "Dec", actual: totalMRR, target: 100000 },
-    { month: "Jan\u2019", forecast: forecastData.months[0].value, target: 103000 },
-    { month: "Feb\u2019", forecast: forecastData.months[1].value, target: 106000 },
-    { month: "Mar\u2019", forecast: forecastData.months[2].value, target: 109000 },
+  const MRR_YEARLY_DATA = [
+    { month: "Jan", actual: 42500, target: 50000, isForecast: false },
+    { month: "Feb", actual: 44200, target: 55000, isForecast: false },
+    { month: "Mar", actual: 46800, target: 60000, isForecast: false },
+    { month: "Apr", actual: 48100, target: 65000, isForecast: false },
+    { month: "May", actual: 49300, target: 70000, isForecast: false },
+    { month: "Jun", actual: 48900, target: 75000, isForecast: false },
+    { month: "Jul", actual: 50200, target: 80000, isForecast: false },
+    { month: "Aug", actual: 51800, target: 85000, isForecast: false },
+    { month: "Sep", actual: 53400, target: 90000, isForecast: false },
+    { month: "Oct", actual: 55100, target: 95000, isForecast: false },
+    { month: "Nov", actual: 47100, target: 97000, isForecast: false },
+    { month: "Dec", actual: totalMRR, target: 100000, isForecast: false },
+    { month: "Jan\u2019", actual: forecastData.months[0].value, target: 103000, isForecast: true },
+    { month: "Feb\u2019", actual: forecastData.months[1].value, target: 106000, isForecast: true },
+    { month: "Mar\u2019", actual: forecastData.months[2].value, target: 109000, isForecast: true },
   ];
 
   // Revenue over time
@@ -748,7 +748,7 @@ export default function Dashboard() {
               <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="text-sm font-semibold text-slate-300">MRR vs Target (Monthly)</div>
-                  <span className="text-[10px] bg-cyan-500/15 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-500/30">+ Forecast</span>
+                  <span className="text-[10px] bg-cyan-500/15 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-500/30">Dashed = Forecast</span>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={MRR_YEARLY_DATA} barGap={2}>
@@ -758,17 +758,30 @@ export default function Dashboard() {
                     <Tooltip
                       contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
                       formatter={(v: number, name: string) => {
-                        const label = name === "actual" ? "Actual" : name === "forecast" ? "Forecast" : "Target";
-                        return [`\u20AC${v.toLocaleString()}`, label];
+                        return [`\u20AC${v.toLocaleString()}`, name === "actual" ? "Actual" : "Target"];
                       }}
+                      labelFormatter={(label: string) => label.includes("\u2019") ? `${label} (Forecast)` : label}
                     />
                     <Legend
-                      formatter={(value: string) => value === "actual" ? "Actual" : value === "forecast" ? "Forecast" : "Target"}
+                      formatter={(value: string) => value === "actual" ? "Actual / Forecast" : "Target"}
                       wrapperStyle={{ fontSize: 12, color: "#94a3b8" }}
                     />
                     <ReferenceLine x="Dec" stroke="#334155" strokeDasharray="6 3" label={{ value: "Forecast \u2192", position: "top", fill: "#64748b", fontSize: 10 }} />
-                    <Bar dataKey="actual" fill="#06b6d4" radius={[3, 3, 0, 0]} name="actual" />
-                    <Bar dataKey="forecast" fill="#06b6d4" radius={[3, 3, 0, 0]} name="forecast" opacity={0.4} strokeDasharray="4 2" stroke="#06b6d4" />
+                    <Bar
+                      dataKey="actual"
+                      radius={[3, 3, 0, 0]}
+                      name="actual"
+                      shape={(props: Record<string, unknown>) => {
+                        const { x, y, width, height, payload } = props as { x: number; y: number; width: number; height: number; payload: { isForecast: boolean } };
+                        if (payload.isForecast) {
+                          return (
+                            <rect x={x} y={y} width={width} height={height} rx={3} ry={3}
+                              fill="#06b6d4" fillOpacity={0.2} stroke="#06b6d4" strokeWidth={1.5} strokeDasharray="4 3" />
+                          );
+                        }
+                        return <rect x={x} y={y} width={width} height={height} rx={3} ry={3} fill="#06b6d4" />;
+                      }}
+                    />
                     <Bar dataKey="target" fill="#475569" radius={[3, 3, 0, 0]} name="target" opacity={0.6} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -904,20 +917,26 @@ export default function Dashboard() {
                 <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
                   <div className="flex items-center justify-between mb-3">
                     <div className="text-sm font-semibold text-slate-300">Sales Pipeline</div>
-                    <div className="text-xs text-slate-500">{PIPELINE.qualified + PIPELINE.proposal + PIPELINE.negotiation + PIPELINE.closed} total</div>
+                    <div className="text-xs text-slate-500">{PIPELINE.qualified + PIPELINE.proposal + PIPELINE.negotiation + PIPELINE.closed} deals</div>
                   </div>
                   <div className="space-y-2.5">
                     {[
-                      { stage: "Qualified", count: PIPELINE.qualified, color: "text-cyan-400" },
-                      { stage: "Proposal", count: PIPELINE.proposal, color: "text-purple-400" },
-                      { stage: "Negotiation", count: PIPELINE.negotiation, color: "text-amber-400" },
-                      { stage: "Closed Won", count: PIPELINE.closed, color: "text-emerald-400" },
+                      { stage: "Qualified", count: PIPELINE.qualified, value: PIPELINE.qualifiedVal, color: "text-cyan-400" },
+                      { stage: "Proposal", count: PIPELINE.proposal, value: PIPELINE.proposalVal, color: "text-purple-400" },
+                      { stage: "Negotiation", count: PIPELINE.negotiation, value: PIPELINE.negotiationVal, color: "text-amber-400" },
+                      { stage: "Closed Won", count: PIPELINE.closed, value: PIPELINE.closedVal, color: "text-emerald-400" },
                     ].map((s, i) => (
                       <div key={i} className="flex justify-between items-center">
-                        <span className="text-xs text-slate-500">{s.stage}</span>
-                        <span className={`text-sm font-bold tabular-nums ${s.color}`}>{s.count}</span>
+                        <span className="text-xs text-slate-500">{s.stage} ({s.count})</span>
+                        <span className={`text-sm font-bold tabular-nums ${s.color}`}>{"\u20AC"}{s.value.toLocaleString()}</span>
                       </div>
                     ))}
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-700/30">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-slate-500 font-medium">Total Pipeline</span>
+                      <span className="text-sm font-bold text-white tabular-nums">{"\u20AC"}{(PIPELINE.qualifiedVal + PIPELINE.proposalVal + PIPELINE.negotiationVal + PIPELINE.closedVal).toLocaleString()}</span>
+                    </div>
                   </div>
                   <div className="mt-3 pt-3 border-t border-slate-700/30">
                     <div className="text-sm font-semibold text-slate-300 mb-2">Top 5 by MRR</div>
@@ -1020,7 +1039,7 @@ export default function Dashboard() {
               </div>
 
               {/* Client Detail */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl overflow-y-auto max-h-[calc(100vh-160px)]">
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl overflow-y-auto max-h-[calc(100vh-80px)] sticky top-4">
                 {detail ? (
                   <div>
                     {/* Header */}
