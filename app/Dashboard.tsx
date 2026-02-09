@@ -790,71 +790,6 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* MRR vs Target Chart (with forecast) */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="text-sm font-semibold text-slate-300">MRR vs Target (Monthly)</div>
-                  <span className="text-[10px] bg-cyan-500/15 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-500/30">Dashed = Forecast</span>
-                </div>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={MRR_YEARLY_DATA} barGap={2}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
-                    <Tooltip
-                      contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
-                      formatter={(v: number, name: string) => {
-                        return [`\u20AC${v.toLocaleString()}`, name === "actual" ? "Actual" : "Target"];
-                      }}
-                      labelFormatter={(label: string) => label.includes("\u2019") ? `${label} (Forecast)` : label}
-                    />
-                    <Legend
-                      formatter={(value: string) => value === "actual" ? "Actual / Forecast" : "Target"}
-                      wrapperStyle={{ fontSize: 12, color: "#94a3b8" }}
-                    />
-                    <ReferenceLine x="Dec" stroke="#334155" strokeDasharray="6 3" label={{ value: "Forecast \u2192", position: "top", fill: "#64748b", fontSize: 10 }} />
-                    <Bar
-                      dataKey="actual"
-                      radius={[3, 3, 0, 0]}
-                      name="actual"
-                      shape={(props: unknown) => {
-                        const { x, y, width, height, payload } = props as { x: number; y: number; width: number; height: number; payload: { isForecast: boolean } };
-                        if (payload.isForecast) {
-                          return (
-                            <rect x={x} y={y} width={width} height={height} rx={3} ry={3}
-                              fill="#06b6d4" fillOpacity={0.2} stroke="#06b6d4" strokeWidth={1.5} strokeDasharray="4 3" />
-                          );
-                        }
-                        return <rect x={x} y={y} width={width} height={height} rx={3} ry={3} fill="#06b6d4" />;
-                      }}
-                    />
-                    <Bar dataKey="target" fill="#475569" radius={[3, 3, 0, 0]} name="target" opacity={0.6} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-
-              {/* Revenue by Tier */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="text-sm font-semibold text-slate-300 mb-3">Monthly Revenue by Tier</div>
-                <ResponsiveContainer width="100%" height={280}>
-                  <AreaChart data={revOverTime}>
-                    <defs>
-                      <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3}/><stop offset="100%" stopColor="#06b6d4" stopOpacity={0}/></linearGradient>
-                      <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.3}/><stop offset="100%" stopColor="#8b5cf6" stopOpacity={0}/></linearGradient>
-                      <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#22c55e" stopOpacity={0.3}/><stop offset="100%" stopColor="#22c55e" stopOpacity={0}/></linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
-                    <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${v.toLocaleString()}`, ""]} />
-                    <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
-                    <Area type="monotone" dataKey="t1" stackId="1" stroke="#06b6d4" fill="url(#g1)" strokeWidth={2} name="Tier 1" />
-                    <Area type="monotone" dataKey="t2" stackId="1" stroke="#8b5cf6" fill="url(#g2)" strokeWidth={2} name="Tier 2" />
-                    <Area type="monotone" dataKey="t3" stackId="1" stroke="#22c55e" fill="url(#g3)" strokeWidth={2} name="Tier 3 & New" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-
               {/* Revenue Split + KPIs + Pipeline Summary */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
@@ -954,6 +889,71 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* MRR vs Target Chart (with forecast) */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="text-sm font-semibold text-slate-300">MRR vs Target (Monthly)</div>
+                  <span className="text-[10px] bg-cyan-500/15 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-500/30">Dashed = Forecast</span>
+                </div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={MRR_YEARLY_DATA} barGap={2}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
+                      formatter={(v: number, name: string) => {
+                        return [`\u20AC${v.toLocaleString()}`, name === "actual" ? "Actual" : "Target"];
+                      }}
+                      labelFormatter={(label: string) => label.includes("\u2019") ? `${label} (Forecast)` : label}
+                    />
+                    <Legend
+                      formatter={(value: string) => value === "actual" ? "Actual / Forecast" : "Target"}
+                      wrapperStyle={{ fontSize: 12, color: "#94a3b8" }}
+                    />
+                    <ReferenceLine x="Dec" stroke="#334155" strokeDasharray="6 3" label={{ value: "Forecast \u2192", position: "top", fill: "#64748b", fontSize: 10 }} />
+                    <Bar
+                      dataKey="actual"
+                      radius={[3, 3, 0, 0]}
+                      name="actual"
+                      shape={(props: unknown) => {
+                        const { x, y, width, height, payload } = props as { x: number; y: number; width: number; height: number; payload: { isForecast: boolean } };
+                        if (payload.isForecast) {
+                          return (
+                            <rect x={x} y={y} width={width} height={height} rx={3} ry={3}
+                              fill="#06b6d4" fillOpacity={0.2} stroke="#06b6d4" strokeWidth={1.5} strokeDasharray="4 3" />
+                          );
+                        }
+                        return <rect x={x} y={y} width={width} height={height} rx={3} ry={3} fill="#06b6d4" />;
+                      }}
+                    />
+                    <Bar dataKey="target" fill="#475569" radius={[3, 3, 0, 0]} name="target" opacity={0.6} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Revenue by Tier */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="text-sm font-semibold text-slate-300 mb-3">Monthly Revenue by Tier</div>
+                <ResponsiveContainer width="100%" height={280}>
+                  <AreaChart data={revOverTime}>
+                    <defs>
+                      <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3}/><stop offset="100%" stopColor="#06b6d4" stopOpacity={0}/></linearGradient>
+                      <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.3}/><stop offset="100%" stopColor="#8b5cf6" stopOpacity={0}/></linearGradient>
+                      <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#22c55e" stopOpacity={0.3}/><stop offset="100%" stopColor="#22c55e" stopOpacity={0}/></linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                    <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${v.toLocaleString()}`, ""]} />
+                    <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
+                    <Area type="monotone" dataKey="t1" stackId="1" stroke="#06b6d4" fill="url(#g1)" strokeWidth={2} name="Tier 1" />
+                    <Area type="monotone" dataKey="t2" stackId="1" stroke="#8b5cf6" fill="url(#g2)" strokeWidth={2} name="Tier 2" />
+                    <Area type="monotone" dataKey="t3" stackId="1" stroke="#22c55e" fill="url(#g3)" strokeWidth={2} name="Tier 3 & New" />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
             </div>
           )}
