@@ -1069,6 +1069,41 @@ export default function Dashboard() {
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
+
+              {/* Revenue per Client */}
+              {(() => {
+                const CLIENT_COLORS = ["#06b6d4","#8b5cf6","#22c55e","#f59e0b","#ef4444","#ec4899","#14b8a6","#f97316","#6366f1","#84cc16","#a855f7","#0ea5e9","#e879f9","#facc15","#fb923c","#4ade80"];
+                const payingClients = CLIENTS.filter(c => c.rev.some(v => v > 0)).sort((a, b) => b.rev[b.rev.length-1] - a.rev[a.rev.length-1]);
+                const clientRevData = MONTHS_LABELS.map((month, i) => {
+                  const row: Record<string, string | number> = { month };
+                  payingClients.forEach(c => { row[c.name] = c.rev[i]; });
+                  return row;
+                });
+                return (
+                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="text-sm font-semibold text-slate-300">Revenue per Client Account</div>
+                    <div className="text-xs text-slate-500">{payingClients.length} accounts with revenue</div>
+                  </div>
+                  <ResponsiveContainer width="100%" height={380}>
+                    <LineChart data={clientRevData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                      <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
+                      <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                      <Tooltip
+                        contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 11, color: "#e2e8f0" }}
+                        formatter={(v: number, name: string) => [`\u20AC${v.toLocaleString()}`, name]}
+                        itemSorter={(item: { value?: number }) => -(item.value ?? 0)}
+                      />
+                      <Legend wrapperStyle={{ fontSize: 11, color: "#94a3b8" }} />
+                      {payingClients.map((c, i) => (
+                        <Line key={c.id} type="monotone" dataKey={c.name} stroke={CLIENT_COLORS[i % CLIENT_COLORS.length]} strokeWidth={c.tier === "T1" ? 2.5 : 1.5} dot={{ r: c.tier === "T1" ? 3 : 2 }} activeDot={{ r: 5 }} />
+                      ))}
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                );
+              })()}
             </div>
           )}
 
