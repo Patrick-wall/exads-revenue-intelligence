@@ -1094,6 +1094,8 @@ export default function Dashboard() {
                       <YAxis type="category" dataKey="name" tick={{ fill: "#94a3b8", fontSize: 11 }} axisLine={false} width={110} />
                       <Tooltip
                         contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
+                        labelStyle={{ color: "#e2e8f0" }}
+                        itemStyle={{ color: "#e2e8f0" }}
                         formatter={(v: number) => [`\u20AC${v.toLocaleString()}`, "Current MRR"]}
                         cursor={{ fill: "rgba(148,163,184,0.05)" }}
                       />
