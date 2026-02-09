@@ -98,7 +98,7 @@ const CLIENTS: Client[] = [
   { id:22, name:"Ezmob", vertical:["Mainstream"], language:"English", currency:"USD", blurb:"Ad tech platform running test campaigns on Ad Serving. Evaluating integration and performance.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["Ad Serving"], plans:{"Ad Serving":"Core"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   { id:23, name:"AdultadAdworld", vertical:["Adult","Dating"], language:"English", currency:"USD", blurb:"Running test campaigns on DSP platform. Evaluating ad formats and targeting capabilities.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   // ── Churn (1) ──
-  { id:24, name:"Venus London", tradingName:"Venus London Technology", vertical:["Dating"], language:"English", currency:"GBP", blurb:"Was on DSP Business plan. Churned — last activity was minimal. May be worth a win-back campaign.", rev:[420,380,310,180,90,0], adReqs:[0.2,0.2,0.1,0.1,0,0], cost:[48,44,36,21,10,0], tier:"T3", status:"churn", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"very_unhappy", tickets:{open:0,resolved:2}, upsell:null },
+  { id:24, name:"Venus London", tradingName:"Venus London Technology", vertical:["Dating"], language:"English", currency:"GBP", blurb:"Was on DSP Business plan. Revenue declined steadily over 6 months before going quiet. May be worth a win-back campaign.", rev:[420,380,340,290,210,120], adReqs:[0.2,0.2,0.15,0.12,0.08,0.04], cost:[48,44,39,33,24,14], tier:"T3", status:"churn", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"very_unhappy", tickets:{open:0,resolved:2}, upsell:null },
 ];
 
 const VERTICAL_ICONS: Record<string, string> = {
@@ -140,14 +140,25 @@ function generateAlerts(clients: Client[]): Alert[] {
     if (r.length < 2) return;
     const curr = r[r.length-1], prev = r[r.length-2];
 
-    // Client ready for billing: onboarding status + 2+ months of revenue
-    if (c.status === "onboarding" && r.filter(v => v > 0).length >= 2 && curr > 100) {
+    // Client ready for billing: onboarding/testing with significant activity
+    if ((c.status === "onboarding" || c.status === "testing") && r.filter(v => v > 0).length >= 2 && curr > 100) {
       alerts.push({
         severity: "positive",
         client: c.name,
-        title: "Ready to move to billing",
-        detail: `${r.filter(v => v > 0).length} months of activity. Current MRR: \u20AC${curr.toLocaleString()}.`,
-        action: "Set up billing",
+        title: "Move to billing — significant activity detected",
+        detail: `${r.filter(v => v > 0).length} months of activity, current MRR \u20AC${curr.toLocaleString()}. Platform: ${c.pricing.join(" + ")}, plan: ${c.pricing.map(p => c.plans[p] || "Core").join(" / ")}.`,
+        action: "Set up billing & activate account",
+        time: "Today"
+      });
+    }
+    // Testing client with first activity
+    if (c.status === "testing" && curr === 0 && a[a.length-1] > 0) {
+      alerts.push({
+        severity: "positive",
+        client: c.name,
+        title: "Testing activity detected",
+        detail: `Ad requests: ${a[a.length-1].toFixed(2)}B this month. No revenue yet — monitor for billing readiness.`,
+        action: "Monitor & prepare onboarding",
         time: "Today"
       });
     }
@@ -365,6 +376,15 @@ function ClientRow({ client, onClick, selected, sentimentOverride, openTickets }
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${statusColors[client.status] || "bg-slate-500"}`} />
           <span className="text-sm text-slate-200 font-medium">{client.name}</span>
+          {client.status === "testing" && (
+            <span className="bg-violet-500/20 text-violet-400 text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-violet-500/30">TESTING</span>
+          )}
+          {client.status === "onboarding" && (
+            <span className="bg-cyan-500/20 text-cyan-400 text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-cyan-500/30">ONBOARDING</span>
+          )}
+          {client.status === "churn" && (
+            <span className="bg-slate-500/20 text-slate-400 text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-slate-500/30">CHURNED</span>
+          )}
           {(openTickets ?? client.tickets.open) > 0 && (
             <span className="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-1.5 py-0 rounded-full">{openTickets ?? client.tickets.open}</span>
           )}
