@@ -988,8 +988,8 @@ export default function Dashboard() {
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={MRR_YEARLY_DATA} barGap={2}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                    <XAxis dataKey="month" tick={{ fill: "#cbd5e1", fontSize: 11 }} axisLine={false} />
+                    <YAxis tick={{ fill: "#cbd5e1", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
                     <Tooltip
                       contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
                       formatter={(v: number, name: string) => {
@@ -999,7 +999,7 @@ export default function Dashboard() {
                     />
                     <Legend
                       formatter={(value: string) => value === "actual" ? "Actual / Forecast" : "Target"}
-                      wrapperStyle={{ fontSize: 12, color: "#94a3b8" }}
+                      wrapperStyle={{ fontSize: 12, color: "#e2e8f0" }}
                     />
                     <ReferenceLine x="Dec" stroke="#334155" strokeDasharray="6 3" label={{ value: "Forecast \u2192", position: "top", fill: "#64748b", fontSize: 10 }} />
                     <Bar
@@ -1033,10 +1033,10 @@ export default function Dashboard() {
                       <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#22c55e" stopOpacity={0.3}/><stop offset="100%" stopColor="#22c55e" stopOpacity={0}/></linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                    <XAxis dataKey="month" tick={{ fill: "#cbd5e1", fontSize: 11 }} axisLine={false} />
+                    <YAxis tick={{ fill: "#cbd5e1", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
                     <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${v.toLocaleString()}`, ""]} />
-                    <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
+                    <Legend wrapperStyle={{ fontSize: 12, color: "#e2e8f0" }} />
                     <Area type="monotone" dataKey="t1" stackId="1" stroke="#06b6d4" fill="url(#g1)" strokeWidth={2} name="Tier 1" />
                     <Area type="monotone" dataKey="t2" stackId="1" stroke="#8b5cf6" fill="url(#g2)" strokeWidth={2} name="Tier 2" />
                     <Area type="monotone" dataKey="t3" stackId="1" stroke="#22c55e" fill="url(#g3)" strokeWidth={2} name="Tier 3 & New" />
@@ -1060,10 +1060,10 @@ export default function Dashboard() {
                       <linearGradient id="gNet2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.25}/><stop offset="100%" stopColor="#8b5cf6" stopOpacity={0}/></linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000000).toFixed(1)}M`} />
+                    <XAxis dataKey="month" tick={{ fill: "#cbd5e1", fontSize: 11 }} axisLine={false} />
+                    <YAxis tick={{ fill: "#cbd5e1", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000000).toFixed(1)}M`} />
                     <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${(v/1000000).toFixed(2)}M`, ""]} />
-                    <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
+                    <Legend wrapperStyle={{ fontSize: 12, color: "#e2e8f0" }} />
                     <Area type="monotone" dataKey="adServing" stackId="1" stroke="#06b6d4" fill="url(#gNet1)" strokeWidth={2} name="Ad Serving" />
                     <Area type="monotone" dataKey="dsp" stackId="1" stroke="#8b5cf6" fill="url(#gNet2)" strokeWidth={2} name="DSP" />
                   </AreaChart>
@@ -1090,8 +1090,8 @@ export default function Dashboard() {
                   <ResponsiveContainer width="100%" height={Math.max(300, payingClients.length * 32)}>
                     <BarChart data={clientBarData} layout="vertical" margin={{ left: 10, right: 20 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />
-                      <XAxis type="number" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
-                      <YAxis type="category" dataKey="name" tick={{ fill: "#94a3b8", fontSize: 11 }} axisLine={false} width={110} />
+                      <XAxis type="number" tick={{ fill: "#cbd5e1", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                      <YAxis type="category" dataKey="name" tick={{ fill: "#e2e8f0", fontSize: 11 }} axisLine={false} width={110} />
                       <Tooltip
                         contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
                         labelStyle={{ color: "#e2e8f0" }}
