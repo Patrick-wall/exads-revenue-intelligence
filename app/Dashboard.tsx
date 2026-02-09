@@ -771,7 +771,7 @@ export default function Dashboard() {
                       dataKey="actual"
                       radius={[3, 3, 0, 0]}
                       name="actual"
-                      shape={(props: Record<string, unknown>) => {
+                      shape={(props: unknown) => {
                         const { x, y, width, height, payload } = props as { x: number; y: number; width: number; height: number; payload: { isForecast: boolean } };
                         if (payload.isForecast) {
                           return (
