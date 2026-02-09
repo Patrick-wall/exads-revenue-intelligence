@@ -744,6 +744,52 @@ export default function Dashboard() {
                 <div className="text-sm text-slate-500">Revenue tracking & targets</div>
               </div>
 
+              {/* Revenue Forecast */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="text-sm font-semibold text-slate-300">Revenue Forecast</div>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                      forecastData.confidence === "High" ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30" :
+                      forecastData.confidence === "Medium" ? "bg-amber-500/15 text-amber-400 border border-amber-500/30" :
+                      "bg-red-500/15 text-red-400 border border-red-500/30"
+                    }`}>
+                      {forecastData.confidence} confidence
+                    </span>
+                  </div>
+                  <div className="text-xs text-slate-500">Based on weighted 3-month trends</div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {forecastData.months.map((m, i) => {
+                    const prevVal = i === 0 ? totalMRR : forecastData.months[i - 1].value;
+                    const change = prevVal > 0 ? ((m.value - prevVal) / prevVal) * 100 : 0;
+                    const target = [103000, 106000, 109000][i];
+                    const attainment = ((m.value / target) * 100).toFixed(0);
+                    return (
+                      <div key={m.label} className="bg-slate-900/50 rounded-lg p-4">
+                        <div className="text-xs text-slate-500 mb-1">{m.label} 2026</div>
+                        <div className="text-xl font-bold text-cyan-400 tabular-nums">{"\u20AC"}{m.value.toLocaleString()}</div>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className={`text-xs font-medium ${change >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                            {change >= 0 ? "\u2191" : "\u2193"}{Math.abs(change).toFixed(1)}%
+                          </span>
+                          <span className="text-xs text-slate-500">vs {i === 0 ? "Jan" : forecastData.months[i-1].label}</span>
+                        </div>
+                        <div className="mt-2 pt-2 border-t border-slate-700/30">
+                          <div className="flex justify-between text-xs">
+                            <span className="text-slate-500">vs Target</span>
+                            <span className={`font-medium ${parseInt(attainment) >= 80 ? "text-emerald-400" : "text-amber-400"}`}>{attainment}%</span>
+                          </div>
+                          <div className="h-1.5 bg-slate-800 rounded-full mt-1 overflow-hidden">
+                            <div className={`h-full rounded-full ${parseInt(attainment) >= 80 ? "bg-emerald-500" : "bg-amber-500"}`} style={{ width: `${Math.min(100, parseInt(attainment))}%` }} />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* MRR vs Target Chart (with forecast) */}
               <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
                 <div className="flex items-center gap-2 mb-3">
@@ -807,52 +853,6 @@ export default function Dashboard() {
                     <Area type="monotone" dataKey="t3" stackId="1" stroke="#22c55e" fill="url(#g3)" strokeWidth={2} name="Tier 3 & New" />
                   </AreaChart>
                 </ResponsiveContainer>
-              </div>
-
-              {/* Revenue Forecast */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="text-sm font-semibold text-slate-300">Revenue Forecast</div>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                      forecastData.confidence === "High" ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30" :
-                      forecastData.confidence === "Medium" ? "bg-amber-500/15 text-amber-400 border border-amber-500/30" :
-                      "bg-red-500/15 text-red-400 border border-red-500/30"
-                    }`}>
-                      {forecastData.confidence} confidence
-                    </span>
-                  </div>
-                  <div className="text-xs text-slate-500">Based on weighted 3-month trends</div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {forecastData.months.map((m, i) => {
-                    const prevVal = i === 0 ? totalMRR : forecastData.months[i - 1].value;
-                    const change = prevVal > 0 ? ((m.value - prevVal) / prevVal) * 100 : 0;
-                    const target = [103000, 106000, 109000][i];
-                    const attainment = ((m.value / target) * 100).toFixed(0);
-                    return (
-                      <div key={m.label} className="bg-slate-900/50 rounded-lg p-4">
-                        <div className="text-xs text-slate-500 mb-1">{m.label} 2026</div>
-                        <div className="text-xl font-bold text-cyan-400 tabular-nums">{"\u20AC"}{m.value.toLocaleString()}</div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className={`text-xs font-medium ${change >= 0 ? "text-emerald-400" : "text-red-400"}`}>
-                            {change >= 0 ? "\u2191" : "\u2193"}{Math.abs(change).toFixed(1)}%
-                          </span>
-                          <span className="text-xs text-slate-500">vs {i === 0 ? "Jan" : forecastData.months[i-1].label}</span>
-                        </div>
-                        <div className="mt-2 pt-2 border-t border-slate-700/30">
-                          <div className="flex justify-between text-xs">
-                            <span className="text-slate-500">vs Target</span>
-                            <span className={`font-medium ${parseInt(attainment) >= 80 ? "text-emerald-400" : "text-amber-400"}`}>{attainment}%</span>
-                          </div>
-                          <div className="h-1.5 bg-slate-800 rounded-full mt-1 overflow-hidden">
-                            <div className={`h-full rounded-full ${parseInt(attainment) >= 80 ? "bg-emerald-500" : "bg-amber-500"}`} style={{ width: `${Math.min(100, parseInt(attainment))}%` }} />
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
               </div>
 
               {/* Revenue Split + KPIs + Pipeline Summary */}
