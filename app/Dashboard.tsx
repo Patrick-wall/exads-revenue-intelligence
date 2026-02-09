@@ -6,7 +6,8 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContai
 // TYPE DEFINITIONS
 // ═══════════════════════════════════════════════════════════════
 type Sentiment = "very_happy" | "happy" | "neutral" | "unhappy" | "very_unhappy";
-type Plan = "Ad Serving" | "DSP";
+type Pricing = "Ad Serving" | "DSP";
+type ClientPlan = "Enterprise" | "Business" | "Pro" | "Core";
 
 interface Client {
   id: number;
@@ -18,7 +19,8 @@ interface Client {
   cost: number[];
   tier: "T1" | "T2" | "T3" | "New";
   status: "active" | "warning" | "critical" | "declining" | "onboarding";
-  plan: Plan;
+  pricing: Pricing;
+  plan: ClientPlan;
   sentiment: Sentiment;
   tickets: { open: number; resolved: number };
   upsell: string | null;
@@ -65,25 +67,25 @@ interface AlertCardProps {
 // MOCK DATA — In production, all from EXADS API + HubSpot
 // ═══════════════════════════════════════════════════════════════
 const CLIENTS: Client[] = [
-  { id:1, name:"Adsession", tradingName:"Adsession BV", vertical:"Ad Tech", rev:[12162,12024,13101,11927,14718,16941], adReqs:[4.2,4.1,4.5,4.1,5.0,5.8], cost:[410,395,440,390,510,580], tier:"T1", status:"active", plan:"Ad Serving", sentiment:"very_happy", tickets:{open:0,resolved:5}, upsell:"CDN Video add-on" },
-  { id:2, name:"Crakmedia", tradingName:"Crak Revenue / Crakmedia Inc.", vertical:"Performance Marketing", rev:[0,0,0,5280,8940,12526], adReqs:[0,0,0,1.8,3.1,4.3], cost:[0,0,0,290,530,820], tier:"T1", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:1,resolved:3}, upsell:"DSP migration" },
-  { id:3, name:"DatingLeads", tradingName:"Dating Leads Ltd", vertical:"Dating", rev:[3785,4114,3887,3084,3144,7320], adReqs:[1.3,1.4,1.3,1.1,1.1,2.5], cost:[340,380,350,285,290,680], tier:"T2", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:2,resolved:4}, upsell:"Enterprise tier upgrade" },
-  { id:4, name:"ValueMedia", tradingName:"Value Media GmbH", vertical:"Media Buying", rev:[1429,1594,2181,2263,1443,1213], adReqs:[0.9,1.0,1.3,1.4,1.2,1.1], cost:[155,178,262,275,170,142], tier:"T2", status:"warning", plan:"DSP", sentiment:"neutral", tickets:{open:3,resolved:2}, upsell:null },
-  { id:5, name:"OptiDigital", tradingName:"Opti Digital SAS", vertical:"Ad Tech", rev:[1538,1505,1348,1447,1280,1193], adReqs:[0.5,0.5,0.4,0.5,0.4,0.4], cost:[78,76,68,73,64,60], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:0,resolved:1}, upsell:null },
-  { id:6, name:"FlirtVentures", tradingName:"Flirt Ventures B.V.", vertical:"Dating", rev:[1100,1050,980,1020,1045,1070], adReqs:[0.4,0.4,0.3,0.3,0.4,0.4], cost:[99,95,88,92,94,96], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:0,resolved:2}, upsell:"CDN Video add-on" },
-  { id:7, name:"Topple", tradingName:"Topple Media", vertical:"Media Buying", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"neutral", tickets:{open:1,resolved:1}, upsell:null },
-  { id:8, name:"PlayaMedia", tradingName:"Playa Media S.L.", vertical:"Media Buying", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[70,68,65,67,66,62], tier:"T3", status:"declining", plan:"Ad Serving", sentiment:"unhappy", tickets:{open:2,resolved:6}, upsell:null },
-  { id:9, name:"Expandi Group", tradingName:"Expandi Group B.V. / TrafficHunt", vertical:"Ad Tech", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[195,180,135,138,115,105], tier:"T2", status:"critical", plan:"Ad Serving", sentiment:"very_unhappy", tickets:{open:4,resolved:8}, upsell:null },
-  { id:10, name:"CargoMedia", tradingName:"Cargo Media AG", vertical:"Dating", rev:[1000,1000,1000,1000,1000,1000], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[45,45,45,45,45,45], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:0,resolved:0}, upsell:"Pro plan upgrade" },
-  { id:11, name:"Adsomnia", vertical:"Ad Tech", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[82,110,88,84,92,95], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:1,resolved:3}, upsell:null },
-  { id:12, name:"Vrume", tradingName:"Vrume Ltd", vertical:"Gaming", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[52,48,51,49,51,48], tier:"T3", status:"active", plan:"DSP", sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Ad Serving bundle" },
-  { id:13, name:"Digital East", tradingName:"Digital East GmbH", vertical:"Media Buying", rev:[320,340,310,290,305,295], adReqs:[0.1,0.1,0.1,0.1,0.1,0.1], cost:[38,41,37,35,37,35], tier:"T3", status:"active", plan:"Ad Serving", sentiment:"happy", tickets:{open:0,resolved:0}, upsell:null },
-  { id:14, name:"PTP Media", tradingName:"PTP Media Ltd", vertical:"Performance Marketing", rev:[1800,1750,1690,1720,1680,1650], adReqs:[0.6,0.6,0.6,0.6,0.6,0.6], cost:[108,105,101,103,101,99], tier:"T2", status:"active", plan:"Ad Serving", sentiment:"neutral", tickets:{open:1,resolved:4}, upsell:"DSP migration" },
-  { id:15, name:"Chillipepper", tradingName:"Chillipepper Media", vertical:"Ad Tech", rev:[0,0,0,0,150,380], adReqs:[0,0,0,0,0.1,0.1], cost:[0,0,0,0,18,46], tier:"New", status:"onboarding", plan:"DSP", sentiment:"neutral", tickets:{open:1,resolved:0}, upsell:null },
-  { id:16, name:"CF Media", vertical:"Ad Tech", rev:[0,0,0,0,0,220], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,24], tier:"New", status:"onboarding", plan:"DSP", sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
-  { id:17, name:"Bank Midia", tradingName:"Bank Midia Ltda", vertical:"Media Buying", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,22,42,58], tier:"New", status:"onboarding", plan:"Ad Serving", sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"CDN Video add-on" },
-  { id:18, name:"Caribou Media", vertical:"Gaming", rev:[0,0,0,0,0,175], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,19], tier:"New", status:"onboarding", plan:"DSP", sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
-  { id:19, name:"Top Solutions", tradingName:"Top Solutions S.R.L.", vertical:"Media Buying", rev:[0,0,0,0,100,280], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,12,34], tier:"New", status:"onboarding", plan:"DSP", sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:1, name:"Adsession", tradingName:"Adsession BV", vertical:"Ad Tech", rev:[12162,12024,13101,11927,14718,16941], adReqs:[4.2,4.1,4.5,4.1,5.0,5.8], cost:[410,395,440,390,510,580], tier:"T1", status:"active", pricing:"Ad Serving", plan:"Enterprise", sentiment:"very_happy", tickets:{open:0,resolved:5}, upsell:null },
+  { id:2, name:"Crakmedia", tradingName:"Crak Revenue / Crakmedia Inc.", vertical:"Performance Marketing", rev:[0,0,0,5280,8940,12526], adReqs:[0,0,0,1.8,3.1,4.3], cost:[0,0,0,290,530,820], tier:"T1", status:"active", pricing:"Ad Serving", plan:"Business", sentiment:"happy", tickets:{open:1,resolved:3}, upsell:"DSP migration" },
+  { id:3, name:"DatingLeads", tradingName:"Dating Leads Ltd", vertical:"Dating", rev:[3785,4114,3887,3084,3144,7320], adReqs:[1.3,1.4,1.3,1.1,1.1,2.5], cost:[340,380,350,285,290,680], tier:"T2", status:"active", pricing:"Ad Serving", plan:"Pro", sentiment:"happy", tickets:{open:2,resolved:4}, upsell:"Enterprise plan upgrade" },
+  { id:4, name:"ValueMedia", tradingName:"Value Media GmbH", vertical:"Media Buying", rev:[1429,1594,2181,2263,1443,1213], adReqs:[0.9,1.0,1.3,1.4,1.2,1.1], cost:[155,178,262,275,170,142], tier:"T2", status:"warning", pricing:"DSP", plan:"Pro", sentiment:"neutral", tickets:{open:3,resolved:2}, upsell:null },
+  { id:5, name:"OptiDigital", tradingName:"Opti Digital SAS", vertical:"Ad Tech", rev:[1538,1505,1348,1447,1280,1193], adReqs:[0.5,0.5,0.4,0.5,0.4,0.4], cost:[78,76,68,73,64,60], tier:"T3", status:"active", pricing:"Ad Serving", plan:"Core", sentiment:"happy", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
+  { id:6, name:"FlirtVentures", tradingName:"Flirt Ventures B.V.", vertical:"Dating", rev:[1100,1050,980,1020,1045,1070], adReqs:[0.4,0.4,0.3,0.3,0.4,0.4], cost:[99,95,88,92,94,96], tier:"T3", status:"active", pricing:"Ad Serving", plan:"Core", sentiment:"happy", tickets:{open:0,resolved:2}, upsell:"Pro plan upgrade" },
+  { id:7, name:"Topple", tradingName:"Topple Media", vertical:"Media Buying", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", pricing:"Ad Serving", plan:"Core", sentiment:"neutral", tickets:{open:1,resolved:1}, upsell:null },
+  { id:8, name:"PlayaMedia", tradingName:"Playa Media S.L.", vertical:"Media Buying", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[70,68,65,67,66,62], tier:"T3", status:"declining", pricing:"Ad Serving", plan:"Core", sentiment:"unhappy", tickets:{open:2,resolved:6}, upsell:null },
+  { id:9, name:"Expandi Group", tradingName:"Expandi Group B.V. / TrafficHunt", vertical:"Ad Tech", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[195,180,135,138,115,105], tier:"T2", status:"critical", pricing:"Ad Serving", plan:"Business", sentiment:"very_unhappy", tickets:{open:4,resolved:8}, upsell:null },
+  { id:10, name:"CargoMedia", tradingName:"Cargo Media AG", vertical:"Dating", rev:[1000,1000,1000,1000,1000,1000], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[45,45,45,45,45,45], tier:"T3", status:"active", pricing:"Ad Serving", plan:"Core", sentiment:"happy", tickets:{open:0,resolved:0}, upsell:"Pro plan upgrade" },
+  { id:11, name:"Adsomnia", vertical:"Ad Tech", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[82,110,88,84,92,95], tier:"T3", status:"active", pricing:"Ad Serving", plan:"Core", sentiment:"happy", tickets:{open:1,resolved:3}, upsell:null },
+  { id:12, name:"Vrume", tradingName:"Vrume Ltd", vertical:"Gaming", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[52,48,51,49,51,48], tier:"T3", status:"active", pricing:"DSP", plan:"Core", sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Ad Serving migration" },
+  { id:13, name:"Digital East", tradingName:"Digital East GmbH", vertical:"Media Buying", rev:[320,340,310,290,305,295], adReqs:[0.1,0.1,0.1,0.1,0.1,0.1], cost:[38,41,37,35,37,35], tier:"T3", status:"active", pricing:"Ad Serving", plan:"Core", sentiment:"happy", tickets:{open:0,resolved:0}, upsell:null },
+  { id:14, name:"PTP Media", tradingName:"PTP Media Ltd", vertical:"Performance Marketing", rev:[1800,1750,1690,1720,1680,1650], adReqs:[0.6,0.6,0.6,0.6,0.6,0.6], cost:[108,105,101,103,101,99], tier:"T2", status:"active", pricing:"Ad Serving", plan:"Pro", sentiment:"neutral", tickets:{open:1,resolved:4}, upsell:"DSP migration" },
+  { id:15, name:"Chillipepper", tradingName:"Chillipepper Media", vertical:"Ad Tech", rev:[0,0,0,0,150,380], adReqs:[0,0,0,0,0.1,0.1], cost:[0,0,0,0,18,46], tier:"New", status:"onboarding", pricing:"DSP", plan:"Core", sentiment:"neutral", tickets:{open:1,resolved:0}, upsell:null },
+  { id:16, name:"CF Media", vertical:"Ad Tech", rev:[0,0,0,0,0,220], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,24], tier:"New", status:"onboarding", pricing:"DSP", plan:"Core", sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:17, name:"Bank Midia", tradingName:"Bank Midia Ltda", vertical:"Media Buying", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,22,42,58], tier:"New", status:"onboarding", pricing:"Ad Serving", plan:"Core", sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
+  { id:18, name:"Caribou Media", vertical:"Gaming", rev:[0,0,0,0,0,175], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,19], tier:"New", status:"onboarding", pricing:"DSP", plan:"Core", sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:19, name:"Top Solutions", tradingName:"Top Solutions S.R.L.", vertical:"Media Buying", rev:[0,0,0,0,100,280], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,12,34], tier:"New", status:"onboarding", pricing:"DSP", plan:"Core", sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
 ];
 
 const MONTHS_LABELS = ["Aug","Sep","Oct","Nov","Dec","Jan"];
@@ -359,7 +361,8 @@ export default function Dashboard() {
   const [view, setView] = useState("overview");
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
   const [alertFilter, setAlertFilter] = useState("all");
-  const [clientOverrides, setClientOverrides] = useState<Record<number, { sentiment?: Sentiment; plan?: Plan }>>({});
+  const [clientOverrides, setClientOverrides] = useState<Record<number, { sentiment?: Sentiment; pricing?: Pricing; plan?: ClientPlan }>>({});
+  const [editingPlan, setEditingPlan] = useState<number | null>(null);
   const [clientTab, setClientTab] = useState<"all" | "new">("all");
 
   const alerts = useMemo(() => generateAlerts(CLIENTS), []);
@@ -443,9 +446,9 @@ export default function Dashboard() {
   const top3Rev = sortedByRev.slice(0, 3).reduce((s, c) => s + c.rev[c.rev.length-1], 0);
   const top3Pct = ((top3Rev / totalMRR) * 100).toFixed(1);
 
-  // Plan split
-  const adServingRev = CLIENTS.filter(c => c.plan === "Ad Serving").reduce((s, c) => s + c.rev[c.rev.length-1], 0);
-  const dspRev = CLIENTS.filter(c => c.plan === "DSP").reduce((s, c) => s + c.rev[c.rev.length-1], 0);
+  // Pricing split
+  const adServingRev = CLIENTS.filter(c => c.pricing === "Ad Serving").reduce((s, c) => s + c.rev[c.rev.length-1], 0);
+  const dspRev = CLIENTS.filter(c => c.pricing === "DSP").reduce((s, c) => s + c.rev[c.rev.length-1], 0);
 
   const pieData = [
     { name: "Ad Serving", value: adServingRev, color: "#06b6d4" },
@@ -455,7 +458,8 @@ export default function Dashboard() {
   // Client detail
   const detail = selectedClient ? CLIENTS.find(c => c.id === selectedClient) : null;
   const detailSentiment = detail ? (clientOverrides[detail.id]?.sentiment ?? detail.sentiment) : "neutral";
-  const detailPlan = detail ? (clientOverrides[detail.id]?.plan ?? detail.plan) : "Ad Serving";
+  const detailPricing = detail ? (clientOverrides[detail.id]?.pricing ?? detail.pricing) : "Ad Serving";
+  const detailPlan = detail ? (clientOverrides[detail.id]?.plan ?? detail.plan) : "Core";
 
   // Invoice generation
   function openInvoice(client: Client) {
@@ -536,7 +540,7 @@ export default function Dashboard() {
       </div>
       <div class="inv-details">
         <div><strong>Bill To:</strong><br>${client.name}${client.tradingName ? `<br><span style="color:#64748b">${client.tradingName}</span>` : ""}<br>Client ID: ${client.id}</div>
-        <div style="text-align:right"><strong>Invoice Date:</strong> 31/01/2026<br><strong>Due Date:</strong> 15/02/2026<br><strong>Currency:</strong> EUR<br><strong>Plan:</strong> ${detailPlan}</div>
+        <div style="text-align:right"><strong>Invoice Date:</strong> 31/01/2026<br><strong>Due Date:</strong> 15/02/2026<br><strong>Currency:</strong> EUR<br><strong>Pricing:</strong> ${detailPricing}</div>
       </div>
       <table>
         <thead><tr><th>Description</th><th style="text-align:right">Quantity</th><th style="text-align:right">Unit Price</th><th style="text-align:right">Discount</th><th style="text-align:right">Amount</th></tr></thead>
@@ -837,7 +841,7 @@ export default function Dashboard() {
               {/* Revenue Split + KPIs + Pipeline Summary */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                  <div className="text-sm font-semibold text-slate-300 mb-2">Revenue by Plan</div>
+                  <div className="text-sm font-semibold text-slate-300 mb-2">Revenue by Pricing</div>
                   <ResponsiveContainer width="100%" height={160}>
                     <PieChart>
                       <Pie data={pieData} cx="50%" cy="50%" innerRadius={35} outerRadius={60} dataKey="value" paddingAngle={3}>
@@ -1048,19 +1052,19 @@ export default function Dashboard() {
                       </div>
                     </div>
 
-                    {/* Plan toggle */}
+                    {/* Pricing toggle (Ad Serving / DSP) */}
                     <div className="mb-4">
-                      <div className="text-xs text-slate-500 font-medium mb-2">Plan</div>
+                      <div className="text-xs text-slate-500 font-medium mb-2">Pricing</div>
                       <div className="flex rounded-lg overflow-hidden border border-slate-700/50">
                         {(["Ad Serving", "DSP"] as const).map(p => (
                           <button
                             key={p}
                             onClick={() => setClientOverrides(prev => ({
                               ...prev,
-                              [detail.id]: { ...prev[detail.id], plan: p }
+                              [detail.id]: { ...prev[detail.id], pricing: p }
                             }))}
                             className={`flex-1 py-1.5 text-xs font-medium transition-colors ${
-                              detailPlan === p
+                              detailPricing === p
                                 ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/40"
                                 : "bg-slate-800/40 text-slate-500 hover:text-slate-300"
                             }`}
@@ -1069,6 +1073,51 @@ export default function Dashboard() {
                           </button>
                         ))}
                       </div>
+                    </div>
+
+                    {/* Plan (Enterprise > Business > Pro > Core) */}
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-xs text-slate-500 font-medium">Plan</div>
+                        <button
+                          onClick={() => setEditingPlan(editingPlan === detail.id ? null : detail.id)}
+                          className="text-[10px] text-cyan-400 hover:text-cyan-300 transition-colors"
+                        >
+                          {editingPlan === detail.id ? "Done" : "Edit"}
+                        </button>
+                      </div>
+                      {editingPlan === detail.id ? (
+                        <div className="grid grid-cols-2 gap-1.5">
+                          {(["Enterprise", "Business", "Pro", "Core"] as const).map(p => (
+                            <button
+                              key={p}
+                              onClick={() => {
+                                setClientOverrides(prev => ({
+                                  ...prev,
+                                  [detail.id]: { ...prev[detail.id], plan: p }
+                                }));
+                                setEditingPlan(null);
+                              }}
+                              className={`py-1.5 text-xs font-medium rounded-lg transition-colors border ${
+                                detailPlan === p
+                                  ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/40"
+                                  : "bg-slate-800/40 text-slate-500 hover:text-slate-300 border-slate-700/50"
+                              }`}
+                            >
+                              {p}
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="bg-slate-900/50 rounded-lg px-3 py-2 flex items-center justify-between">
+                          <span className="text-xs text-slate-200 font-medium">{detailPlan}</span>
+                          {detailPlan !== "Enterprise" && (
+                            <span className="text-[10px] text-purple-400">
+                              {"\u2191"} {detailPlan === "Core" ? "Pro" : detailPlan === "Pro" ? "Business" : "Enterprise"} available
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* Key metrics */}
@@ -1164,12 +1213,9 @@ export default function Dashboard() {
 
                     {/* Actions: Invoice + Odoo */}
                     <div className="mt-4 space-y-2">
-                      <button
-                        onClick={() => openInvoice(detail)}
-                        className="w-full py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-xs font-medium text-cyan-400 hover:bg-cyan-500/20 transition-colors"
-                      >
-                        View Invoice {"\u2192"}
-                      </button>
+                      <div className="w-full py-2 bg-slate-900/50 border border-slate-700/30 rounded-lg text-xs font-medium text-slate-300 text-center">
+                        Latest Invoice
+                      </div>
                       <div className="text-xs text-slate-500 font-medium mt-3 mb-1.5">Finance</div>
                       <div className="flex gap-2">
                         <a
