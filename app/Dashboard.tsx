@@ -1115,7 +1115,7 @@ export default function Dashboard() {
               : clientTab === "testing"
               ? sortedByRev.filter(c => c.status === "testing")
               : sortedByRev;
-            return (
+            return (<>
             <div key="clients-tab" className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <div className="lg:col-span-2 bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl overflow-hidden backdrop-blur-xl">
                 <div className="px-4 py-3 border-b border-slate-700/30 flex items-center justify-between">
@@ -1419,7 +1419,7 @@ export default function Dashboard() {
                 })}
               </div>
             </div>
-          );})()}
+          </>);})()}
 
           {/* ═══════ PIPELINES TAB ═══════ */}
           {view === "pipelines" && (
