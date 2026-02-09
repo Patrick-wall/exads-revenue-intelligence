@@ -107,12 +107,12 @@ const HUBSPOT_TICKETS = { open: 12, pending: 5, resolved: 34 };
 
 // Network-wide revenue (illustrative — all EXADS network traffic, not just managed clients)
 const NETWORK_REVENUE = [
-  { month: "Aug", total: 185000, adServing: 142000, dsp: 43000 },
-  { month: "Sep", total: 192000, adServing: 146000, dsp: 46000 },
-  { month: "Oct", total: 198000, adServing: 149000, dsp: 49000 },
-  { month: "Nov", total: 189000, adServing: 140000, dsp: 49000 },
-  { month: "Dec", total: 204000, adServing: 152000, dsp: 52000 },
-  { month: "Jan", total: 211000, adServing: 156000, dsp: 55000 },
+  { month: "Aug", total: 2850000, adServing: 2140000, dsp: 710000 },
+  { month: "Sep", total: 2920000, adServing: 2160000, dsp: 760000 },
+  { month: "Oct", total: 3080000, adServing: 2280000, dsp: 800000 },
+  { month: "Nov", total: 2940000, adServing: 2150000, dsp: 790000 },
+  { month: "Dec", total: 3210000, adServing: 2350000, dsp: 860000 },
+  { month: "Jan", total: 3340000, adServing: 2420000, dsp: 920000 },
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -732,10 +732,7 @@ export default function Dashboard() {
                     <div className="text-sm font-semibold text-slate-300">Network Revenue (All EXADS)</div>
                     <span className="text-[10px] bg-slate-700/50 text-slate-400 px-2 py-0.5 rounded-full">Platform-wide</span>
                   </div>
-                  <div className="flex items-center gap-4 text-xs">
-                    <span className="text-slate-400">This month: <span className="text-white font-bold tabular-nums">{"\u20AC"}{NETWORK_REVENUE[NETWORK_REVENUE.length-1].total.toLocaleString()}</span></span>
-                    <span className="text-slate-500">Your clients: <span className="text-cyan-400 font-bold tabular-nums">{((totalMRR / NETWORK_REVENUE[NETWORK_REVENUE.length-1].total) * 100).toFixed(1)}%</span> of network</span>
-                  </div>
+                  <div className="text-xs text-slate-400">This month: <span className="text-white font-bold tabular-nums">{"\u20AC"}{NETWORK_REVENUE[NETWORK_REVENUE.length-1].total.toLocaleString()}</span></div>
                 </div>
                 <ResponsiveContainer width="100%" height={220}>
                   <AreaChart data={NETWORK_REVENUE}>
