@@ -105,6 +105,16 @@ const MRR_TARGET = 100000;
 const PIPELINE = { qualified: 8, proposal: 3, negotiation: 2, closed: 1, qualifiedVal: 18400, proposalVal: 9200, negotiationVal: 7600, closedVal: 3800 };
 const HUBSPOT_TICKETS = { open: 12, pending: 5, resolved: 34 };
 
+// Network-wide revenue (illustrative — all EXADS network traffic, not just managed clients)
+const NETWORK_REVENUE = [
+  { month: "Aug", total: 185000, adServing: 142000, dsp: 43000 },
+  { month: "Sep", total: 192000, adServing: 146000, dsp: 46000 },
+  { month: "Oct", total: 198000, adServing: 149000, dsp: 49000 },
+  { month: "Nov", total: 189000, adServing: 140000, dsp: 49000 },
+  { month: "Dec", total: 204000, adServing: 152000, dsp: 52000 },
+  { month: "Jan", total: 211000, adServing: 156000, dsp: 55000 },
+];
+
 // ═══════════════════════════════════════════════════════════════
 // ALERT ENGINE
 // ═══════════════════════════════════════════════════════════════
@@ -713,6 +723,35 @@ export default function Dashboard() {
                     <div className="text-lg font-bold text-amber-400 tabular-nums">{"\u20AC"}{(MRR_TARGET - totalMRR).toLocaleString()}</div>
                   </div>
                 </div>
+              </div>
+
+              {/* Network Revenue */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="text-sm font-semibold text-slate-300">Network Revenue (All EXADS)</div>
+                    <span className="text-[10px] bg-slate-700/50 text-slate-400 px-2 py-0.5 rounded-full">Platform-wide</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs">
+                    <span className="text-slate-400">This month: <span className="text-white font-bold tabular-nums">{"\u20AC"}{NETWORK_REVENUE[NETWORK_REVENUE.length-1].total.toLocaleString()}</span></span>
+                    <span className="text-slate-500">Your clients: <span className="text-cyan-400 font-bold tabular-nums">{((totalMRR / NETWORK_REVENUE[NETWORK_REVENUE.length-1].total) * 100).toFixed(1)}%</span> of network</span>
+                  </div>
+                </div>
+                <ResponsiveContainer width="100%" height={220}>
+                  <AreaChart data={NETWORK_REVENUE}>
+                    <defs>
+                      <linearGradient id="gNet1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#06b6d4" stopOpacity={0.25}/><stop offset="100%" stopColor="#06b6d4" stopOpacity={0}/></linearGradient>
+                      <linearGradient id="gNet2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.25}/><stop offset="100%" stopColor="#8b5cf6" stopOpacity={0}/></linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                    <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${v.toLocaleString()}`, ""]} />
+                    <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
+                    <Area type="monotone" dataKey="adServing" stackId="1" stroke="#06b6d4" fill="url(#gNet1)" strokeWidth={2} name="Ad Serving" />
+                    <Area type="monotone" dataKey="dsp" stackId="1" stroke="#8b5cf6" fill="url(#gNet2)" strokeWidth={2} name="DSP" />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
 
               {/* Quick Client Table */}
