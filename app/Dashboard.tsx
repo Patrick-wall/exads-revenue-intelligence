@@ -365,6 +365,7 @@ export default function Dashboard() {
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
   const [alertFilter, setAlertFilter] = useState("all");
   const [clientOverrides, setClientOverrides] = useState<Record<number, { sentiment?: Sentiment; pricing?: Pricing; plan?: ClientPlan }>>({});
+  const [editingPricing, setEditingPricing] = useState<number | null>(null);
   const [editingPlan, setEditingPlan] = useState<number | null>(null);
   const [clientTab, setClientTab] = useState<"all" | "new">("all");
 
@@ -1063,27 +1064,44 @@ export default function Dashboard() {
                       </div>
                     </div>
 
-                    {/* Pricing toggle (Ad Serving / DSP) */}
+                    {/* Pricing (Ad Serving / DSP) — edit to change */}
                     <div className="mb-4">
-                      <div className="text-xs text-slate-500 font-medium mb-2">Pricing</div>
-                      <div className="flex rounded-lg overflow-hidden border border-slate-700/50">
-                        {(["Ad Serving", "DSP"] as const).map(p => (
-                          <button
-                            key={p}
-                            onClick={() => setClientOverrides(prev => ({
-                              ...prev,
-                              [detail.id]: { ...prev[detail.id], pricing: p }
-                            }))}
-                            className={`flex-1 py-1.5 text-xs font-medium transition-colors ${
-                              detailPricing === p
-                                ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/40"
-                                : "bg-slate-800/40 text-slate-500 hover:text-slate-300"
-                            }`}
-                          >
-                            {p}
-                          </button>
-                        ))}
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-xs text-slate-500 font-medium">Pricing</div>
+                        <button
+                          onClick={() => setEditingPricing(editingPricing === detail.id ? null : detail.id)}
+                          className="text-[10px] text-cyan-400 hover:text-cyan-300 transition-colors"
+                        >
+                          {editingPricing === detail.id ? "Done" : "Edit"}
+                        </button>
                       </div>
+                      {editingPricing === detail.id ? (
+                        <div className="flex rounded-lg overflow-hidden border border-slate-700/50">
+                          {(["Ad Serving", "DSP"] as const).map(p => (
+                            <button
+                              key={p}
+                              onClick={() => {
+                                setClientOverrides(prev => ({
+                                  ...prev,
+                                  [detail.id]: { ...prev[detail.id], pricing: p }
+                                }));
+                                setEditingPricing(null);
+                              }}
+                              className={`flex-1 py-1.5 text-xs font-medium transition-colors ${
+                                detailPricing === p
+                                  ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/40"
+                                  : "bg-slate-800/40 text-slate-500 hover:text-slate-300"
+                              }`}
+                            >
+                              {p}
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="bg-slate-900/50 rounded-lg px-3 py-2">
+                          <span className="text-xs text-slate-200 font-medium">{detailPricing}</span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Plan (Enterprise > Business > Pro > Core) */}
