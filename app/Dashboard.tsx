@@ -1039,7 +1039,7 @@ export default function Dashboard() {
               </div>
 
               {/* Client Detail */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl overflow-y-auto max-h-[calc(100vh-80px)] sticky top-4">
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
                 {detail ? (
                   <div>
                     {/* Header */}
