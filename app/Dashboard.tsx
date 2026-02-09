@@ -155,7 +155,7 @@ function generateAlerts(clients: Client[]): Alert[] {
     if ((c.status === "testing" || c.status === "onboarding") && curr === 0 && a.some(v => v > 0)) {
       const activeMonths = a.filter(v => v > 0).length;
       alerts.push({
-        severity: "positive",
+        severity: "warning",
         client: c.name,
         title: activeMonths >= 2 ? "Move to billing — significant activity detected" : "Testing activity detected — monitor for billing",
         detail: `${activeMonths} month${activeMonths > 1 ? "s" : ""} of ad request activity (${a[a.length-1].toFixed(2)}B this month). No revenue billed yet. Platform: ${c.pricing.join(" + ")}, plan: ${c.pricing.map(p => c.plans[p] || "Core").join(" / ")}.`,
@@ -761,30 +761,32 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Network Revenue */}
+              {/* Clients by Vertical */}
               <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="text-sm font-semibold text-slate-300">Network Revenue (All EXADS)</div>
-                    <span className="text-[10px] bg-slate-700/50 text-slate-400 px-2 py-0.5 rounded-full">Platform-wide</span>
-                  </div>
-                  <div className="text-xs text-slate-400">This month: <span className="text-white font-bold tabular-nums">{"\u20AC"}{NETWORK_REVENUE[NETWORK_REVENUE.length-1].total.toLocaleString()}</span></div>
+                <div className="text-sm font-semibold text-slate-300 mb-3">Clients by Vertical</div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {Object.keys(VERTICAL_ICONS).map(v => {
+                    const allV = CLIENTS.filter(c => c.vertical.includes(v));
+                    const payingV = allV.filter(c => c.rev[c.rev.length-1] > 0);
+                    const vRev = payingV.reduce((s, c) => s + c.rev[c.rev.length-1], 0);
+                    return (
+                      <div key={v} className="bg-slate-900/50 rounded-lg p-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-base">{VERTICAL_ICONS[v]}</span>
+                          <span className="text-xs text-slate-300 font-medium">{v}</span>
+                        </div>
+                        <div className="text-lg font-bold tabular-nums" style={{ color: VERTICAL_COLORS[v] }}>{allV.length} <span className="text-xs font-normal text-slate-500">accounts</span></div>
+                        <div className="flex items-center justify-between mt-1">
+                          <span className="text-[10px] text-slate-500">{payingV.length} paying</span>
+                          <span className="text-[10px] text-slate-500">{"\u20AC"}{vRev.toLocaleString()} MRR</span>
+                        </div>
+                        <div className="h-1.5 bg-slate-800 rounded-full mt-2 overflow-hidden">
+                          <div className="h-full rounded-full" style={{ width: `${allV.length > 0 ? (payingV.length / allV.length * 100) : 0}%`, backgroundColor: VERTICAL_COLORS[v] }} />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-                <ResponsiveContainer width="100%" height={220}>
-                  <AreaChart data={NETWORK_REVENUE}>
-                    <defs>
-                      <linearGradient id="gNet1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#06b6d4" stopOpacity={0.25}/><stop offset="100%" stopColor="#06b6d4" stopOpacity={0}/></linearGradient>
-                      <linearGradient id="gNet2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.25}/><stop offset="100%" stopColor="#8b5cf6" stopOpacity={0}/></linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000000).toFixed(1)}M`} />
-                    <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${(v/1000000).toFixed(2)}M`, ""]} />
-                    <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
-                    <Area type="monotone" dataKey="adServing" stackId="1" stroke="#06b6d4" fill="url(#gNet1)" strokeWidth={2} name="Ad Serving" />
-                    <Area type="monotone" dataKey="dsp" stackId="1" stroke="#8b5cf6" fill="url(#gNet2)" strokeWidth={2} name="DSP" />
-                  </AreaChart>
-                </ResponsiveContainer>
               </div>
 
               {/* Quick Client Table */}
@@ -1042,6 +1044,32 @@ export default function Dashboard() {
                 </ResponsiveContainer>
               </div>
 
+              {/* Network Revenue */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="text-sm font-semibold text-slate-300">Network Revenue (All EXADS)</div>
+                    <span className="text-[10px] bg-slate-700/50 text-slate-400 px-2 py-0.5 rounded-full">Platform-wide</span>
+                  </div>
+                  <div className="text-xs text-slate-400">This month: <span className="text-white font-bold tabular-nums">{"\u20AC"}{NETWORK_REVENUE[NETWORK_REVENUE.length-1].total.toLocaleString()}</span></div>
+                </div>
+                <ResponsiveContainer width="100%" height={220}>
+                  <AreaChart data={NETWORK_REVENUE}>
+                    <defs>
+                      <linearGradient id="gNet1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#06b6d4" stopOpacity={0.25}/><stop offset="100%" stopColor="#06b6d4" stopOpacity={0}/></linearGradient>
+                      <linearGradient id="gNet2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.25}/><stop offset="100%" stopColor="#8b5cf6" stopOpacity={0}/></linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000000).toFixed(1)}M`} />
+                    <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${(v/1000000).toFixed(2)}M`, ""]} />
+                    <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
+                    <Area type="monotone" dataKey="adServing" stackId="1" stroke="#06b6d4" fill="url(#gNet1)" strokeWidth={2} name="Ad Serving" />
+                    <Area type="monotone" dataKey="dsp" stackId="1" stroke="#8b5cf6" fill="url(#gNet2)" strokeWidth={2} name="DSP" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+
               {/* Revenue per Client */}
               {(() => {
                 const CLIENT_COLORS = ["#06b6d4","#8b5cf6","#22c55e","#f59e0b","#ef4444","#ec4899","#14b8a6","#f97316","#6366f1","#84cc16","#a855f7","#0ea5e9","#e879f9","#facc15","#fb923c","#4ade80"];
@@ -1115,7 +1143,7 @@ export default function Dashboard() {
               : clientTab === "testing"
               ? sortedByRev.filter(c => c.status === "testing")
               : sortedByRev;
-            return (<>
+            return (
             <div key="clients-tab" className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <div className="lg:col-span-2 bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl overflow-hidden backdrop-blur-xl">
                 <div className="px-4 py-3 border-b border-slate-700/30 flex items-center justify-between">
@@ -1391,35 +1419,7 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-
-            {/* Clients by Vertical */}
-            <div className="mt-4 bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-              <div className="text-sm font-semibold text-slate-300 mb-3">Clients by Vertical</div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {Object.keys(VERTICAL_ICONS).map(v => {
-                  const allV = CLIENTS.filter(c => c.vertical.includes(v));
-                  const payingV = allV.filter(c => c.rev[c.rev.length-1] > 0);
-                  const vRev = payingV.reduce((s, c) => s + c.rev[c.rev.length-1], 0);
-                  return (
-                    <div key={v} className="bg-slate-900/50 rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-base">{VERTICAL_ICONS[v]}</span>
-                        <span className="text-xs text-slate-300 font-medium">{v}</span>
-                      </div>
-                      <div className="text-lg font-bold tabular-nums" style={{ color: VERTICAL_COLORS[v] }}>{allV.length} <span className="text-xs font-normal text-slate-500">accounts</span></div>
-                      <div className="flex items-center justify-between mt-1">
-                        <span className="text-[10px] text-slate-500">{payingV.length} paying</span>
-                        <span className="text-[10px] text-slate-500">{"\u20AC"}{vRev.toLocaleString()} MRR</span>
-                      </div>
-                      <div className="h-1.5 bg-slate-800 rounded-full mt-2 overflow-hidden">
-                        <div className="h-full rounded-full" style={{ width: `${allV.length > 0 ? (payingV.length / allV.length * 100) : 0}%`, backgroundColor: VERTICAL_COLORS[v] }} />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </>);})()}
+          );})()}
 
           {/* ═══════ PIPELINES TAB ═══════ */}
           {view === "pipelines" && (
