@@ -55,25 +55,25 @@ interface AlertCardProps {
 // MOCK DATA — In production, all from EXADS API + HubSpot
 // ═══════════════════════════════════════════════════════════════
 const CLIENTS: Client[] = [
-  { id:1, name:"Adsession", rev:[12162,12024,13101,11927,14718,16941], adReqs:[4.2,4.1,4.5,4.1,5.0,5.8], cost:[890,875,960,870,1080,1240], tier:"T1", status:"active", plan:"Ad Serving" },
-  { id:2, name:"Crakmedia", rev:[0,0,0,5280,8940,12526], adReqs:[0,0,0,1.8,3.1,4.3], cost:[0,0,0,385,650,910], tier:"T1", status:"active", plan:"Ad Serving" },
-  { id:3, name:"DatingLeads", rev:[3785,4114,3887,3084,3144,7320], adReqs:[1.3,1.4,1.3,1.1,1.1,2.5], cost:[275,300,282,224,228,532], tier:"T2", status:"active", plan:"Ad Serving" },
-  { id:4, name:"ValueMedia", rev:[1429,1594,2181,2263,1443,1213], adReqs:[0.9,1.0,1.3,1.4,1.2,1.1], cost:[104,116,159,165,105,88], tier:"T2", status:"warning", plan:"DSP" },
-  { id:5, name:"OptiDigital", rev:[1538,1505,1348,1447,1280,1193], adReqs:[0.5,0.5,0.4,0.5,0.4,0.4], cost:[112,110,98,105,93,87], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:6, name:"FlirtVentures", rev:[1100,1050,980,1020,1045,1070], adReqs:[0.4,0.4,0.3,0.3,0.4,0.4], cost:[80,77,71,74,76,78], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:7, name:"Topple", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[64,64,62,64,63,62], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:8, name:"PlayaMedia", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[47,45,42,44,43,40], tier:"T3", status:"declining", plan:"Ad Serving" },
-  { id:9, name:"Expandi Group", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[276,252,186,187,153,138], tier:"T2", status:"critical", plan:"Ad Serving" },
-  { id:10, name:"CargoMedia", rev:[1000,1000,1000,1000,1000,1000], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[73,73,73,73,73,73], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:11, name:"Adsomnia", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[57,73,60,58,62,63], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:12, name:"Vrume", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[38,35,37,36,37,35], tier:"T3", status:"active", plan:"DSP" },
-  { id:13, name:"Digital East", rev:[320,340,310,290,305,295], adReqs:[0.1,0.1,0.1,0.1,0.1,0.1], cost:[23,25,23,21,22,21], tier:"T3", status:"active", plan:"Ad Serving" },
-  { id:14, name:"PTP Media", rev:[1800,1750,1690,1720,1680,1650], adReqs:[0.6,0.6,0.6,0.6,0.6,0.6], cost:[131,128,123,125,122,120], tier:"T2", status:"active", plan:"Ad Serving" },
-  { id:15, name:"Chillipepper", rev:[0,0,0,0,150,380], adReqs:[0,0,0,0,0.1,0.1], cost:[0,0,0,0,11,28], tier:"New", status:"onboarding", plan:"DSP" },
-  { id:16, name:"CF Media", rev:[0,0,0,0,0,220], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,16], tier:"New", status:"onboarding", plan:"DSP" },
-  { id:17, name:"Bank Midia", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,15,26,35], tier:"New", status:"onboarding", plan:"Ad Serving" },
-  { id:18, name:"Caribou Media", rev:[0,0,0,0,0,175], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,13], tier:"New", status:"onboarding", plan:"DSP" },
-  { id:19, name:"Top Solutions", rev:[0,0,0,0,100,280], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,7,20], tier:"New", status:"onboarding", plan:"DSP" },
+  { id:1, name:"Adsession", rev:[12162,12024,13101,11927,14718,16941], adReqs:[4.2,4.1,4.5,4.1,5.0,5.8], cost:[410,395,440,390,510,580], tier:"T1", status:"active", plan:"Ad Serving" },
+  { id:2, name:"Crakmedia", rev:[0,0,0,5280,8940,12526], adReqs:[0,0,0,1.8,3.1,4.3], cost:[0,0,0,290,530,820], tier:"T1", status:"active", plan:"Ad Serving" },
+  { id:3, name:"DatingLeads", rev:[3785,4114,3887,3084,3144,7320], adReqs:[1.3,1.4,1.3,1.1,1.1,2.5], cost:[340,380,350,285,290,680], tier:"T2", status:"active", plan:"Ad Serving" },
+  { id:4, name:"ValueMedia", rev:[1429,1594,2181,2263,1443,1213], adReqs:[0.9,1.0,1.3,1.4,1.2,1.1], cost:[155,178,262,275,170,142], tier:"T2", status:"warning", plan:"DSP" },
+  { id:5, name:"OptiDigital", rev:[1538,1505,1348,1447,1280,1193], adReqs:[0.5,0.5,0.4,0.5,0.4,0.4], cost:[78,76,68,73,64,60], tier:"T3", status:"active", plan:"Ad Serving" },
+  { id:6, name:"FlirtVentures", rev:[1100,1050,980,1020,1045,1070], adReqs:[0.4,0.4,0.3,0.3,0.4,0.4], cost:[99,95,88,92,94,96], tier:"T3", status:"active", plan:"Ad Serving" },
+  { id:7, name:"Topple", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", plan:"Ad Serving" },
+  { id:8, name:"PlayaMedia", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[70,68,65,67,66,62], tier:"T3", status:"declining", plan:"Ad Serving" },
+  { id:9, name:"Expandi Group", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[195,180,135,138,115,105], tier:"T2", status:"critical", plan:"Ad Serving" },
+  { id:10, name:"CargoMedia", rev:[1000,1000,1000,1000,1000,1000], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[45,45,45,45,45,45], tier:"T3", status:"active", plan:"Ad Serving" },
+  { id:11, name:"Adsomnia", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[82,110,88,84,92,95], tier:"T3", status:"active", plan:"Ad Serving" },
+  { id:12, name:"Vrume", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[52,48,51,49,51,48], tier:"T3", status:"active", plan:"DSP" },
+  { id:13, name:"Digital East", rev:[320,340,310,290,305,295], adReqs:[0.1,0.1,0.1,0.1,0.1,0.1], cost:[38,41,37,35,37,35], tier:"T3", status:"active", plan:"Ad Serving" },
+  { id:14, name:"PTP Media", rev:[1800,1750,1690,1720,1680,1650], adReqs:[0.6,0.6,0.6,0.6,0.6,0.6], cost:[108,105,101,103,101,99], tier:"T2", status:"active", plan:"Ad Serving" },
+  { id:15, name:"Chillipepper", rev:[0,0,0,0,150,380], adReqs:[0,0,0,0,0.1,0.1], cost:[0,0,0,0,18,46], tier:"New", status:"onboarding", plan:"DSP" },
+  { id:16, name:"CF Media", rev:[0,0,0,0,0,220], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,24], tier:"New", status:"onboarding", plan:"DSP" },
+  { id:17, name:"Bank Midia", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,22,42,58], tier:"New", status:"onboarding", plan:"Ad Serving" },
+  { id:18, name:"Caribou Media", rev:[0,0,0,0,0,175], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,0,19], tier:"New", status:"onboarding", plan:"DSP" },
+  { id:19, name:"Top Solutions", rev:[0,0,0,0,100,280], adReqs:[0,0,0,0,0,0.1], cost:[0,0,0,0,12,34], tier:"New", status:"onboarding", plan:"DSP" },
 ];
 
 const MONTHS_LABELS = ["Aug","Sep","Oct","Nov","Dec","Jan"];
@@ -298,9 +298,10 @@ export default function Dashboard() {
 
   const navItems = [
     { id: "overview", label: "Overview", icon: "\u25C9" },
+    { id: "sales", label: "Sales", icon: "\u25B2" },
     { id: "alerts", label: "Alerts", icon: "\u26A0", count: alerts.filter(a => a.severity === "critical" || a.severity === "warning").length },
     { id: "clients", label: "Clients", icon: "\u25EB" },
-    { id: "pipeline", label: "Pipeline", icon: "\u25C8" },
+    { id: "pipelines", label: "Pipelines", icon: "\u25C8" },
   ];
 
   return (
@@ -369,83 +370,59 @@ export default function Dashboard() {
                 <StatCard label="Top 3 Share" value={`${top3Pct}%`} sub={sortedByRev.slice(0,3).map(c=>c.name).join(", ")} color={parseFloat(top3Pct) > 65 ? "text-red-400" : "text-cyan-400"} />
               </div>
 
-              {/* MRR vs Target Chart */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="text-sm font-semibold text-slate-300 mb-3">MRR vs Target (Monthly)</div>
-                <ResponsiveContainer width="100%" height={260}>
-                  <BarChart data={MRR_YEARLY_DATA} barGap={2}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
-                    <Tooltip
-                      contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
-                      formatter={(v: number, name: string) => [`\u20AC${v.toLocaleString()}`, name === "actual" ? "Actual" : "Target"]}
-                    />
-                    <Legend
-                      formatter={(value: string) => value === "actual" ? "Actual" : "Target"}
-                      wrapperStyle={{ fontSize: 12, color: "#94a3b8" }}
-                    />
-                    <Bar dataKey="actual" fill="#06b6d4" radius={[3, 3, 0, 0]} name="actual" />
-                    <Bar dataKey="target" fill="#475569" radius={[3, 3, 0, 0]} name="target" opacity={0.6} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                {/* Revenue Chart */}
-                <div className="lg:col-span-2 bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                  <div className="text-sm font-semibold text-slate-300 mb-3">Monthly Revenue by Tier</div>
-                  <ResponsiveContainer width="100%" height={240}>
-                    <AreaChart data={revOverTime}>
-                      <defs>
-                        <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3}/><stop offset="100%" stopColor="#06b6d4" stopOpacity={0}/></linearGradient>
-                        <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.3}/><stop offset="100%" stopColor="#8b5cf6" stopOpacity={0}/></linearGradient>
-                        <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#22c55e" stopOpacity={0.3}/><stop offset="100%" stopColor="#22c55e" stopOpacity={0}/></linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                      <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
-                      <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
-                      <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${v.toLocaleString()}`, ""]} />
-                      <Area type="monotone" dataKey="t1" stackId="1" stroke="#06b6d4" fill="url(#g1)" strokeWidth={2} name="Tier 1" />
-                      <Area type="monotone" dataKey="t2" stackId="1" stroke="#8b5cf6" fill="url(#g2)" strokeWidth={2} name="Tier 2" />
-                      <Area type="monotone" dataKey="t3" stackId="1" stroke="#22c55e" fill="url(#g3)" strokeWidth={2} name="Tier 3 & New" />
-                    </AreaChart>
-                  </ResponsiveContainer>
+                {/* Alerts Summary */}
+                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="text-sm font-semibold text-slate-300">Active Alerts</div>
+                    <button onClick={() => setView("alerts")} className="text-xs text-cyan-400 hover:text-cyan-300">{`View all \u2192`}</button>
+                  </div>
+                  <div className="space-y-1.5">
+                    {alerts.slice(0, 5).map((a, i) => (
+                      <div key={i} className={`flex items-center gap-2 text-xs ${severityConfig[a.severity].text}`}>
+                        <div className={`w-1.5 h-1.5 rounded-full ${severityConfig[a.severity].dot}`} />
+                        <span className="text-slate-300 truncate">{a.client}</span>
+                        <span className="text-slate-500 ml-auto text-xs whitespace-nowrap">{a.severity}</span>
+                      </div>
+                    ))}
+                    {alerts.length > 5 && <div className="text-xs text-slate-500">+{alerts.length - 5} more</div>}
+                  </div>
                 </div>
 
-                {/* Alerts Summary + Pie */}
-                <div className="space-y-4">
-                  <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="text-sm font-semibold text-slate-300">Active Alerts</div>
-                      <button onClick={() => setView("alerts")} className="text-xs text-cyan-400 hover:text-cyan-300">{`View all \u2192`}</button>
-                    </div>
-                    <div className="space-y-1.5">
-                      {alerts.slice(0, 3).map((a, i) => (
-                        <div key={i} className={`flex items-center gap-2 text-xs ${severityConfig[a.severity].text}`}>
-                          <div className={`w-1.5 h-1.5 rounded-full ${severityConfig[a.severity].dot}`} />
-                          <span className="text-slate-300 truncate">{a.client}</span>
-                          <span className="text-slate-500 ml-auto text-xs whitespace-nowrap">{a.severity}</span>
-                        </div>
-                      ))}
-                      {alerts.length > 3 && <div className="text-xs text-slate-500">+{alerts.length - 3} more</div>}
-                    </div>
+                {/* Revenue Split Pie */}
+                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                  <div className="text-sm font-semibold text-slate-300 mb-2">Revenue Split</div>
+                  <ResponsiveContainer width="100%" height={160}>
+                    <PieChart>
+                      <Pie data={pieData} cx="50%" cy="50%" innerRadius={35} outerRadius={60} dataKey="value" paddingAngle={3}>
+                        {pieData.map((d, i) => <Cell key={i} fill={d.color} />)}
+                      </Pie>
+                      <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 11, color: "#e2e8f0" }} formatter={(v: number) => `\u20AC${v.toLocaleString()}`} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="flex justify-center gap-4 text-xs">
+                    <span className="text-cyan-400">{"\u25CF"} Ad Serving {((adServingRev/totalMRR)*100).toFixed(0)}%</span>
+                    <span className="text-purple-400">{"\u25CF"} DSP {((dspRev/totalMRR)*100).toFixed(0)}%</span>
                   </div>
+                </div>
 
-                  <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                    <div className="text-sm font-semibold text-slate-300 mb-2">Revenue Split</div>
-                    <ResponsiveContainer width="100%" height={120}>
-                      <PieChart>
-                        <Pie data={pieData} cx="50%" cy="50%" innerRadius={30} outerRadius={50} dataKey="value" paddingAngle={3}>
-                          {pieData.map((d, i) => <Cell key={i} fill={d.color} />)}
-                        </Pie>
-                        <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 11, color: "#e2e8f0" }} formatter={(v: number) => `\u20AC${v.toLocaleString()}`} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <div className="flex justify-center gap-4 text-xs">
-                      <span className="text-cyan-400">{"\u25CF"} Ad Serving {((adServingRev/totalMRR)*100).toFixed(0)}%</span>
-                      <span className="text-purple-400">{"\u25CF"} DSP {((dspRev/totalMRR)*100).toFixed(0)}%</span>
-                    </div>
+                {/* MRR Progress */}
+                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                  <div className="text-sm font-semibold text-slate-300 mb-3">MRR to Target</div>
+                  <div className="flex items-end gap-2 mb-4">
+                    <div className="text-3xl font-bold text-cyan-400 tabular-nums">{((totalMRR/MRR_TARGET)*100).toFixed(0)}%</div>
+                    <div className="text-xs text-slate-500 mb-1">of {"\u20AC"}100k target</div>
+                  </div>
+                  <div className="h-4 bg-slate-900/50 rounded-full overflow-hidden mb-3">
+                    <div className="h-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full transition-all" style={{ width: `${(totalMRR/MRR_TARGET*100).toFixed(0)}%` }} />
+                  </div>
+                  <div className="flex justify-between text-xs text-slate-500">
+                    <span>{"\u20AC"}{totalMRR.toLocaleString()}</span>
+                    <span>{"\u20AC"}{MRR_TARGET.toLocaleString()}</span>
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-slate-700/30">
+                    <div className="text-xs text-slate-500 mb-1">Gap to close</div>
+                    <div className="text-lg font-bold text-amber-400 tabular-nums">{"\u20AC"}{(MRR_TARGET - totalMRR).toLocaleString()}</div>
                   </div>
                 </div>
               </div>
@@ -474,6 +451,155 @@ export default function Dashboard() {
                       ))}
                     </tbody>
                   </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ═══════ SALES TAB ═══════ */}
+          {view === "sales" && (
+            <div className="space-y-5">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="text-lg font-bold text-white">Sales</div>
+                <div className="text-sm text-slate-500">Revenue tracking & targets</div>
+              </div>
+
+              {/* MRR vs Target Chart */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="text-sm font-semibold text-slate-300 mb-3">MRR vs Target (Monthly)</div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={MRR_YEARLY_DATA} barGap={2}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }}
+                      formatter={(v: number, name: string) => [`\u20AC${v.toLocaleString()}`, name === "actual" ? "Actual" : "Target"]}
+                    />
+                    <Legend
+                      formatter={(value: string) => value === "actual" ? "Actual" : "Target"}
+                      wrapperStyle={{ fontSize: 12, color: "#94a3b8" }}
+                    />
+                    <Bar dataKey="actual" fill="#06b6d4" radius={[3, 3, 0, 0]} name="actual" />
+                    <Bar dataKey="target" fill="#475569" radius={[3, 3, 0, 0]} name="target" opacity={0.6} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Revenue by Tier */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="text-sm font-semibold text-slate-300 mb-3">Monthly Revenue by Tier</div>
+                <ResponsiveContainer width="100%" height={280}>
+                  <AreaChart data={revOverTime}>
+                    <defs>
+                      <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3}/><stop offset="100%" stopColor="#06b6d4" stopOpacity={0}/></linearGradient>
+                      <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.3}/><stop offset="100%" stopColor="#8b5cf6" stopOpacity={0}/></linearGradient>
+                      <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#22c55e" stopOpacity={0.3}/><stop offset="100%" stopColor="#22c55e" stopOpacity={0}/></linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                    <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                    <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12, color: "#e2e8f0" }} formatter={(v: number) => [`\u20AC${v.toLocaleString()}`, ""]} />
+                    <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
+                    <Area type="monotone" dataKey="t1" stackId="1" stroke="#06b6d4" fill="url(#g1)" strokeWidth={2} name="Tier 1" />
+                    <Area type="monotone" dataKey="t2" stackId="1" stroke="#8b5cf6" fill="url(#g2)" strokeWidth={2} name="Tier 2" />
+                    <Area type="monotone" dataKey="t3" stackId="1" stroke="#22c55e" fill="url(#g3)" strokeWidth={2} name="Tier 3 & New" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Revenue Split + KPIs + Pipeline Summary */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                  <div className="text-sm font-semibold text-slate-300 mb-2">Revenue by Plan</div>
+                  <ResponsiveContainer width="100%" height={160}>
+                    <PieChart>
+                      <Pie data={pieData} cx="50%" cy="50%" innerRadius={35} outerRadius={60} dataKey="value" paddingAngle={3}>
+                        {pieData.map((d, i) => <Cell key={i} fill={d.color} />)}
+                      </Pie>
+                      <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 11, color: "#e2e8f0" }} formatter={(v: number) => `\u20AC${v.toLocaleString()}`} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="flex justify-center gap-4 text-xs">
+                    <span className="text-cyan-400">{"\u25CF"} Ad Serving {"\u20AC"}{adServingRev.toLocaleString()}</span>
+                    <span className="text-purple-400">{"\u25CF"} DSP {"\u20AC"}{dspRev.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                  <div className="text-sm font-semibold text-slate-300 mb-3">Revenue KPIs</div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-slate-500">Total MRR</span>
+                      <span className="text-sm font-bold text-cyan-400 tabular-nums">{"\u20AC"}{totalMRR.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-slate-500">Target</span>
+                      <span className="text-sm font-bold text-slate-300 tabular-nums">{"\u20AC"}{MRR_TARGET.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-slate-500">Attainment</span>
+                      <span className={`text-sm font-bold tabular-nums ${totalMRR/MRR_TARGET >= 0.8 ? "text-emerald-400" : "text-amber-400"}`}>{((totalMRR/MRR_TARGET)*100).toFixed(1)}%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-slate-500">Gap</span>
+                      <span className="text-sm font-bold text-amber-400 tabular-nums">{"\u20AC"}{(MRR_TARGET - totalMRR).toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-slate-500">Avg per Client</span>
+                      <span className="text-sm font-bold text-slate-300 tabular-nums">{"\u20AC"}{avgRev.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-slate-500">MoM Growth</span>
+                      <span className={`text-sm font-bold tabular-nums ${mrrChange >= 0 ? "text-emerald-400" : "text-red-400"}`}>{mrrChange >= 0 ? "+" : ""}{mrrChange.toFixed(1)}%</span>
+                    </div>
+                  </div>
+                  {/* MRR to Target Progress */}
+                  <div className="mt-4 pt-3 border-t border-slate-700/30">
+                    <div className="text-xs text-slate-500 mb-2">MRR to Target Progress</div>
+                    <div className="h-4 bg-slate-900/50 rounded-full overflow-hidden mb-1">
+                      <div className="h-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full" style={{ width: `${(totalMRR/MRR_TARGET*100).toFixed(0)}%` }} />
+                    </div>
+                    <div className="flex justify-between text-xs text-slate-500">
+                      <span>{"\u20AC"}{totalMRR.toLocaleString()}</span>
+                      <span>{"\u20AC"}{MRR_TARGET.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="text-sm font-semibold text-slate-300">Sales Pipeline</div>
+                    <div className="text-xs text-slate-500">{PIPELINE.qualified + PIPELINE.proposal + PIPELINE.negotiation + PIPELINE.closed} total</div>
+                  </div>
+                  <div className="space-y-2.5">
+                    {[
+                      { stage: "Qualified", count: PIPELINE.qualified, color: "text-cyan-400" },
+                      { stage: "Proposal", count: PIPELINE.proposal, color: "text-purple-400" },
+                      { stage: "Negotiation", count: PIPELINE.negotiation, color: "text-amber-400" },
+                      { stage: "Closed Won", count: PIPELINE.closed, color: "text-emerald-400" },
+                    ].map((s, i) => (
+                      <div key={i} className="flex justify-between items-center">
+                        <span className="text-xs text-slate-500">{s.stage}</span>
+                        <span className={`text-sm font-bold tabular-nums ${s.color}`}>{s.count}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-700/30">
+                    <div className="text-sm font-semibold text-slate-300 mb-2">Top 5 by MRR</div>
+                    <div className="space-y-1.5">
+                      {sortedByRev.slice(0, 5).map((c, i) => {
+                        const curr = c.rev[c.rev.length-1];
+                        const pct = (curr / totalMRR * 100);
+                        return (
+                          <div key={c.id} className="flex justify-between text-xs">
+                            <span className="text-slate-300">{i+1}. {c.name}</span>
+                            <span className="text-slate-400 tabular-nums">{"\u20AC"}{curr.toLocaleString()} ({pct.toFixed(0)}%)</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -580,8 +706,8 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* ═══════ PIPELINE TAB ═══════ */}
-          {view === "pipeline" && (
+          {/* ═══════ PIPELINES TAB ═══════ */}
+          {view === "pipelines" && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
                 <div className="text-sm font-semibold text-slate-300 mb-4">Sales Pipeline (from HubSpot)</div>
@@ -622,14 +748,8 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="text-xs text-slate-500 border-t border-slate-700/30 pt-3">
-                  <div className="font-medium text-slate-400 mb-2">MRR to Target Progress</div>
-                  <div className="h-4 bg-slate-900/50 rounded-full overflow-hidden mb-1">
-                    <div className="h-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full" style={{ width: `${(totalMRR/100000*100).toFixed(0)}%` }} />
-                  </div>
-                  <div className="flex justify-between">
-                    <span>{"\u20AC"}{totalMRR.toLocaleString()}</span>
-                    <span>{"\u20AC"}100,000 target</span>
-                  </div>
+                  <div className="font-medium text-slate-400 mb-1">Resolution Rate</div>
+                  <div className="text-lg font-bold text-emerald-400">{((HUBSPOT_TICKETS.resolved / (HUBSPOT_TICKETS.open + HUBSPOT_TICKETS.pending + HUBSPOT_TICKETS.resolved)) * 100).toFixed(0)}%</div>
                 </div>
               </div>
             </div>
