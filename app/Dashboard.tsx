@@ -431,9 +431,9 @@ export default function Dashboard() {
     { month: "Oct", actual: 55100, target: 95000, isForecast: false },
     { month: "Nov", actual: 47100, target: 97000, isForecast: false },
     { month: "Dec", actual: totalMRR, target: 100000, isForecast: false },
-    { month: "Jan\u2019", actual: forecastData.months[0].value, target: 103000, isForecast: true },
-    { month: "Feb\u2019", actual: forecastData.months[1].value, target: 106000, isForecast: true },
-    { month: "Mar\u2019", actual: forecastData.months[2].value, target: 109000, isForecast: true },
+    { month: "Jan\u2019", actual: forecastData.months[0].value, target: MRR_TARGET, isForecast: true },
+    { month: "Feb\u2019", actual: forecastData.months[1].value, target: MRR_TARGET, isForecast: true },
+    { month: "Mar\u2019", actual: forecastData.months[2].value, target: MRR_TARGET, isForecast: true },
   ];
 
   // Revenue over time
@@ -763,7 +763,7 @@ export default function Dashboard() {
                   {forecastData.months.map((m, i) => {
                     const prevVal = i === 0 ? totalMRR : forecastData.months[i - 1].value;
                     const change = prevVal > 0 ? ((m.value - prevVal) / prevVal) * 100 : 0;
-                    const target = [103000, 106000, 109000][i];
+                    const target = MRR_TARGET;
                     const attainment = ((m.value / target) * 100).toFixed(0);
                     return (
                       <div key={m.label} className="bg-slate-900/50 rounded-lg p-4">
@@ -834,6 +834,10 @@ export default function Dashboard() {
                     <div className="flex justify-between items-center">
                       <span className="text-xs text-slate-500">MoM Growth</span>
                       <span className={`text-sm font-bold tabular-nums ${mrrChange >= 0 ? "text-emerald-400" : "text-red-400"}`}>{mrrChange >= 0 ? "+" : ""}{mrrChange.toFixed(1)}%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-slate-500">12m Growth</span>
+                      <span className={`text-sm font-bold tabular-nums ${totalMRR >= 42500 ? "text-emerald-400" : "text-red-400"}`}>{totalMRR >= 42500 ? "+" : ""}{(((totalMRR - 42500) / 42500) * 100).toFixed(1)}%</span>
                     </div>
                   </div>
                   {/* MRR to Target Progress */}
