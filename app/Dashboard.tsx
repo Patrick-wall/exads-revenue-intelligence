@@ -77,13 +77,13 @@ const CLIENTS: Client[] = [
   { id:3, name:"DatingLeads", tradingName:"Adclix / Perfect Ads / Traffic Gold", vertical:["Dating/Adult"], language:"English", currency:"EUR", blurb:"Monetises member areas across a large portfolio of dating sites. Operates multiple brands including Adclix, Perfect Ads, and Traffic Gold.", rev:[3785,4114,3887,3084,3144,7320], adReqs:[1.3,1.4,1.3,1.1,1.1,2.5], cost:[340,380,350,285,290,680], tier:"T2", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:2,resolved:4}, upsell:null },
   { id:4, name:"ValueMedia", tradingName:"Value Media GmbH", vertical:["Mainstream"], language:"German / English", currency:"USD", blurb:"German media buying agency focused on display and native campaigns. Uses DSP for programmatic buying across EU markets.", rev:[1429,1594,2181,2263,1443,1213], adReqs:[0.9,1.0,1.3,1.4,1.2,1.1], cost:[155,178,262,275,170,142], tier:"T2", status:"warning", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:3,resolved:2}, upsell:null },
   { id:5, name:"OptiDigital", tradingName:"Opti Digital SAS", vertical:["Mainstream"], language:"French / English", currency:"EUR", blurb:"French ad tech company providing header bidding and ad layout optimisation for premium publishers.", rev:[1538,1505,1348,1447,1280,1193], adReqs:[0.5,0.5,0.4,0.5,0.4,0.4], cost:[78,76,68,73,64,60], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
-  { id:6, name:"Topple", tradingName:"Topple Media", vertical:["Dating/Adult"], language:"English", currency:"USD", blurb:"Performance-focused media buyer running RON campaigns across dating verticals. Steady mid-tier account with predictable volumes.", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:1,resolved:1}, upsell:null },
+  { id:6, name:"Topple", tradingName:"Topple Media", vertical:["Dating/Adult"], language:"English", currency:"USD", blurb:"Performance-focused media buyer running RON campaigns across dating verticals. Steady mid-tier account with predictable volumes.", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, platformStatus:{"Ad Serving":"active","DSP":"testing"}, sentiment:"neutral", tickets:{open:1,resolved:1}, upsell:null },
   { id:7, name:"CargoMedia", tradingName:"Cargo Media AG", vertical:["Dating/Adult"], language:"German / English", currency:"CHF", blurb:"Swiss dating platform operator. Very stable, flat revenue — classic \"set and forget\" account.", rev:[1000,1000,1000,1000,1000,1000], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[45,45,45,45,45,45], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:0,resolved:0}, upsell:"Pro plan upgrade" },
   { id:8, name:"Harlem Next", tradingName:"Adsomnia", vertical:["Dating/Adult"], language:"English", currency:"EUR", blurb:"Ad tech outfit running remnant inventory monetisation across adult traffic. Trades as Adsomnia. Inconsistent month-to-month but overall stable.", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[82,110,88,84,92,95], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:1,resolved:3}, upsell:null },
   { id:9, name:"Vrume", tradingName:"Ontario", vertical:["Dating/Adult"], language:"English", currency:"USD", blurb:"Also operates as Ontario. Performance media buyer running dating offers with steady volumes across multiple geos.", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[52,48,51,49,51,48], tier:"T3", status:"active", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Ad Serving migration" },
   { id:10, name:"Ideawise", tradingName:"PlayaMedia", vertical:["Dating/Adult"], language:"English", currency:"USD", blurb:"Trades as PlayaMedia. Media buying focused on dating and adult offers across tier 1 geos.", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[70,68,65,67,66,62], tier:"T3", status:"declining", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"unhappy", tickets:{open:2,resolved:6}, upsell:null },
   { id:11, name:"Expandi Group", tradingName:"Expandi Group B.V. / TrafficHunt", vertical:["Dating/Adult"], language:"English / Russian", currency:"USD", blurb:"Runs TrafficHunt ad network serving adult traffic. Was a strong T1 account but has been steadily declining. Multiple open tickets — possible platform dissatisfaction.", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[195,180,135,138,115,105], tier:"T2", status:"critical", pricing:["Ad Serving"], plans:{"Ad Serving":"Pro"}, sentiment:"very_unhappy", tickets:{open:4,resolved:8}, upsell:null },
-  { id:12, name:"Digital East", tradingName:"Digital East GmbH", vertical:["Mainstream"], language:"German", currency:"USD", blurb:"Small agency buying inventory for DACH region clients. Low volume but consistent payer.", rev:[320,340,310,290,305,295], adReqs:[0.1,0.1,0.1,0.1,0.1,0.1], cost:[38,41,37,35,37,35], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Pro"}, sentiment:"happy", tickets:{open:0,resolved:0}, upsell:null },
+  { id:12, name:"Digital East", tradingName:"Digital East GmbH", vertical:["Mainstream"], language:"German", currency:"USD", blurb:"Small agency buying inventory for DACH region clients. Recently won several new advertiser mandates — scaling rapidly.", rev:[320,340,310,420,580,750], adReqs:[0.02,0.025,0.03,0.04,0.048,0.063], cost:[38,41,37,50,68,88], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Pro"}, sentiment:"happy", tickets:{open:0,resolved:0}, upsell:null },
   { id:13, name:"PTP Media", tradingName:"PTP Media Ltd", vertical:["Dating/Adult"], language:"English", currency:"EUR", blurb:"UK-based performance network specialising in lead generation. Slow decline in volumes — may need pricing review.", rev:[1800,1750,1690,1720,1680,1650], adReqs:[0.6,0.6,0.6,0.6,0.6,0.6], cost:[108,105,101,103,101,99], tier:"T2", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:1,resolved:4}, upsell:"DSP migration" },
   { id:14, name:"FlirtVentures", tradingName:"SSP / Former AdClix / Turtle Pace Media", vertical:["Dating/Adult"], language:"Dutch / English", currency:"EUR", blurb:"Netherlands-based dating network operating niche dating sites across Western Europe. Formerly operated as AdClix. Stable, consistent traffic.", rev:[1100,1050,980,1020,1045,1070], adReqs:[0.4,0.4,0.3,0.3,0.4,0.4], cost:[99,95,88,92,94,96], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:0,resolved:2}, upsell:"Pro plan upgrade" },
   { id:15, name:"Bank Midia", tradingName:"Bank Midia Ltda", vertical:["Dating/Adult"], language:"Portuguese", currency:"BRL", blurb:"Brazilian media buyer focused on dating traffic in LATAM markets. Growing steadily since onboarding — potential for significant scale.", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,22,42,58], tier:"New", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
@@ -130,6 +130,8 @@ const NETWORK_REVENUE = [
 // ═══════════════════════════════════════════════════════════════
 // ALERT ENGINE
 // ═══════════════════════════════════════════════════════════════
+const PLAN_AD_REQ_LIMITS: Record<ClientPlan, number> = { Core: 0.01, Pro: 0.05, Business: 0.5, Enterprise: 10.0 };
+
 function generateAlerts(clients: Client[]): Alert[] {
   const alerts: Alert[] = [];
   clients.forEach(c => {
@@ -137,6 +139,41 @@ function generateAlerts(clients: Client[]): Alert[] {
     const a = c.adReqs;
     if (r.length < 2) return;
     const curr = r[r.length-1], prev = r[r.length-2];
+    const currA = a[a.length-1];
+
+    // Plan ad request limit exceeded — upsell opportunity (single-platform clients only)
+    if (c.pricing.length === 1 && c.status === "active") {
+      const p = c.pricing[0];
+      const plan = c.plans[p] || "Core";
+      if (plan !== "Enterprise") {
+        const limit = PLAN_AD_REQ_LIMITS[plan];
+        if (currA > limit) {
+          alerts.push({
+            severity: "positive",
+            client: c.name,
+            title: `Exceeded ${plan} plan ad request limit`,
+            detail: `${(currA * 1000).toFixed(0)}M ad requests this month vs ${(limit * 1000).toFixed(0)}M ${plan} plan allowance (${((currA / limit - 1) * 100).toFixed(0)}% over). Needs Enterprise plan for continued growth.`,
+            action: "Propose Enterprise upgrade",
+            time: "Today"
+          });
+        }
+      }
+    }
+
+    // First-time RTB/DSP activity detected on Ad Serving-only client
+    if (c.platformStatus && !c.pricing.includes("DSP")) {
+      const dspStatus = c.platformStatus["DSP"];
+      if (dspStatus) {
+        alerts.push({
+          severity: "trend",
+          client: c.name,
+          title: "RTB activity detected \u2014 first time",
+          detail: `DSP/RTB bidding activity detected on account (status: ${dspStatus}). Client is currently ${c.pricing.join(" + ")} only \u2014 business model may be shifting to include programmatic buying.`,
+          action: "Speak to client \u2014 understand strategy shift",
+          time: "Today"
+        });
+      }
+    }
 
     // Client ready for billing: onboarding/testing with significant activity
     if ((c.status === "onboarding" || c.status === "testing") && r.filter(v => v > 0).length >= 2 && curr > 100) {
@@ -164,7 +201,7 @@ function generateAlerts(clients: Client[]): Alert[] {
 
     if (prev === 0) return;
     const revChange = ((curr - prev) / prev) * 100;
-    const currA = a[a.length-1], prevA = a[a.length-2];
+    const prevA = a[a.length-2];
     const adChange = prevA > 0 ? ((currA - prevA) / prevA) * 100 : 0;
 
     // Critical: revenue drop > 30%
@@ -187,8 +224,8 @@ function generateAlerts(clients: Client[]): Alert[] {
         alerts.push({ severity: "trend", client: c.name, title: `${r.length >= 5 ? "5" : "3"}+ months declining`, detail: `\u20AC${last4[0].toLocaleString()} \u2192 \u20AC${last4[last4.length-1].toLocaleString()}. Sustained downward trend.`, action: "Schedule health check", time: "1d ago" });
       }
     }
-    // Positive: growth > 30%
-    if (revChange > 30 && curr > 500) {
+    // Positive: growth 30-100% (>100% is usually a spike/recovery, not a trend)
+    if (revChange > 30 && revChange <= 100 && curr > 500) {
       alerts.push({ severity: "positive", client: c.name, title: `Growth +${revChange.toFixed(0)}% MoM`, detail: `Revenue \u20AC${curr.toLocaleString()}/m. ${adChange > 20 ? "Organic growth \u2014 volume scaling too." : "Check if pricing change."}`, action: "Upsell opportunity", time: "3h ago" });
     }
   });
@@ -227,18 +264,44 @@ const severityConfig: Record<AlertSeverity, { bg: string; border: string; text: 
   positive: { bg: "bg-emerald-500/10", border: "border-emerald-500/40", text: "text-emerald-400", badge: "bg-emerald-500/20 text-emerald-400", dot: "bg-emerald-500" },
 };
 
+const SEVERITY_ICONS: Record<AlertSeverity, string> = {
+  critical: "\u26A0",
+  warning: "\u2193",
+  trend: "\uD83D\uDCC9",
+  positive: "\u2191",
+};
+
+const severityFilterActive: Record<string, string> = {
+  all: "bg-cyan-500/15 text-cyan-400 border border-cyan-500/40",
+  critical: "bg-red-500/15 text-red-400 border border-red-500/40",
+  warning: "bg-amber-500/15 text-amber-400 border border-amber-500/40",
+  trend: "bg-purple-500/15 text-purple-400 border border-purple-500/40",
+  positive: "bg-emerald-500/15 text-emerald-400 border border-emerald-500/40",
+};
+
+const severityFilterBadge: Record<string, string> = {
+  all: "bg-cyan-500/20 text-cyan-400",
+  critical: "bg-red-500/20 text-red-400",
+  warning: "bg-amber-500/20 text-amber-400",
+  trend: "bg-purple-500/20 text-purple-400",
+  positive: "bg-emerald-500/20 text-emerald-400",
+};
+
 function AlertCard({ alert }: AlertCardProps) {
   const s = severityConfig[alert.severity];
+  const icon = SEVERITY_ICONS[alert.severity];
   return (
-    <div className={`${s.bg} border ${s.border} rounded-lg p-3 mb-2 backdrop-blur-sm`}>
-      <div className="flex items-center gap-2 mb-1">
-        <div className={`w-2 h-2 rounded-full ${s.dot}`} />
+    <div className={`${s.bg} border ${s.border} rounded-lg p-4 backdrop-blur-sm`}>
+      <div className="flex items-center gap-2 mb-1.5">
+        <span className="text-sm">{icon}</span>
         <span className={`text-xs font-mono uppercase font-bold ${s.text}`}>{alert.severity}</span>
         <span className="text-xs text-slate-500 ml-auto">{alert.time}</span>
       </div>
       <div className="text-sm font-semibold text-slate-200">{alert.client} — {alert.title}</div>
-      <div className="text-xs text-slate-400 mt-0.5">{alert.detail}</div>
-      <div className={`text-xs font-medium mt-1.5 ${s.text}`}>{"\u2192"} {alert.action}</div>
+      <div className="text-xs text-slate-400 mt-1">{alert.detail}</div>
+      <div className="mt-2.5">
+        <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${s.badge} border ${s.border}`}>{"\u2192"} {alert.action}</span>
+      </div>
     </div>
   );
 }
@@ -620,7 +683,7 @@ export default function Dashboard() {
   const navItems = [
     { id: "overview", label: "Overview", icon: "\u25C9" },
     { id: "sales", label: "Sales", icon: "\u25B2" },
-    { id: "alerts", label: "Alerts", icon: "\u26A0", count: alerts.filter(a => a.severity === "critical" || a.severity === "warning").length },
+    { id: "alerts", label: "Alerts", icon: "\u26A0", count: alerts.length },
     { id: "clients", label: "Clients", icon: "\u25EB" },
     { id: "reports", label: "Reports", icon: "\u2630" },
   ];
@@ -1056,7 +1119,7 @@ export default function Dashboard() {
                 return (
                 <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="text-sm font-semibold text-slate-300">Revenue per Client Account</div>
+                    <div className="text-sm font-semibold text-slate-300">Revenue per Client Account — January 2026</div>
                     <div className="text-xs text-slate-500">{payingClients.length} accounts with revenue</div>
                   </div>
                   <ResponsiveContainer width="100%" height={Math.max(300, payingClients.length * 32)}>
@@ -1085,28 +1148,93 @@ export default function Dashboard() {
           )}
 
           {/* ═══════ ALERTS TAB ═══════ */}
-          {view === "alerts" && (
-            <div>
-              <div className="flex items-center gap-2 mb-4">
+          {view === "alerts" && (() => {
+            const criticalCount = alerts.filter(a => a.severity === "critical").length;
+            const warningCount = alerts.filter(a => a.severity === "warning").length;
+            const trendCount = alerts.filter(a => a.severity === "trend").length;
+            const positiveCount = alerts.filter(a => a.severity === "positive").length;
+            const severityOrder: AlertSeverity[] = ["critical", "warning", "trend", "positive"];
+            const sectionLabels: Record<AlertSeverity, string> = { critical: "Critical", warning: "Warning", trend: "Trend", positive: "Positive" };
+            return (
+            <div className="space-y-4">
+              {/* Header + pill filters */}
+              <div className="flex items-center gap-2">
                 <div className="text-lg font-bold text-white">Alerts</div>
                 <div className="text-sm text-slate-500">({alerts.length} active)</div>
                 <div className="ml-auto flex gap-1">
                   {(["all", "critical", "warning", "trend", "positive"] as const).map(f => (
                     <button key={f} onClick={() => setAlertFilter(f)}
-                      className={`px-3 py-1 rounded-lg text-xs font-medium capitalize transition-colors ${
-                        alertFilter === f ? "bg-slate-700 text-white" : "text-slate-500 hover:text-slate-300"
-                      }`}>{f} {f !== "all" && `(${alerts.filter(a => a.severity === f).length})`}</button>
+                      className={`px-3 py-1.5 text-xs font-medium rounded-lg capitalize transition-colors ${
+                        alertFilter === f
+                          ? severityFilterActive[f]
+                          : "text-slate-500 hover:text-slate-300 border border-transparent"
+                      }`}>
+                      {f}
+                      {f !== "all" && (
+                        <span className={`ml-1.5 text-[10px] font-bold px-1.5 py-0 rounded-full ${
+                          alertFilter === f ? severityFilterBadge[f] : "bg-slate-700/50 text-slate-500"
+                        }`}>{alerts.filter(a => a.severity === f).length}</span>
+                      )}
+                    </button>
                   ))}
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {filteredAlerts.map((a, i) => <AlertCard key={i} alert={a} />)}
+
+              {/* Summary strip */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/50 rounded-xl p-4 backdrop-blur-xl">
+                <div className="grid grid-cols-4 gap-3">
+                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-red-400">{criticalCount}</div>
+                    <div className="text-xs text-slate-500">Critical</div>
+                  </div>
+                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-amber-400">{warningCount}</div>
+                    <div className="text-xs text-slate-500">Warning</div>
+                  </div>
+                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-purple-400">{trendCount}</div>
+                    <div className="text-xs text-slate-500">Trend</div>
+                  </div>
+                  <div className="bg-slate-900/50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-emerald-400">{positiveCount}</div>
+                    <div className="text-xs text-slate-500">Positive</div>
+                  </div>
+                </div>
               </div>
+
+              {/* Alert cards — grouped by severity when showing all, flat when filtered */}
+              {alertFilter === "all" ? (
+                <div className="space-y-5">
+                  {severityOrder.map(sev => {
+                    const group = alerts.filter(a => a.severity === sev);
+                    if (group.length === 0) return null;
+                    const s = severityConfig[sev];
+                    return (
+                      <div key={sev}>
+                        <div className="flex items-center gap-2 mb-2.5">
+                          <span className="text-sm">{SEVERITY_ICONS[sev]}</span>
+                          <span className={`text-xs font-bold uppercase tracking-wider ${s.text}`}>{sectionLabels[sev]}</span>
+                          <span className={`text-[10px] font-bold px-1.5 py-0 rounded-full ${s.badge}`}>{group.length}</span>
+                          <div className={`flex-1 h-px ${s.border} ml-2`} style={{ borderTopWidth: 1, borderTopStyle: "solid" }} />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {group.map((a, i) => <AlertCard key={i} alert={a} />)}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {filteredAlerts.map((a, i) => <AlertCard key={i} alert={a} />)}
+                </div>
+              )}
               {filteredAlerts.length === 0 && (
                 <div className="text-center py-12 text-slate-500">No {alertFilter} alerts</div>
               )}
             </div>
-          )}
+            );
+          })()}
 
           {/* ═══════ CLIENTS TAB ═══════ */}
           {view === "clients" && (() => {
