@@ -504,8 +504,10 @@ export default function Dashboard() {
   const top3Pct = ((top3Rev / totalMRR) * 100).toFixed(1);
 
   // Pricing split
-  const adServingRev = CLIENTS.filter(c => c.pricing.includes("Ad Serving")).reduce((s, c) => s + c.rev[c.rev.length-1], 0);
-  const dspRev = CLIENTS.filter(c => c.pricing.includes("DSP")).reduce((s, c) => s + c.rev[c.rev.length-1], 0);
+  const adServingClients = CLIENTS.filter(c => c.pricing.includes("Ad Serving"));
+  const dspClients = CLIENTS.filter(c => c.pricing.includes("DSP"));
+  const adServingRev = adServingClients.reduce((s, c) => s + c.rev[c.rev.length-1], 0);
+  const dspRev = dspClients.reduce((s, c) => s + c.rev[c.rev.length-1], 0);
 
   const pieData = [
     { name: "Ad Serving", value: adServingRev, color: "#06b6d4" },
@@ -732,8 +734,8 @@ export default function Dashboard() {
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="flex justify-center gap-4 text-xs">
-                    <span className="text-cyan-400">{"\u25CF"} Ad Serving {((adServingRev/(adServingRev+dspRev))*100).toFixed(0)}%</span>
-                    <span className="text-purple-400">{"\u25CF"} DSP {((dspRev/(adServingRev+dspRev))*100).toFixed(0)}%</span>
+                    <span className="text-cyan-400">{"\u25CF"} Ad Serving {((adServingRev/(adServingRev+dspRev))*100).toFixed(0)}% {"\u00B7"} {adServingClients.length} accounts</span>
+                    <span className="text-purple-400">{"\u25CF"} DSP {((dspRev/(adServingRev+dspRev))*100).toFixed(0)}% {"\u00B7"} {dspClients.length} accounts</span>
                   </div>
                 </div>
 
