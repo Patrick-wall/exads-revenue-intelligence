@@ -77,25 +77,25 @@ const CLIENTS: Client[] = [
   { id:3, name:"DatingLeads", tradingName:"Adclix / Perfect Ads / Traffic Gold", vertical:["Dating/Adult"], language:"English", currency:"EUR", blurb:"Monetises member areas across a large portfolio of dating sites. Operates multiple brands including Adclix, Perfect Ads, and Traffic Gold.", rev:[3785,4114,3887,3084,3144,7320], adReqs:[1.3,1.4,1.3,1.1,1.1,2.5], cost:[340,380,350,285,290,680], tier:"T2", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:2,resolved:4}, upsell:null },
   { id:4, name:"ValueMedia", tradingName:"Value Media GmbH", vertical:["Mainstream"], language:"German / English", currency:"USD", blurb:"German media buying agency focused on display and native campaigns. Uses DSP for programmatic buying across EU markets.", rev:[1429,1594,2181,2263,1443,1213], adReqs:[0.9,1.0,1.3,1.4,1.2,1.1], cost:[155,178,262,275,170,142], tier:"T2", status:"warning", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:3,resolved:2}, upsell:null },
   { id:5, name:"OptiDigital", tradingName:"Opti Digital SAS", vertical:["Mainstream"], language:"French / English", currency:"EUR", blurb:"French ad tech company providing header bidding and ad layout optimisation for premium publishers.", rev:[1538,1505,1348,1447,1280,1193], adReqs:[0.5,0.5,0.4,0.5,0.4,0.4], cost:[78,76,68,73,64,60], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
-  { id:6, name:"Topple", tradingName:"Topple Media", vertical:["Mainstream"], language:"English", currency:"USD", blurb:"Performance-focused media buyer running RON campaigns. Steady mid-tier account with predictable volumes.", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:1,resolved:1}, upsell:null },
+  { id:6, name:"Topple", tradingName:"Topple Media", vertical:["Dating/Adult"], language:"English", currency:"USD", blurb:"Performance-focused media buyer running RON campaigns across dating verticals. Steady mid-tier account with predictable volumes.", rev:[879,882,854,874,858,852], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[92,93,90,92,90,90], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:1,resolved:1}, upsell:null },
   { id:7, name:"CargoMedia", tradingName:"Cargo Media AG", vertical:["Dating/Adult"], language:"German / English", currency:"CHF", blurb:"Swiss dating platform operator. Very stable, flat revenue — classic \"set and forget\" account.", rev:[1000,1000,1000,1000,1000,1000], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[45,45,45,45,45,45], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:0,resolved:0}, upsell:"Pro plan upgrade" },
-  { id:8, name:"Harlem Next", tradingName:"Adsomnia", vertical:["Mainstream"], language:"English", currency:"EUR", blurb:"Ad tech outfit running remnant inventory monetisation. Trades as Adsomnia. Inconsistent month-to-month but overall stable.", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[82,110,88,84,92,95], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:1,resolved:3}, upsell:null },
-  { id:9, name:"Vrume", tradingName:"Ontario", vertical:["Mainstream"], language:"English", currency:"USD", blurb:"Also operates as Ontario. Performance media buyer with steady volumes across multiple geos.", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[52,48,51,49,51,48], tier:"T3", status:"active", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Ad Serving migration" },
-  { id:10, name:"Ideawise", tradingName:"PlayaMedia", vertical:["Mainstream"], language:"English", currency:"USD", blurb:"Trades as PlayaMedia. Media buying across multiple verticals with focus on entertainment and dating offers.", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[70,68,65,67,66,62], tier:"T3", status:"declining", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"unhappy", tickets:{open:2,resolved:6}, upsell:null },
-  { id:11, name:"Expandi Group", tradingName:"Expandi Group B.V. / TrafficHunt", vertical:["Mainstream"], language:"English / Russian", currency:"USD", blurb:"Runs TrafficHunt ad network. Was a strong T1 account but has been steadily declining. Multiple open tickets — possible platform dissatisfaction.", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[195,180,135,138,115,105], tier:"T2", status:"critical", pricing:["Ad Serving"], plans:{"Ad Serving":"Pro"}, sentiment:"very_unhappy", tickets:{open:4,resolved:8}, upsell:null },
+  { id:8, name:"Harlem Next", tradingName:"Adsomnia", vertical:["Dating/Adult"], language:"English", currency:"EUR", blurb:"Ad tech outfit running remnant inventory monetisation across adult traffic. Trades as Adsomnia. Inconsistent month-to-month but overall stable.", rev:[782,1005,818,795,845,869], adReqs:[0.3,0.3,0.3,0.3,0.3,0.3], cost:[82,110,88,84,92,95], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:1,resolved:3}, upsell:null },
+  { id:9, name:"Vrume", tradingName:"Ontario", vertical:["Dating/Adult"], language:"English", currency:"USD", blurb:"Also operates as Ontario. Performance media buyer running dating offers with steady volumes across multiple geos.", rev:[520,480,510,490,505,475], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[52,48,51,49,51,48], tier:"T3", status:"active", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Ad Serving migration" },
+  { id:10, name:"Ideawise", tradingName:"PlayaMedia", vertical:["Dating/Adult"], language:"English", currency:"USD", blurb:"Trades as PlayaMedia. Media buying focused on dating and adult offers across tier 1 geos.", rev:[650,620,580,610,590,545], adReqs:[0.2,0.2,0.2,0.2,0.2,0.2], cost:[70,68,65,67,66,62], tier:"T3", status:"declining", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"unhappy", tickets:{open:2,resolved:6}, upsell:null },
+  { id:11, name:"Expandi Group", tradingName:"Expandi Group B.V. / TrafficHunt", vertical:["Dating/Adult"], language:"English / Russian", currency:"USD", blurb:"Runs TrafficHunt ad network serving adult traffic. Was a strong T1 account but has been steadily declining. Multiple open tickets — possible platform dissatisfaction.", rev:[3787,3456,2558,2568,2102,1890], adReqs:[1.3,1.2,0.9,0.9,0.7,0.7], cost:[195,180,135,138,115,105], tier:"T2", status:"critical", pricing:["Ad Serving"], plans:{"Ad Serving":"Pro"}, sentiment:"very_unhappy", tickets:{open:4,resolved:8}, upsell:null },
   { id:12, name:"Digital East", tradingName:"Digital East GmbH", vertical:["Mainstream"], language:"German", currency:"USD", blurb:"Small agency buying inventory for DACH region clients. Low volume but consistent payer.", rev:[320,340,310,290,305,295], adReqs:[0.1,0.1,0.1,0.1,0.1,0.1], cost:[38,41,37,35,37,35], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Pro"}, sentiment:"happy", tickets:{open:0,resolved:0}, upsell:null },
   { id:13, name:"PTP Media", tradingName:"PTP Media Ltd", vertical:["Dating/Adult"], language:"English", currency:"EUR", blurb:"UK-based performance network specialising in lead generation. Slow decline in volumes — may need pricing review.", rev:[1800,1750,1690,1720,1680,1650], adReqs:[0.6,0.6,0.6,0.6,0.6,0.6], cost:[108,105,101,103,101,99], tier:"T2", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:1,resolved:4}, upsell:"DSP migration" },
   { id:14, name:"FlirtVentures", tradingName:"SSP / Former AdClix / Turtle Pace Media", vertical:["Dating/Adult"], language:"Dutch / English", currency:"EUR", blurb:"Netherlands-based dating network operating niche dating sites across Western Europe. Formerly operated as AdClix. Stable, consistent traffic.", rev:[1100,1050,980,1020,1045,1070], adReqs:[0.4,0.4,0.3,0.3,0.4,0.4], cost:[99,95,88,92,94,96], tier:"T3", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"happy", tickets:{open:0,resolved:2}, upsell:"Pro plan upgrade" },
-  { id:15, name:"Bank Midia", tradingName:"Bank Midia Ltda", vertical:["Mainstream"], language:"Portuguese", currency:"BRL", blurb:"Brazilian media buyer focused on LATAM markets. Growing steadily since onboarding — potential for significant scale.", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,22,42,58], tier:"New", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
+  { id:15, name:"Bank Midia", tradingName:"Bank Midia Ltda", vertical:["Dating/Adult"], language:"Portuguese", currency:"BRL", blurb:"Brazilian media buyer focused on dating traffic in LATAM markets. Growing steadily since onboarding — potential for significant scale.", rev:[0,0,0,200,350,480], adReqs:[0,0,0,0.1,0.1,0.2], cost:[0,0,0,22,42,58], tier:"New", status:"active", pricing:["Ad Serving"], plans:{"Ad Serving":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:1}, upsell:"Pro plan upgrade" },
   // ── Onboarding (5) ──
-  { id:16, name:"Chillipepper", tradingName:"Chillipepper Media", vertical:["Mainstream"], language:"English", currency:"EUR", blurb:"Newly onboarded ad tech startup. Running initial setup on DSP. Early signs of potential.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:1,resolved:0}, upsell:null },
+  { id:16, name:"Chillipepper", tradingName:"Chillipepper Media", vertical:["Dating/Adult"], language:"English", currency:"EUR", blurb:"Newly onboarded dating traffic buyer. Running initial setup on DSP. Early signs of potential.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:1,resolved:0}, upsell:null },
   { id:17, name:"Flowlink Global", tradingName:"Starlinker", vertical:["Mainstream"], language:"English", currency:"USD", blurb:"Also trades as Starlinker. Setting up DSP campaigns — onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
-  { id:18, name:"CF Media", tradingName:"Klico", vertical:["Mainstream"], language:"Portuguese / English", currency:"USD", blurb:"Also operates as Klico. Setting up DSP integration — onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:18, name:"CF Media", tradingName:"Klico", vertical:["Dating/Adult"], language:"Portuguese / English", currency:"USD", blurb:"Also operates as Klico. Setting up DSP integration for dating traffic — onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   { id:19, name:"Caribou Media", tradingName:"Recoil Network", vertical:["iGaming"], language:"English", currency:"CAD", blurb:"Canadian gaming publisher. Also operates Recoil Network. Setting up DSP for mobile game ad monetisation.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   { id:20, name:"Medialix", tradingName:"Adclix", vertical:["Mainstream"], language:"English", currency:"EUR", blurb:"Trades as Adclix. Setting up DSP integration — enterprise onboarding in progress.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"onboarding", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   // ── Testing (3) ──
   { id:21, name:"Top Solutions", tradingName:"Top Solutions Media", vertical:["Mainstream"], language:"English", currency:"EUR", blurb:"Running initial test campaigns on DSP. Evaluating platform fit before committing to full rollout.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
-  { id:22, name:"Ezmob", vertical:["Mainstream"], language:"English", currency:"USD", blurb:"Ad tech platform running test campaigns on Ad Serving. Evaluating integration and performance.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0.08,0.15], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["Ad Serving"], plans:{"Ad Serving":"Core"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
+  { id:22, name:"Ezmob", vertical:["Dating/Adult"], language:"English", currency:"USD", blurb:"Ad tech platform running test campaigns on Ad Serving for dating and adult verticals. Evaluating integration and performance.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0.08,0.15], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["Ad Serving"], plans:{"Ad Serving":"Core"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   { id:23, name:"AdultadAdworld", vertical:["Dating/Adult"], language:"English", currency:"USD", blurb:"Running test campaigns on DSP platform. Evaluating ad formats and targeting capabilities.", rev:[0,0,0,0,0,0], adReqs:[0,0,0,0,0,0], cost:[0,0,0,0,0,0], tier:"New", status:"testing", pricing:["DSP"], plans:{"DSP":"Enterprise"}, sentiment:"neutral", tickets:{open:0,resolved:0}, upsell:null },
   // ── Churn (1) ──
   { id:24, name:"Venus London", tradingName:"Venus London Technology", vertical:["Dating/Adult"], language:"English", currency:"GBP", blurb:"Was on DSP Business plan. Revenue declined steadily over 6 months before going quiet. May be worth a win-back campaign.", rev:[420,380,340,290,210,120], adReqs:[0.2,0.2,0.15,0.12,0.08,0.04], cost:[48,44,39,33,24,14], tier:"T3", status:"churn", pricing:["DSP"], plans:{"DSP":"Business"}, sentiment:"very_unhappy", tickets:{open:0,resolved:2}, upsell:null },
@@ -368,7 +368,7 @@ function ClientRow({ client, onClick, selected, sentimentOverride, openTickets }
 
   return (
     <tr
-      className={`border-b border-slate-800/50 cursor-pointer transition-colors ${selected ? "bg-cyan-500/10" : "hover:bg-slate-800/40"}`}
+      className={`border-b border-slate-800/50 cursor-pointer transition-colors even:bg-slate-800/20 ${selected ? "bg-cyan-500/15 border-l-2 border-l-cyan-400" : "hover:bg-slate-800/40"}`}
       onClick={onClick}
     >
       <td className="py-2.5 px-3">
@@ -703,7 +703,7 @@ export default function Dashboard() {
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 {/* Alerts Summary */}
-                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/50 rounded-xl p-4 backdrop-blur-xl">
                   <div className="flex items-center justify-between mb-3">
                     <div className="text-sm font-semibold text-slate-300">Active Alerts</div>
                     <button onClick={() => setView("alerts")} className="text-xs text-cyan-400 hover:text-cyan-300">{`View all \u2192`}</button>
@@ -721,7 +721,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Revenue Split Pie */}
-                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/50 rounded-xl p-4 backdrop-blur-xl">
                   <div className="text-sm font-semibold text-slate-300 mb-2">Revenue Split</div>
                   <ResponsiveContainer width="100%" height={160}>
                     <PieChart>
@@ -738,7 +738,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* MRR Progress */}
-                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/50 rounded-xl p-4 backdrop-blur-xl">
                   <div className="text-sm font-semibold text-slate-300 mb-3">MRR to Target</div>
                   <div className="flex items-end gap-2 mb-4">
                     <div className="text-3xl font-bold text-cyan-400 tabular-nums">{((totalMRR/MRR_TARGET)*100).toFixed(0)}%</div>
@@ -759,9 +759,9 @@ export default function Dashboard() {
               </div>
 
               {/* Clients by Vertical */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/50 rounded-xl p-4 backdrop-blur-xl">
                 <div className="text-sm font-semibold text-slate-300 mb-3">Clients by Vertical</div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="grid grid-cols-3 gap-3">
                   {Object.keys(VERTICAL_ICONS).map(v => {
                     const allV = CLIENTS.filter(c => c.vertical.includes(v));
                     const payingV = allV.filter(c => c.rev[c.rev.length-1] > 0);
@@ -787,7 +787,7 @@ export default function Dashboard() {
               </div>
 
               {/* Quick Client Table */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl overflow-hidden backdrop-blur-xl">
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/50 rounded-xl overflow-hidden backdrop-blur-xl">
                 <div className="px-4 py-3 flex items-center justify-between border-b border-slate-700/30">
                   <div className="text-sm font-semibold text-slate-300">Client Portfolio</div>
                   <button onClick={() => setView("clients")} className="text-xs text-cyan-400 hover:text-cyan-300">{`Full view \u2192`}</button>
@@ -795,7 +795,7 @@ export default function Dashboard() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-slate-700/30 text-xs text-slate-500 uppercase tracking-wider">
+                      <tr className="border-b border-slate-700/30 text-xs text-slate-400 uppercase tracking-wider">
                         <th className="text-left px-3 py-2 font-medium">Client</th>
                         <th className="text-left px-3 py-2 font-medium">Tier</th>
                         <th className="text-center px-1 py-2 font-medium" title="Mainstream \uD83C\uDF10 | Dating/Adult \u2764\uFE0F | iGaming \uD83C\uDFB0">Vertical</th>
@@ -1130,7 +1130,7 @@ export default function Dashboard() {
               : sortedByRev;
             return (
             <div key="clients-tab" className="space-y-4">
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/50 rounded-xl p-4 backdrop-blur-xl">
                 <div className="text-sm font-semibold text-slate-300 mb-4">Support Tickets (from HubSpot)</div>
                 <div className="grid grid-cols-4 gap-3">
                   <div className="bg-slate-900/50 rounded-lg p-3 text-center">
@@ -1152,7 +1152,7 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              <div className="lg:col-span-2 bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl overflow-hidden backdrop-blur-xl">
+              <div className="lg:col-span-2 bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/50 rounded-xl overflow-hidden backdrop-blur-xl">
                 <div className="px-4 py-3 border-b border-slate-700/30 flex items-center justify-between">
                   <div className="flex items-center gap-1">
                     {([
@@ -1182,7 +1182,7 @@ export default function Dashboard() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-slate-700/30 text-xs text-slate-500 uppercase tracking-wider">
+                      <tr className="border-b border-slate-700/30 text-xs text-slate-400 uppercase tracking-wider">
                         <th className="text-left px-3 py-2 font-medium">Client</th>
                         <th className="text-left px-3 py-2 font-medium">Tier</th>
                         <th className="text-center px-1 py-2 font-medium" title="Mainstream \uD83C\uDF10 | Dating/Adult \u2764\uFE0F | iGaming \uD83C\uDFB0">Vertical</th>
@@ -1225,7 +1225,7 @@ export default function Dashboard() {
 
                     {/* Client info blurb */}
                     <div className="mb-4 bg-slate-900/50 rounded-lg p-2.5">
-                      <div className="text-[11px] text-slate-400 leading-relaxed">{detail.blurb}</div>
+                      <div className="text-xs text-slate-400 leading-relaxed">{detail.blurb}</div>
                     </div>
 
                     {/* Sentiment faces */}
@@ -1282,7 +1282,7 @@ export default function Dashboard() {
                     </div>
 
                     {/* Key metrics */}
-                    <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
+                    <div className="grid grid-cols-2 gap-3 mb-4 text-xs">
                       <div className="bg-slate-900/50 rounded-lg p-2"><span className="text-slate-500">Tier</span><div className="text-slate-200 font-medium">{detail.tier}</div></div>
                       <div className="bg-slate-900/50 rounded-lg p-2"><span className="text-slate-500">Status</span><div className="text-slate-200 font-medium capitalize">{detail.status}</div></div>
                       <div className="bg-slate-900/50 rounded-lg p-2"><span className="text-slate-500">MRR</span><div className="text-cyan-400 font-bold">{"\u20AC"}{detail.rev[detail.rev.length-1].toLocaleString()}</div></div>
@@ -1322,8 +1322,8 @@ export default function Dashboard() {
                           <linearGradient id="detailG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#06b6d4" stopOpacity={0.4}/><stop offset="100%" stopColor="#06b6d4" stopOpacity={0}/></linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                        <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 10 }} axisLine={false} />
-                        <YAxis tick={{ fill: "#64748b", fontSize: 10 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
+                        <XAxis dataKey="month" tick={{ fill: "#cbd5e1", fontSize: 10 }} axisLine={false} />
+                        <YAxis tick={{ fill: "#cbd5e1", fontSize: 10 }} axisLine={false} tickFormatter={(v: number) => `\u20AC${(v/1000).toFixed(0)}k`} />
                         <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 11, color: "#e2e8f0" }} labelStyle={{ color: "#e2e8f0" }} itemStyle={{ color: "#e2e8f0" }} formatter={(v: number) => `\u20AC${v.toLocaleString()}`} />
                         <Area type="monotone" dataKey="rev" stroke="#06b6d4" fill="url(#detailG)" strokeWidth={2} name="Revenue" />
                         <Line type="monotone" dataKey="cost" stroke="#ef4444" strokeWidth={1.5} strokeDasharray="4 4" dot={false} name="Cost" />
