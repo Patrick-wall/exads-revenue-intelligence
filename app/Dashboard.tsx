@@ -1,6 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart, CartesianGrid, Legend, ReferenceLine } from "recharts";
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart, CartesianGrid, Legend } from "recharts";
 
 // ═══════════════════════════════════════════════════════════════
 // TYPE DEFINITIONS
@@ -470,23 +470,11 @@ export default function Dashboard() {
     };
   }, []);
 
-  // MRR vs Target yearly data (with forecast extension)
+  // MRR vs Target yearly data (current month + forecasts)
   const MRR_YEARLY_DATA = [
-    { month: "Jan", actual: 42500, target: MRR_TARGET, isForecast: false },
-    { month: "Feb", actual: 44200, target: MRR_TARGET, isForecast: false },
-    { month: "Mar", actual: 46800, target: MRR_TARGET, isForecast: false },
-    { month: "Apr", actual: 48100, target: MRR_TARGET, isForecast: false },
-    { month: "May", actual: 49300, target: MRR_TARGET, isForecast: false },
-    { month: "Jun", actual: 48900, target: MRR_TARGET, isForecast: false },
-    { month: "Jul", actual: 50200, target: MRR_TARGET, isForecast: false },
-    { month: "Aug", actual: 51800, target: MRR_TARGET, isForecast: false },
-    { month: "Sep", actual: 53400, target: MRR_TARGET, isForecast: false },
-    { month: "Oct", actual: 55100, target: MRR_TARGET, isForecast: false },
-    { month: "Nov", actual: 47100, target: MRR_TARGET, isForecast: false },
-    { month: "Dec", actual: totalMRR, target: MRR_TARGET, isForecast: false },
-    { month: "Jan\u2019", actual: forecastData.months[0].value, target: MRR_TARGET, isForecast: true },
-    { month: "Feb\u2019", actual: forecastData.months[1].value, target: MRR_TARGET, isForecast: true },
-    { month: "Mar\u2019", actual: forecastData.months[2].value, target: MRR_TARGET, isForecast: true },
+    { month: "Jan", actual: totalMRR, target: MRR_TARGET, isForecast: false },
+    { month: "Feb", actual: forecastData.months[0].value, target: MRR_TARGET, isForecast: true },
+    { month: "Mar", actual: forecastData.months[1].value, target: MRR_TARGET, isForecast: true },
   ];
 
   // Revenue over time
@@ -827,52 +815,6 @@ export default function Dashboard() {
                 <div className="text-sm text-slate-500">Revenue tracking & targets</div>
               </div>
 
-              {/* Revenue Forecast */}
-              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="text-sm font-semibold text-slate-300">Revenue Forecast</div>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                      forecastData.confidence === "High" ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30" :
-                      forecastData.confidence === "Medium" ? "bg-amber-500/15 text-amber-400 border border-amber-500/30" :
-                      "bg-red-500/15 text-red-400 border border-red-500/30"
-                    }`}>
-                      {forecastData.confidence} confidence
-                    </span>
-                  </div>
-                  <div className="text-xs text-slate-500">Based on weighted 3-month trends</div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {forecastData.months.map((m, i) => {
-                    const prevVal = i === 0 ? totalMRR : forecastData.months[i - 1].value;
-                    const change = prevVal > 0 ? ((m.value - prevVal) / prevVal) * 100 : 0;
-                    const target = MRR_TARGET;
-                    const attainment = ((m.value / target) * 100).toFixed(0);
-                    return (
-                      <div key={m.label} className="bg-slate-900/50 rounded-lg p-4">
-                        <div className="text-xs text-slate-500 mb-1">{m.label} 2026</div>
-                        <div className="text-xl font-bold text-cyan-400 tabular-nums">{"\u20AC"}{m.value.toLocaleString()}</div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className={`text-xs font-medium ${change >= 0 ? "text-emerald-400" : "text-red-400"}`}>
-                            {change >= 0 ? "\u2191" : "\u2193"}{Math.abs(change).toFixed(1)}%
-                          </span>
-                          <span className="text-xs text-slate-500">vs {i === 0 ? "Jan" : forecastData.months[i-1].label}</span>
-                        </div>
-                        <div className="mt-2 pt-2 border-t border-slate-700/30">
-                          <div className="flex justify-between text-xs">
-                            <span className="text-slate-500">vs Target</span>
-                            <span className={`font-medium ${parseInt(attainment) >= 80 ? "text-emerald-400" : "text-amber-400"}`}>{attainment}%</span>
-                          </div>
-                          <div className="h-1.5 bg-slate-800 rounded-full mt-1 overflow-hidden">
-                            <div className={`h-full rounded-full ${parseInt(attainment) >= 80 ? "bg-emerald-500" : "bg-amber-500"}`} style={{ width: `${Math.min(100, parseInt(attainment))}%` }} />
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
               {/* KPIs + Pipeline Summary */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
@@ -962,6 +904,52 @@ export default function Dashboard() {
                 </div>
               </div>
 
+              {/* Revenue Forecast */}
+              <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="text-sm font-semibold text-slate-300">Revenue Forecast</div>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                      forecastData.confidence === "High" ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30" :
+                      forecastData.confidence === "Medium" ? "bg-amber-500/15 text-amber-400 border border-amber-500/30" :
+                      "bg-red-500/15 text-red-400 border border-red-500/30"
+                    }`}>
+                      {forecastData.confidence} confidence
+                    </span>
+                  </div>
+                  <div className="text-xs text-slate-500">Based on weighted 3-month trends</div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {forecastData.months.map((m, i) => {
+                    const prevVal = i === 0 ? totalMRR : forecastData.months[i - 1].value;
+                    const change = prevVal > 0 ? ((m.value - prevVal) / prevVal) * 100 : 0;
+                    const target = MRR_TARGET;
+                    const attainment = ((m.value / target) * 100).toFixed(0);
+                    return (
+                      <div key={m.label} className="bg-slate-900/50 rounded-lg p-4">
+                        <div className="text-xs text-slate-500 mb-1">{m.label} 2026</div>
+                        <div className="text-xl font-bold text-cyan-400 tabular-nums">{"\u20AC"}{m.value.toLocaleString()}</div>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className={`text-xs font-medium ${change >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                            {change >= 0 ? "\u2191" : "\u2193"}{Math.abs(change).toFixed(1)}%
+                          </span>
+                          <span className="text-xs text-slate-500">vs {i === 0 ? "Jan" : forecastData.months[i-1].label}</span>
+                        </div>
+                        <div className="mt-2 pt-2 border-t border-slate-700/30">
+                          <div className="flex justify-between text-xs">
+                            <span className="text-slate-500">vs Target</span>
+                            <span className={`font-medium ${parseInt(attainment) >= 80 ? "text-emerald-400" : "text-amber-400"}`}>{attainment}%</span>
+                          </div>
+                          <div className="h-1.5 bg-slate-800 rounded-full mt-1 overflow-hidden">
+                            <div className={`h-full rounded-full ${parseInt(attainment) >= 80 ? "bg-emerald-500" : "bg-amber-500"}`} style={{ width: `${Math.min(100, parseInt(attainment))}%` }} />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* MRR vs Target Chart (with forecast) */}
               <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
                 <div className="flex items-center gap-2 mb-3">
@@ -980,13 +968,12 @@ export default function Dashboard() {
                       formatter={(v: number, name: string) => {
                         return [`\u20AC${v.toLocaleString()}`, name === "actual" ? "Actual" : "Target"];
                       }}
-                      labelFormatter={(label: string) => label.includes("\u2019") ? `${label} (Forecast)` : label}
+                      labelFormatter={(label: string, payload: Array<{ payload?: { isForecast?: boolean } }>) => payload?.[0]?.payload?.isForecast ? `${label} (Forecast)` : label}
                     />
                     <Legend
                       formatter={(value: string) => value === "actual" ? "Actual / Forecast" : "Target"}
                       wrapperStyle={{ fontSize: 12, color: "#e2e8f0" }}
                     />
-                    <ReferenceLine x="Dec" stroke="#334155" strokeDasharray="6 3" label={{ value: "Forecast \u2192", position: "top", fill: "#64748b", fontSize: 10 }} />
                     <Bar
                       dataKey="actual"
                       radius={[3, 3, 0, 0]}
@@ -1009,7 +996,7 @@ export default function Dashboard() {
 
               {/* Revenue by Tier */}
               <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
-                <div className="text-sm font-semibold text-slate-300 mb-3">Monthly Revenue by Tier</div>
+                <div className="flex items-center gap-2 mb-3"><div className="text-sm font-semibold text-slate-300">Monthly Revenue by Tier</div><span className="text-[10px] text-slate-500">Last 6 months</span></div>
                 <ResponsiveContainer width="100%" height={280}>
                   <AreaChart data={revOverTime}>
                     <defs>
@@ -1033,7 +1020,7 @@ export default function Dashboard() {
               <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/40 border border-slate-700/30 rounded-xl p-4 backdrop-blur-xl">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <div className="text-sm font-semibold text-slate-300">Network Revenue (All EXADS)</div>
+                    <div className="text-sm font-semibold text-slate-300">Network Revenue</div><span className="text-[10px] text-slate-500">Last 6 months</span>
                     <span className="text-[10px] bg-slate-700/50 text-slate-400 px-2 py-0.5 rounded-full">Platform-wide</span>
                   </div>
                   <div className="text-xs text-slate-400">This month: <span className="text-white font-bold tabular-nums">{"\u20AC"}{NETWORK_REVENUE[NETWORK_REVENUE.length-1].total.toLocaleString()}</span></div>
